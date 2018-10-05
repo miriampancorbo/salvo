@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class GamePlayer {
@@ -13,22 +14,27 @@ public class GamePlayer {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="player_id")
     private Player player;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game_id")
     private Game game;
 
-    //...
+    private LocalDateTime joinDate;
 
-    public GamePlayer(){
+
+
+    public GamePlayer(){}
+
+    /*public GamePlayer(Game game){
         this.date = LocalDate.now();
-    }
+    }*/
     public GamePlayer(Game game, Player player) {
         this.game = game;
         this.player = player;
+        this.joinDate = LocalDateTime.now();
     }
 
     //...
@@ -69,4 +75,9 @@ public class GamePlayer {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    public LocalDateTime getJoinDate() { return joinDate; }
+
+    public void setJoinDate(LocalDateTime joinDate) { this.joinDate = joinDate; }
+//...
 }

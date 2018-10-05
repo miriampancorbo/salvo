@@ -2,6 +2,7 @@ package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,10 +45,6 @@ public class Game{
         gamePlayers.add(gamePlayer);
     }
 
-    @JsonIgnore
-    public List<Player> getGame() {
-        return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
-    }
 
     //SET AND GET:
 
@@ -65,6 +62,12 @@ public class Game{
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+
+    @JsonIgnore
+    public List<Player> getGame() {
+        return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
     }
 }
 

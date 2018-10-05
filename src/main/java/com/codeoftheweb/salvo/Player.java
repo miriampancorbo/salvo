@@ -32,9 +32,7 @@ public class Player {
         gamePlayers.add(gamePlayer);
     }
 
-    public Set<GamePlayer> getGamePlayers() {
-        return gamePlayers;
-    } //NO SE SI HACE FALTA
+    public Set<GamePlayer> getGamePlayers() { return gamePlayers; } //NO SE SI HACE FALTA
 
     public void setGamePlayers(Set<GamePlayer> gamePlayers) {
         this.gamePlayers = gamePlayers;
