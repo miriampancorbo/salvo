@@ -6,7 +6,10 @@ import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
@@ -21,6 +24,13 @@ public class Game{
 
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<GamePlayer> gamePlayers;
+
+    /*public Map gameInfoMap;// = new HashMap<>();
+
+    public Map <String, Object> GameInfoMap{
+        String = this.id;
+        Object = LocalDateTime.now().toInstant(ZoneOffset.MAX).toEpochMilli();
+    }*/
 
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
@@ -48,27 +58,24 @@ public class Game{
 
     //SET AND GET:
 
-    public long getId() {
-        return id;
-    }
+    public long getId() {return id;}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public void setId(long id) {this.id = id;}
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+    public LocalDateTime getDate() {return date;}
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
+    public void setDate(LocalDateTime date) {this.date = date;}
 
+/*    public Map<String, Object> getGameInfoMap() {return gameInfoMap;}
+
+    public void setGameInfoMap(Map<String, Object> gameInfo) {this.gameInfoMap = gameInfo;}
+*/
 
     @JsonIgnore
     public List<Player> getGame() {
         return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
     }
+
 }
 
    // LocalDate date = LocalDate.parse("2011-08-03")
