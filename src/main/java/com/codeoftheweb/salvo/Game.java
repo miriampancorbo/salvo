@@ -2,12 +2,11 @@ package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -23,20 +22,13 @@ public class Game{
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<GamePlayer> gamePlayers;
 
-    /*public Map gameInfoMap;// = new HashMap<>();
-
-    public Map <String, Object> GameInfoMap{
-        String = this.id;
-        Object = LocalDateTime.now().toInstant(ZoneOffset.MAX).toEpochMilli();
-    }*/
-
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
-    }//NO SE SI HACE FLATA
+    }
 
     public void setGamePlayers(Set<GamePlayer> gamePlayers) {
         this.gamePlayers = gamePlayers;
-    }//NO SE SI HACE FLATA
+    }
 
     private LocalDateTime date;
 
@@ -64,11 +56,6 @@ public class Game{
 
     public void setDate(LocalDateTime date) {this.date = date;}
 
-/*    public Map<String, Object> getGameInfoMap() {return gameInfoMap;}
-
-    public void setGameInfoMap(Map<String, Object> gameInfo) {this.gameInfoMap = gameInfo;}
-*/
-
     @JsonIgnore
     public List<Player> getGame() {
         return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
@@ -83,6 +70,3 @@ public class Game{
     }
 
 }
-
-   // LocalDate date = LocalDate.parse("2011-08-03")
-//@LocalDate(LocalDate date = LocalDate.parse(string, formatter));

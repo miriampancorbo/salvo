@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salvo</title>
+</head>
+<body>
+<div  id="app">
+    <h1>Salvo!</h1>
+    <ul >My list
+        <li v-for="game in games"> {{game.id}}: {{game.gamePlayers[0].player.userName}} <span v-if="game.gamePlayers[1].player.userName && game.gamePlayers[0].player.userName"> vs </span>{{game.gamePlayers[1].player.userName}} </li>
+    </ul>
+
+</div>
+
+    <!--JQUERY-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!--Vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--js-->
+    <script src="scripts/games.js"></script>
+</body>
+</html>
