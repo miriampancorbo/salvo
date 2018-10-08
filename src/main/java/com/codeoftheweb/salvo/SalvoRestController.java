@@ -3,7 +3,8 @@ package com.codeoftheweb.salvo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-        import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -13,42 +14,23 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 @RestController
+@RequestMapping("/api")
 public class SalvoRestController {
 
     @Autowired
     private GameRepository gameRepository;
 
-    @GetMapping("/api/games")
-    public List<Map<String, Object>> gamesIdAndCreated(){
-        return gameRepository
-                .findAll()
-                .stream()
-                .sorted(Comparator.comparing(Game::getId))
-                .map(this::createMap)
-                .collect(toList());
+    @Autowired
+    private GamePlayerRepository gamePlayerRepository;
+
+    @GetMapping("/games")
+    public Map<String, Object> getgames(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("games", gameRepository.findAll().stream().map(Game::gamesDTO).collect(toList()));
+        return dto;
     }
 
-   private Map<String, Object> createMap(Game g) {
-        Map<String,Object> mapGamesInfo = new LinkedHashMap<>();
-        mapGamesInfo.put("id", g.getId());
-        mapGamesInfo.put("created", Timestamp.valueOf(g.getDate()).getTime());
-     //   mapGamesInfo.put("gamePlayers", map.mapGamePlayersInfo);
-        return mapGamesInfo;
-    }
 
-   /* private List<Map<String, Object>> mapGamePlayersInfo(GamePlayer gp){
-        Map<String,Object> mapGamePlayersInfo = new LinkedHashMap<>();
-        mapGamePlayersInfo.put("id", gp.getId());
-        mapGamePlayersInfo.put("player", map.mapPlayers);
-        return mapGamePlayersInfo;
-    }
-
-    private List<Map<String, Object>> mapPlayers(GamePlayer gp){
-        Map<String,Object> mapGamePlayersInfo = new LinkedHashMap<>();
-        mapPlayers.put("id", gp.getPlayersId());
-        //mapPlayers.put("player", map.mapPlayers);
-        return mapPlayers;
-    }*/
 }
 
 

@@ -3,7 +3,9 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
@@ -58,6 +60,13 @@ public class Player {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Map<String, Object> playerDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("userName", this.getUserName());
+        return dto;
     }
 
 }

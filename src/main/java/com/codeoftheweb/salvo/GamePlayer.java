@@ -5,6 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 public class GamePlayer {
@@ -34,7 +37,13 @@ public class GamePlayer {
     public GamePlayer(Game game, Player player) {
         this.game = game;
         this.player = player;
-        this.joinDate = LocalDateTime.now();
+
+    }
+
+    public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
+        this.game = game;
+        this.player = player;
+        this.joinDate = joinDate;
     }
 
     //...
@@ -80,4 +89,11 @@ public class GamePlayer {
 
     public void setJoinDate(LocalDateTime joinDate) { this.joinDate = joinDate; }
 //...
+
+    public Map<String, Object> gamePlayerDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("player", this.getPlayer().playerDTO());
+        return dto;
+    }
 }

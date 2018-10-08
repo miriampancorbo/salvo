@@ -5,12 +5,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -74,6 +72,14 @@ public class Game{
     @JsonIgnore
     public List<Player> getGame() {
         return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());
+    }
+
+    public Map<String, Object> gamesDTO() {
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("created", Timestamp.valueOf(this.getDate()).getTime());
+        dto.put("gamePlayers", this.getGamePlayers().stream().map(GamePlayer::gamePlayerDTO).collect(toList()));
+        return dto;
     }
 
 }
