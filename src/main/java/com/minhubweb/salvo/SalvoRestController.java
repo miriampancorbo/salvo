@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo;
+package com.minhubweb.salvo;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
