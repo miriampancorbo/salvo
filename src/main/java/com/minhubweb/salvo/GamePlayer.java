@@ -37,8 +37,6 @@ public class GamePlayer {
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Ship> ships = new HashSet<>();
 
-
-
     public GamePlayer(Game game, Player player, Set<Ship> ships) {
         this.game = game;
         this.player = player;

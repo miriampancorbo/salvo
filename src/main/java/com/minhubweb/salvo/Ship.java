@@ -19,20 +19,19 @@ public class Ship {
     private String type;
 
     //Methods, constructors:
-    public Ship (String type) {this.type = type;}
+    public Ship (){}
+    public Ship (String type, List<String> shipLocation) {this.type = type;}
 
     //Methods, others:
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
     private GamePlayer gamePlayer;
 
-
     @ElementCollection
     @Column(name="shipLocation")
-    private List<String> shipLocation = new ArrayList<>();
+    public List<String> shipLocation = new ArrayList<>();
 
     //Set and get:
-
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
 

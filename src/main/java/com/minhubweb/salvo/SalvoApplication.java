@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -45,22 +44,20 @@ public class SalvoApplication {
 			gameRepository.save(game7);
 			gameRepository.save(game8);
 
-			Ship ship1 = new Ship ("Cruiser");
-			Ship ship2 = new Ship ("Destroyer");
-			Ship ship3 = new Ship ("Battleship");
-			Ship ship4 = new Ship ("Chulo");
-			Ship ship5 = new Ship ("Fuerte");
-
 			Set<Ship> shipSet1 = new HashSet<>();
 			Set<Ship> shipSet2 = new HashSet<>();
 			Set<Ship> shipSet3 = new HashSet<>();
 			Set<Ship> shipSet4 = new HashSet<>();
 
-			shipSet1.add(ship1);
-			shipSet1.add(ship2);
-			shipSet1.add(ship3);
-			shipSet1.add(ship4);
-			shipSet1.add(ship5);
+			shipSet1.add(new Ship ("Destroyer", Arrays.asList("H2, H3, H4")));
+			shipSet1.add(new Ship ("Submarine", Arrays.asList("E1, F1, G1")));
+			shipSet1.add(new Ship ("Patrol Boat", Arrays.asList("B4, B5")));
+			shipSet2.add(new Ship ("Destroyer", Arrays.asList("B5, C5, D5")));
+			shipSet2.add(new Ship ("Patrol Boat", Arrays.asList("F1, F2")));
+			shipSet3.add(new Ship ("Destroyer", Arrays.asList("B5, C5, D5")));
+			shipSet3.add(new Ship ("Patrol Boat", Arrays.asList("C6, C7")));
+			shipSet4.add(new Ship ("Submarine", Arrays.asList("A2, A3, A4")));
+			shipSet4.add(new Ship ("Patrol Boat", Arrays.asList("G6, H6")));
 
 			gamePlayerRepository.save(new GamePlayer(game1, player1, shipSet1));
 			gamePlayerRepository.save(new GamePlayer(game1, player2, shipSet2));
