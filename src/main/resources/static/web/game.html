@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/game.css">
 </head>
 <body>
 
 <h1>Ship Locations!!</h1>
+
 <div class="container">
+
     <div id="app">
+        <h2>{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2>
+
         <table class="table">
             <thead>
                 <tr>

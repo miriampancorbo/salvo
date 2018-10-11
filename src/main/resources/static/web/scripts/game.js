@@ -1,33 +1,70 @@
-/*var myTableRows = [
-    [{"th":""},{"th":"1"},{"th":"2"},{"th":"3"}],
-    [{"th":"A"},{"td":""},{"td":""},{"td":""}],
-    [{"th":"B"},{"td":""},{"td":""},{"td":""}],
-    [{"th":"C"},{"td":""},{"td":""},{"td":""}],
-];*/
+var app;
+var currentURL=window.location.href;
+var numberVariable = takeNumberURL(currentURL)
 
-
-
-/*var table = document.createElement("table");
-for(var rowIndex in myTableRows) {
-    var row = document.createElement("tr");
-    for(var colIndex in myTableRows[rowIndex]) {
-        for(var tag in myTableRows[rowIndex][colIndex]) {
-            var cell = document.createElement(tag);
-            var cellContents = document.createTextNode(myTableRows[rowIndex][colIndex][tag]);
-            cell.appendChild(cellContents);
-            row.appendChild(cell);
-        }
-    }
-    table.appendChild(row);
+function takeNumberURL(url){
+    var n = url.slice(url.indexOf("gp=")+3);
+    console.log(n)
+    return n;
 }
-document.body.appendChild(table);*/
- var app;
 
+function fetchJson(url, init) {
+    return fetch(url, init).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error(response.statusText);
+    });
+}
+$(function () {
     app = new Vue({
         el: '#app',
         data: {
             vertical: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
-            horizontal: ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+            horizontal: ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            shipsLocations:[],
+            playerA:"",
+            playerB:"",
+            msgA:"",
+            msgB:""
         }
     })
+      fetchJson("http://localhost:8080/api/game_view/" + numberVariable, {
+                method: 'GET',
+            })
+            .then(function (json) {
+                console.log("esta bien el fetch!")
+                app.shipsLocations = addAllLocations(json);
+                app.playerA = json.gamePlayers[0].player.userName;
+                app.playerB = json.gamePlayers[1].player.userName;
+                getMsg(json);
+                paintPosition(app.shipsLocations);
+            }).catch(function (error) {
+                console.log("Esta mal el fetch...")
+            });
 
+       function addAllLocations(json){
+        var shipCells=[];
+           for(i=0; i<json.ship.length; i++){
+               shipCells.push(json.ship[i].locations)
+           }
+           return shipCells;
+       }
+
+      function paintPosition(allShipsLocations){
+        for (var j=0; j<allShipsLocations.length; j++){
+               for (var i=0; i<allShipsLocations[j].length; i++){
+                    $("#"+ allShipsLocations[j][i]).addClass("my-ship");
+                }
+        }
+     }
+
+     function getMsg(json){
+        if (numberVariable == json.gamePlayers[0].id){
+        app.msgA = "(you)";
+        }
+        else{
+        app.msgB="(you)"
+        }
+     }
+})
