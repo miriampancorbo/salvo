@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+<h1>Ship Locations!!</h1>
+<div class="container">
+    <div id="app">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr v-for="verticalCell in vertical">
+                    <td>{{verticalCell}}</td>
+                    <td :id="verticalCell+1"></td>
+                    <td :id="verticalCell+2"></td>
+                    <td :id="verticalCell+3"></td>
+                    <td :id="verticalCell+4"></td>
+                    <td :id="verticalCell+5"></td>
+                    <td :id="verticalCell+6"></td>
+                    <td :id="verticalCell+7"></td>
+                    <td :id="verticalCell+8"></td>
+                    <td :id="verticalCell+9"></td>
+                    <td :id="verticalCell+10"></td>
+                </tr>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <!--JQUERY-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!--Vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--js-->
+    <script type="text/javascript" src="scripts/game.js"></script>
+</body>
+</html>

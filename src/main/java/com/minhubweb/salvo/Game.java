@@ -45,9 +45,16 @@ public class Game{
 
     public Map<String, Object> gamesDTO() {
         Map<String,Object> dto = new LinkedHashMap<>();
-        dto.put("id", this.getId());
-        dto.put("created", Timestamp.valueOf(this.getDate()).getTime());
-        dto.put("gamePlayers", this.getGamePlayers().stream().map(GamePlayer::gamePlayerDTO).collect(toList()));
+        dto.put("id", this
+                            .getId());
+        dto.put("created", Timestamp
+                            .valueOf(this.getDate())
+                            .getTime());
+        dto.put("gamePlayers", this
+                            .gamePlayers
+                            .stream()
+                            .map(GamePlayer::gamePlayerDTO)
+                            .collect(toList()));
         return dto;
     }
 
@@ -58,12 +65,7 @@ public class Game{
     public void setDate(LocalDateTime date) {this.date = date;}
     public LocalDateTime getDate() {return date;}
 
+    public Set<GamePlayer> getGamePlayers() {return gamePlayers;}
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {this.gamePlayers = gamePlayers;}
 
-    public Set<GamePlayer> getGamePlayers() {
-        return gamePlayers;
-    }
-
-    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
-        this.gamePlayers = gamePlayers;
-    }
 }

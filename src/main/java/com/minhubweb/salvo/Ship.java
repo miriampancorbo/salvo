@@ -4,7 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Ship {
@@ -20,7 +22,10 @@ public class Ship {
 
     //Methods, constructors:
     public Ship (){}
-    public Ship (String type, List<String> shipLocation) {this.type = type;}
+    public Ship (String type, List<String> shipLocation) {
+        this.type = type;
+        this.shipLocation = shipLocation;
+    }
 
     //Methods, others:
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,6 +35,14 @@ public class Ship {
     @ElementCollection
     @Column(name="shipLocation")
     public List<String> shipLocation = new ArrayList<>();
+
+
+    public Map<String, Object> shipDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("type", this.getType());
+        dto.put("locations", this.getShipLocation());
+        return dto;
+    }
 
     //Set and get:
     public long getId() {return id;}
