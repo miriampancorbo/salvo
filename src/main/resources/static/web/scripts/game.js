@@ -22,7 +22,8 @@ $(function () {
         data: {
             vertical: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
             horizontal: ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            shipsLocations:[],
+            //shipsLocations:[],
+            ships:[],
             playerA:"",
             playerB:"",
             msgA:"",
@@ -34,16 +35,18 @@ $(function () {
             })
             .then(function (json) {
                 console.log("esta bien el fetch!")
-                app.shipsLocations = addAllLocations(json);
+                //app.shipsLocations = addAllLocations(json);
+                app.ships = json.ship;
                 app.playerA = json.gamePlayers[0].player.userName;
                 app.playerB = json.gamePlayers[1].player.userName;
                 getMsg(json);
-                paintPosition(app.shipsLocations);
+                //paintPosition(app.shipsLocations);
+                paintPosition(app.ships);
             }).catch(function (error) {
                 console.log("Esta mal el fetch...")
             });
 
-       function addAllLocations(json){
+       /*function addAllLocations(json){
         var shipCells=[];
            for(i=0; i<json.ship.length; i++){
                shipCells.push(json.ship[i].locations)
@@ -51,13 +54,20 @@ $(function () {
            return shipCells;
        }
 
-      function paintPosition(allShipsLocations){
-        for (var j=0; j<allShipsLocations.length; j++){
-               for (var i=0; i<allShipsLocations[j].length; i++){
-                    $("#"+ allShipsLocations[j][i]).addClass("my-ship");
+        for (var j=0; j<ships.length; j++){
+               for (var i=0; i<ships[j].locations.length; i++){
+                    $("#"+ ships[j].locations[i]).addClass("my-ship");
                 }
-        }
-     }
+        }*/
+
+      function paintPosition(ships){
+        ships.forEach(function (ship) {
+            ship.locations.forEach(function (location) {
+                $('#' + location).addClass("my-ship");
+            })
+        });
+      };
+
 
      function getMsg(json){
         if (numberVariable == json.gamePlayers[0].id){

@@ -34,23 +34,24 @@ public class GamePlayer {
     Set<Ship> ships = new HashSet<>();
 
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    Set<Salvo> salvos = new HashSet<>();
+    Set<Salvo> salvoes = new HashSet<>();
 
 
     //Methods, constructors
     public GamePlayer(){}
 
-    public GamePlayer(Game game, Player player, Set<Ship> ships) {
+    public GamePlayer(Game game, Player player, Set<Ship> ships, Set<Salvo> salvoes) {
         this.game = game;
         this.player = player;
         this.addShips(ships);
+        this.addSalvoes(salvoes);
     }
 
-    public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
+    /*public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
         this.game = game;
         this.player = player;
         this.joinDate = joinDate;
-    }
+    }*/
 
 
     //Methods, others
@@ -62,16 +63,16 @@ public class GamePlayer {
             this.ships.add(ship);
         });
     }
-    public void addShip(Ship ship) {
+    /*public void addShip(Ship ship) {
         ship.setGamePlayer(this);
         ships.add(ship);
-    }
+    }*/
 
 
-    public void addSalvos(Set<Salvo> salvos){
-        salvos.stream().forEach(salvo -> {
+    public void addSalvoes(Set<Salvo> salvoes){
+        salvoes.stream().forEach(salvo -> {
             salvo.setGamePlayer(this);
-            this.salvos.add(salvo);
+            this.salvoes.add(salvo);
         });
     }
 
@@ -82,7 +83,7 @@ public class GamePlayer {
         return dto;
     }
 
-    public Map<String, Object> getGameViewDTO(){
+    public Map<String, Object> gameViewDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.game.getId());
         dto.put("created",this.game.getDate());
@@ -117,6 +118,6 @@ public class GamePlayer {
     public Set<Ship> getShips() {return ships;}
     public void setShips(Set<Ship> ships) {this.ships = ships;}
 
-    public Set<Salvo> getSalvos() {return salvos;}
-    public void setSalvos(Set<Salvo> salvos) {this.salvos = salvos;}
+    public Set<Salvo> getSalvoes() {return salvoes;}
+    public void setSalvoes(Set<Salvo> salvoes) {this.salvoes = salvoes;}
 }

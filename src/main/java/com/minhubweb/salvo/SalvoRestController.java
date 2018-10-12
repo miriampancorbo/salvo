@@ -37,7 +37,7 @@ public class SalvoRestController {
     @GetMapping("/game_view/{id}")
     public Map<String, Object> getGameView(@PathVariable("id") long id){
         Optional<GamePlayer> optionalGamePlayer = gamePlayerRepository.findById(id);
-        return optionalGamePlayer.get().getGameViewDTO();
+        return optionalGamePlayer.get().gameViewDTO();
     }
 
     /*private Map<String,Object> buildNotFoundAnswer(long id) {
