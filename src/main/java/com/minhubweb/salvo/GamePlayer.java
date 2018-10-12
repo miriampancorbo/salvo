@@ -22,10 +22,6 @@ public class GamePlayer {
 
     private LocalDate date;
 
-    //Methods, constructors
-    public GamePlayer(){}
-
-    //Methods, others
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="player_id")
     private Player player;
@@ -36,6 +32,13 @@ public class GamePlayer {
 
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Ship> ships = new HashSet<>();
+
+    @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<Salvo> salvos = new HashSet<>();
+
+
+    //Methods, constructors
+    public GamePlayer(){}
 
     public GamePlayer(Game game, Player player, Set<Ship> ships) {
         this.game = game;
@@ -49,10 +52,26 @@ public class GamePlayer {
         this.joinDate = joinDate;
     }
 
+
+    //Methods, others
+
+
     public void addShips(Set<Ship> ships){
         ships.stream().forEach(ship -> {
             ship.setGamePlayer(this);
             this.ships.add(ship);
+        });
+    }
+    public void addShip(Ship ship) {
+        ship.setGamePlayer(this);
+        ships.add(ship);
+    }
+
+
+    public void addSalvos(Set<Salvo> salvos){
+        salvos.stream().forEach(salvo -> {
+            salvo.setGamePlayer(this);
+            this.salvos.add(salvo);
         });
     }
 
@@ -78,10 +97,6 @@ public class GamePlayer {
         return dto;
     }
 
-    public void addShip(Ship ship) {
-        ship.setGamePlayer(this);
-        ships.add(ship);
-    }
 
     //Set and get
     public long getId() {return id;}
@@ -101,4 +116,7 @@ public class GamePlayer {
 
     public Set<Ship> getShips() {return ships;}
     public void setShips(Set<Ship> ships) {this.ships = ships;}
+
+    public Set<Salvo> getSalvos() {return salvos;}
+    public void setSalvos(Set<Salvo> salvos) {this.salvos = salvos;}
 }
