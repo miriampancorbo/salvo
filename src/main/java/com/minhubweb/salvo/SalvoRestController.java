@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 @RequestMapping("/api")
@@ -39,13 +38,6 @@ public class SalvoRestController {
         Optional<GamePlayer> optionalGamePlayer = gamePlayerRepository.findById(id);
         return optionalGamePlayer.get().gameViewDTO();
     }
-
-    /*private Map<String,Object> buildNotFoundAnswer(long id) {
-        Map<String, Object> notFoundAnswer = new HashMap<>();
-        notFoundAnswer.put("Status", 404);
-        notFoundAnswer.put("Reason", "Game with id " + id + " could not be found");
-        return notFoundAnswer;
-    }*/
 }
 
 

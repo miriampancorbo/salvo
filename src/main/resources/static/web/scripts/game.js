@@ -22,12 +22,16 @@ $(function () {
         data: {
             vertical: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
             horizontal: ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-            //shipsLocations:[],
             ships:[],
             playerA:"",
             playerB:"",
             msgA:"",
-            msgB:""
+            msgB:"",
+            salvo:[],
+            myGpId:"",
+            opponentGpId:"",
+            myId:"",
+            opponentId:""
         }
     })
       fetchJson("http://localhost:8080/api/game_view/" + numberVariable, {
@@ -35,38 +39,58 @@ $(function () {
             })
             .then(function (json) {
                 console.log("esta bien el fetch!")
-                //app.shipsLocations = addAllLocations(json);
+                getIds(json);
                 app.ships = json.ship;
                 app.playerA = json.gamePlayers[0].player.userName;
                 app.playerB = json.gamePlayers[1].player.userName;
+                app.salvo=json.salvo;
                 getMsg(json);
-                //paintPosition(app.shipsLocations);
-                paintPosition(app.ships);
+                paintPositionOwnShips(app.ships);
+                paintPositionSalvoes(json, app.salvo);
+
             }).catch(function (error) {
                 console.log("Esta mal el fetch...")
             });
 
-       /*function addAllLocations(json){
-        var shipCells=[];
-           for(i=0; i<json.ship.length; i++){
-               shipCells.push(json.ship[i].locations)
-           }
-           return shipCells;
-       }
+    function getIds(json){
+        if (json.gamePlayers[0].id==numberVariable){
+            app.myGpId=json.gamePlayers[0].id;
+            app.myId=json.gamePlayers[0].player.id;
+            app.opponentGpId=json.gamePlayers[1].id;
+            app.opponentId=json.gamePlayers[1].player.id;
+        }
+        else {
+            app.myGpId=json.gamePlayers[1].id;
+            app.myId=json.gamePlayers[1].player.id;
+            app.opponentGpId=json.gamePlayers[0].id
+            app.opponentId=json.gamePlayers[0].player.id;
+        }
+    }
 
-        for (var j=0; j<ships.length; j++){
-               for (var i=0; i<ships[j].locations.length; i++){
-                    $("#"+ ships[j].locations[i]).addClass("my-ship");
-                }
-        }*/
-
-      function paintPosition(ships){
+      function paintPositionOwnShips(ships){
         ships.forEach(function (ship) {
             ship.locations.forEach(function (location) {
                 $('#' + location).addClass("my-ship");
             })
         });
       };
+
+    function paintPositionSalvoes(json, salvoes){
+        for (var i = 0; i < salvoes.length; i++) {
+            if (salvoes[i].player.id == app.myGpId) {
+                salvoes[i].locations.forEach(location => mySalvosStyle(location))
+           } else {
+                salvoes[i].locations.forEach(location => opponentSalvosStyle(location))
+           }
+        }
+    }
+
+    function mySalvosStyle(location) {
+        $('#' + location + 'S').addClass("my-salvo").html(json.salvo[i].turn);
+    }
+    function opponentSalvosStyle(location){
+        $('#' + location).addClass("opponent-salvo").html(json.salvo[i].turn);
+    }
 
 
      function getMsg(json){

@@ -52,10 +52,7 @@ public class GamePlayer {
         this.player = player;
         this.joinDate = joinDate;
     }*/
-
-
     //Methods, others
-
 
     public void addShips(Set<Ship> ships){
         ships.stream().forEach(ship -> {
@@ -89,6 +86,7 @@ public class GamePlayer {
         dto.put("created",this.game.getDate());
         dto.put("gamePlayers",this.game.getGamePlayers().stream().map(GamePlayer::gamePlayerDTO));
         dto.put("ship", this.ships.stream().map(Ship::shipDTO));
+        dto.put("salvo", this.getGame().getGamePlayers().stream().flatMap(gamePlayer -> gamePlayer.salvoes.stream().map(Salvo::salvoDTO)));
         return dto;
     }
 

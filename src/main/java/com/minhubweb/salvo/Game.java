@@ -55,6 +55,7 @@ public class Game{
                             .stream()
                             .map(GamePlayer::gamePlayerDTO)
                             .collect(toList()));
+
         return dto;
     }
 

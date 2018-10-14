@@ -6,3 +6,10 @@ table, td, th{
 .my-ship{
 background-color: black;
 }
+.my-salvo{
+background-color:red;
+color:yellow;
+}
+.opponent-salvo{
+background-color:orange;
+}
