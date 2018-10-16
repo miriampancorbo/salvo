@@ -78,17 +78,17 @@ $(function () {
     function paintPositionSalvoes(json, salvoes){
         for (var i = 0; i < salvoes.length; i++) {
             if (salvoes[i].player.id == app.myGpId) {
-                salvoes[i].locations.forEach(location => mySalvosStyle(location))
+                salvoes[i].locations.forEach(location => mySalvosStyle(location, json, i));
            } else {
-                salvoes[i].locations.forEach(location => opponentSalvosStyle(location))
+                salvoes[i].locations.forEach(location => opponentSalvosStyle(location, json, i));
            }
         }
     }
 
-    function mySalvosStyle(location) {
+    function mySalvosStyle(location, json, i) {
         $('#' + location + 'S').addClass("my-salvo").html(json.salvo[i].turn);
     }
-    function opponentSalvosStyle(location){
+    function opponentSalvosStyle(location, json, i){
         $('#' + location).addClass("opponent-salvo").html(json.salvo[i].turn);
     }
 

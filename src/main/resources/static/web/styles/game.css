@@ -7,9 +7,13 @@ table, td, th{
 background-color: black;
 }
 .my-salvo{
-background-color:red;
-color:yellow;
+//background-color:red;
+color:red;
+font-size:120%;
+
 }
 .opponent-salvo{
-background-color:orange;
+//background-color:orange;
+color:orange;
+font-size:120%;
 }
