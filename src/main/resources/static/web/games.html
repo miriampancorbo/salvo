@@ -2,13 +2,47 @@
 <html>
 <head>
     <title>Salvo</title>
+    <link rel="stylesheet" href="styles/games.css">
+
 </head>
 <body>
 <div  id="app">
     <h1>Salvo!</h1>
     <ul>My list
-        <li v-for="game in games"> {{game.id}}: {{game.gamePlayers[0].player.userName}} <span v-if="game.gamePlayers[1].player.userName && game.gamePlayers[0].player.userName"> vs </span>{{game.gamePlayers[1].player.userName}} </li>
+        <li v-for="game in games" v-if="game.gamePlayers[1]"> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}} </li>
+        <li  v-else> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
     </ul>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Total</th>
+            <th>Won</th>
+            <th>Lost</th>
+            <th>Tied</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>Jack Bauer</td>
+            <td v-for="point in jackSummary">{{point}}</td>
+        </tr>
+        <tr>
+            <td>Chloe O'Brian</td>
+            <td v-for="point in chloeSummary">{{point}}</td>
+        </tr>
+        <tr>
+            <td>Kim Bauer </td>
+            <td v-for="point in kimSummary">{{point}}</td>
+        </tr>
+        <tr>
+            <td>Tony Almeida </td>
+            <td v-for="point in almeidaSummary">{{point}}</td>
+        </tr>
+        </tbody>
+    </table>
 
 </div>
 

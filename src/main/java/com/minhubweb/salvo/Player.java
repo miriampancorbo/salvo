@@ -35,15 +35,26 @@ public class Player {
         gamePlayers.add(gamePlayer);
     }
 
+    @OneToMany(mappedBy="player", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<Score> scores;
+
+    public void addScore(Score score) {
+        score.setPlayer(this);
+        scores.add(score);
+    }
+
     public List<Game> getGames() {return gamePlayers.stream().map(sub -> sub.getGame()).collect(toList());}
 
     public Map<String, Object> playerDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("userName", this.getUserName());
+
         return dto;
     }
 
+
+    public Score getgameScore (Game game){return scores.stream().filter(score -> score.getGame().getId() == game.getId()).findAny().orElse(null);}
     //Set and get:
     public void setId(long id) {this.id = id;}
     public long getId() {return id;}
@@ -54,6 +65,9 @@ public class Player {
 
     public Set<GamePlayer> getGamePlayers() { return gamePlayers; }
     public void setGamePlayers(Set<GamePlayer> gamePlayers) {this.gamePlayers = gamePlayers;}
+
+    public Set<Score> getScores() {return scores;}
+    public void setScores(Set<Score> scores) {this.scores = scores;}
 }
 
 

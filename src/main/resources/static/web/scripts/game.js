@@ -89,7 +89,12 @@ $(function () {
         $('#' + location + 'S').addClass("my-salvo").html(json.salvo[i].turn);
     }
     function opponentSalvosStyle(location, json, i){
+    if ($('#' + location).hasClass("my-ship")){
+            $('#' + location).addClass("hit-my-ship").html(json.salvo[i].turn);
+    }
+    else{
         $('#' + location).addClass("opponent-salvo").html(json.salvo[i].turn);
+        }
     }
 
 

@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 @Entity
 public class GamePlayer {
     //Properties
@@ -40,18 +42,14 @@ public class GamePlayer {
     //Methods, constructors
     public GamePlayer(){}
 
-    public GamePlayer(Game game, Player player, Set<Ship> ships, Set<Salvo> salvoes) {
+    public GamePlayer(Game game, Player player, LocalDateTime joinDate, Set<Ship> ships, Set<Salvo> salvoes) {
         this.game = game;
         this.player = player;
+        this.joinDate = joinDate;
         this.addShips(ships);
         this.addSalvoes(salvoes);
     }
 
-    /*public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
-        this.game = game;
-        this.player = player;
-        this.joinDate = joinDate;
-    }*/
     //Methods, others
 
     public void addShips(Set<Ship> ships){
@@ -77,6 +75,11 @@ public class GamePlayer {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("player", this.getPlayer().playerDTO());
+        if (this.getScore()!=null) {
+            dto.put("scores", this.getScore().getPoints());
+        }
+        else{
+            dto.put("scores", this.getScore());}
         return dto;
     }
 
@@ -84,9 +87,20 @@ public class GamePlayer {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.game.getId());
         dto.put("created",this.game.getDate());
-        dto.put("gamePlayers",this.game.getGamePlayers().stream().map(GamePlayer::gamePlayerDTO));
-        dto.put("ship", this.ships.stream().map(Ship::shipDTO));
-        dto.put("salvo", this.getGame().getGamePlayers().stream().flatMap(gamePlayer -> gamePlayer.salvoes.stream().map(Salvo::salvoDTO)));
+        dto.put("gamePlayers",this.game
+                                .getGamePlayers()
+                                .stream()
+                                .map(GamePlayer::gamePlayerDTO));
+        dto.put("ship", this.ships
+                            .stream()
+                            .map(Ship::shipDTO));
+        dto.put("salvo", this.getGame()
+                            .getGamePlayers()
+                            .stream()
+                            .flatMap(gamePlayer -> gamePlayer
+                                                    .salvoes
+                                                    .stream()
+                                                    .map(Salvo::salvoDTO)));
         return dto;
     }
 
@@ -96,6 +110,7 @@ public class GamePlayer {
         return dto;
     }
 
+    public Score getScore(){return this.player.getgameScore(this.game);}
 
     //Set and get
     public long getId() {return id;}

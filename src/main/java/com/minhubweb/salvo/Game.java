@@ -40,6 +40,14 @@ public class Game{
         gamePlayers.add(gamePlayer);
     }
 
+    @OneToMany(mappedBy="game", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    Set<Score> scores;
+
+    public void addScore(Score score) {
+        score.setGame(this);
+        scores.add(score);
+    }
+
     @JsonIgnore
     public List<Player> getGame() {return gamePlayers.stream().map(sub -> sub.getPlayer()).collect(toList());}
 
@@ -69,4 +77,6 @@ public class Game{
     public Set<GamePlayer> getGamePlayers() {return gamePlayers;}
     public void setGamePlayers(Set<GamePlayer> gamePlayers) {this.gamePlayers = gamePlayers;}
 
+    public Set<Score> getScores() {return scores;}
+    public void setScores(Set<Score> scores) {this.scores = scores;}
 }
