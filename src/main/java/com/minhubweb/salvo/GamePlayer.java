@@ -10,8 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
-
 @Entity
 public class GamePlayer {
     //Properties
@@ -51,18 +49,12 @@ public class GamePlayer {
     }
 
     //Methods, others
-
     public void addShips(Set<Ship> ships){
         ships.stream().forEach(ship -> {
             ship.setGamePlayer(this);
             this.ships.add(ship);
         });
     }
-    /*public void addShip(Ship ship) {
-        ship.setGamePlayer(this);
-        ships.add(ship);
-    }*/
-
 
     public void addSalvoes(Set<Salvo> salvoes){
         salvoes.stream().forEach(salvo -> {
@@ -110,7 +102,7 @@ public class GamePlayer {
         return dto;
     }
 
-    public Score getScore(){return this.player.getgameScore(this.game);}
+    public Score getScore(){return this.player.getGameScore(this.game);}
 
     //Set and get
     public long getId() {return id;}

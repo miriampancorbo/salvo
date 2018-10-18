@@ -1,4 +1,5 @@
 var app;
+
 function fetchJson(url, init) {
     return fetch(url, init).then(function (response) {
         if (response.ok) {
@@ -12,14 +13,7 @@ $(function () {
         el: '#app',
         data: {
             games: [],
-            jackTotalPoints:[],
-            chloeTotalPoints:[],
-            kimTotalPoints:[],
-            almeidaTotalPoints:[],
-            jackSummary:[],
-            chloeSummary:[],
-            kimSummary:[],
-            almeidaSummary:[]
+            dataObjectsOfPlayers : []
         }
     })
     fetchJson("http://localhost:8080/api/games", {
@@ -27,53 +21,52 @@ $(function () {
         })
         .then(function (json) {
             app.games = json;
-           // app.jackTotalPoints = joinAllPunctuations(app.jackTotalPoints, 1, json);
-           // app.chloeTotalPoints = joinAllPunctuations(app.chloeTotalPoints, 2, json);
-            //app.KimTotalPoints = joinAllPunctuations(app.kimTotalPoints, 3, json);
-            //app.AlmeidaTotalPoints = joinAllPunctuations(app.almeidaTotalPoints, 4, json);
-            app.jackSummary = operationsGetTablePoints(app.jackSummary, app.jackTotalPoints, 1, json);
-            app.chloeSummary = operationsGetTablePoints(app.chloeSummary, app.chloeTotalPoints, 2, json);
-            app.kimSummary = operationsGetTablePoints(app.kimSummary, app.kimTotalPoints, 3, json);
-            app.almeidaSummary = operationsGetTablePoints(app.almeidaSummary, app.almeidaTotalPoints, 4, json);
+            processPoints(json);
         }).catch(function (error) {
-            console.log("error")
+            console.log(error)
         });
-        function joinAllPunctuations(playerPoints, number, json){
-            var playerPoints;
+
+        function processPoints(json){
             for (var i =0; i<json.length; i++){
-                if (json[i].gamePlayers[0] && json[i].gamePlayers[0].player.id == number){
-                    playerPoints.push(json[i].gamePlayers[0].scores);
-                }
-                else if (json[i].gamePlayers[1] && json[i].gamePlayers[1].player.id == number){
-                    playerPoints.push(json[i].gamePlayers[1].scores);
+                for (var j=0; j<2;j++){
+                    if(json[i].gamePlayers[j]){
+                        var currentIdInJson = json[i].gamePlayers[j].player.id;
+                        var findInAppIdJson = app.dataObjectsOfPlayers.findIndex(player=>player.id === currentIdInJson);
+                        var currentPlayerInApp= app.dataObjectsOfPlayers[findInAppIdJson];
+                            if (findInAppIdJson == -1){
+                                var obj = new Object;
+                                    obj.id = currentIdInJson;
+                                    obj.userName = json[i].gamePlayers[j].player.userName;
+                                    obj.win=0;
+                                    obj.lost=0;
+                                    obj.tied=0;
+                                    obj.points=0;
+                                    if (json[i].gamePlayers[j].scores==3){
+                                        obj.win++;
+                                    }
+                                    else if (json[i].gamePlayers[j].scores==0){
+                                        obj.lost++;
+                                    }
+                                    else if (json[i].gamePlayers[j].scores==2){
+                                        obj.tied++;
+                                    }
+                                obj.points=(obj.win*3) + (obj.tied*2);
+                                app.dataObjectsOfPlayers.push(obj);
+                            }
+                            else {
+                                if (json[i].gamePlayers[j].scores==3){
+                                    currentPlayerInApp.win++;
+                                }
+                                else if (json[i].gamePlayers[j].scores==0){
+                                    currentPlayerInApp.lost++;
+                                }
+                                else if (json[i].gamePlayers[j].scores==2){
+                                    currentPlayerInApp.tied++;
+                                }
+                                currentPlayerInApp.points=(currentPlayerInApp.win*3) + (currentPlayerInApp.tied*2);
+                            }
+                    }
                 }
             }
-            return playerPoints;
         }
-
-        function operationsGetTablePoints(summary, playerPoints, number, json){
-            var everyResult = joinAllPunctuations(playerPoints, number, json);
-            var won=0;
-            var lost=0;
-            var tied=0;
-            var sum=0;
-            for (var i = 0; i<everyResult.length; i++){
-                if (everyResult[i]==3){
-                    won++;
-                }
-                else if (everyResult[i]==0){
-                    lost++;
-                }
-                else{
-                    tied++;
-                }
-            }
-            sum = (won*3) + (tied*2);
-            summary.push(sum);
-            summary.push(won);
-            summary.push(lost);
-            summary.push(tied);
-            return summary;
-        }
-
 })
