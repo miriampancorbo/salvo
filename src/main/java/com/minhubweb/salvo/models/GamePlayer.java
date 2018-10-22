@@ -1,4 +1,4 @@
-package com.minhubweb.salvo;
+package com.minhubweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class GamePlayer {
@@ -95,6 +97,7 @@ public class GamePlayer {
                                                     .map(Salvo::salvoDTO)));
         return dto;
     }
+
 
     public Map<String, Object> gamePlayerId(){
         Map<String,Object> dto = new LinkedHashMap<>();

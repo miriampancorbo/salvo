@@ -1,4 +1,4 @@
-package com.minhubweb.salvo;
+package com.minhubweb.salvo.models;
 
 
 import org.hibernate.annotations.GenericGenerator;

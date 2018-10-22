@@ -1,9 +1,13 @@
 package com.minhubweb.salvo;
-
+import com.minhubweb.salvo.models.*;
+import com.minhubweb.salvo.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -11,19 +15,23 @@ import java.util.*;
 @SpringBootApplication
 public class SalvoApplication {
 
+    @Autowired
+    PasswordEncoder passwordEncoder; //PaswordEncoder es una interfaz que puede ser implementada por ciertas Class
+
 	public static void main(String[] args) {
 
 		SpringApplication.run(SalvoApplication.class, args);
 	}
+
 	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository, GameRepository gameRepository,
 									  GamePlayerRepository gamePlayerRepository, ShipRepository shipRepository,
 									  ScoreRepository scoreRepository) {
 		return (args) -> {
-			Player player1 = new Player("Jack Bauer", "24");
-			Player player2 = new Player("Chloe O'Brian", "42");
-			Player player3 = new Player("Kim Bauer", "kb");
-			Player player4 = new Player("Tony Almeida", "mole");
+			Player player1 = new Player("miri", passwordEncoder.encode("123"));
+			Player player2 = new Player("rodri", passwordEncoder.encode("42"));
+			Player player3 = new Player("felipe", passwordEncoder.encode("kb"));
+			Player player4 = new Player("carlos", passwordEncoder.encode("mole"));
 			playerRepository.save(player1);
 			playerRepository.save(player2);
 			playerRepository.save(player3);
@@ -152,3 +160,4 @@ public class SalvoApplication {
 		};
 	}
 }
+

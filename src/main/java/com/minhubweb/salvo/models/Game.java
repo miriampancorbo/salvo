@@ -1,4 +1,4 @@
-package com.minhubweb.salvo;
+package com.minhubweb.salvo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,7 +20,7 @@ public class Game{
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
 
-    private LocalDateTime date;
+    private LocalDateTime date; //LocalDateTime= tipo de variable
 
     //Methods, constructor:
     public Game(){
@@ -53,8 +53,7 @@ public class Game{
 
     public Map<String, Object> gamesDTO() {
         Map<String,Object> dto = new LinkedHashMap<>();
-        dto.put("id", this
-                            .getId());
+        dto.put("id", this.getId());
         dto.put("created", Timestamp
                             .valueOf(this.getDate())
                             .getTime());
@@ -63,7 +62,6 @@ public class Game{
                             .stream()
                             .map(GamePlayer::gamePlayerDTO)
                             .collect(toList()));
-
         return dto;
     }
 

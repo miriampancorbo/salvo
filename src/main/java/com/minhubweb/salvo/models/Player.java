@@ -1,6 +1,8 @@
-package com.minhubweb.salvo;
+package com.minhubweb.salvo.models;
 
+import com.minhubweb.salvo.repositories.PlayerRepository;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.LinkedHashMap;
@@ -21,12 +23,20 @@ public class Player {
 
     private String userName;
 
+    //@Autowire
+    //PasswordEncoder passwordEncoder;
     private String password;
+
+    /*@Autowired
+    private PlayerRepository playerRepository;*/
 
     //Methods, constructors:
     public Player(){ }
 
-    public Player(String userName, String password) {this.userName = userName;}
+    public Player(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 
     //Methods, others:
     @OneToMany(mappedBy="player", fetch= FetchType.EAGER, cascade = CascadeType.ALL)
@@ -55,6 +65,18 @@ public class Player {
         return dto;
     }
 
+    public Map<String, Object> currentPlayerDTO(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        //dto.put("id", playerRepository.findById(this.getId()));
+        dto.put("userName", this.getUserName());
+
+        return dto;
+    }
+
+
+
+
     public Score getGameScore(Game game){return scores.stream().filter(score -> score.getGame().getId() == game.getId()).findAny().orElse(null);}
 
     //Set and get:
@@ -72,7 +94,6 @@ public class Player {
     public void setScores(Set<Score> scores) {this.scores = scores;}
 
     public String getPassword() {return password;}
-
     public void setPassword(String password) {this.password = password;}
 }
 
