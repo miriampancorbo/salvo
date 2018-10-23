@@ -8,14 +8,13 @@ import com.minhubweb.salvo.repositories.GameRepository;
 import com.minhubweb.salvo.repositories.PlayerRepository;
 import com.minhubweb.salvo.repositories.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.SqlResultSetMapping;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -37,11 +36,14 @@ public class SalvoRestController {
     @Autowired
     private ShipRepository shipRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @GetMapping("/games")
     public Map<String, Object> getAllGames(Authentication authentication){
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication))
-            dto.put("user","plis fucking log!!!");
+            dto.put("user","Please, login");
         else
             dto.put("user", playerRepository.findByUserName(authentication.getName()).currentPlayerDTO());
 
@@ -55,7 +57,7 @@ public class SalvoRestController {
         return dto;
     }
 
-    @RequestMapping("/game_view/{gamePlayerId}")
+    @GetMapping("/game_view/{gamePlayerId}")
     public Map<String, Object> findGameId(@PathVariable Long gamePlayerId){
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
         return gamePlayer.get().gameViewDTO();
@@ -67,8 +69,8 @@ public class SalvoRestController {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
 
-    @RequestMapping(path = "/players", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> createUser(@RequestParam String userName, String password) {
+    @PostMapping(path = "/players")
+    public ResponseEntity<Map<String, Object>> createUser(@RequestParam String userName, @RequestParam String password) {
         if (userName.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>(makeMap("error", "No name or password"), HttpStatus.FORBIDDEN);
         }
@@ -76,7 +78,7 @@ public class SalvoRestController {
         if (player != null) {
             return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);
         }
-        Player newPlayer = playerRepository.save(new Player(userName, password));
+        Player newPlayer = playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
         return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
     }
 

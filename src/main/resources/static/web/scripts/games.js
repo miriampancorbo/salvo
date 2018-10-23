@@ -13,7 +13,8 @@ $(function () {
         el: '#app',
         data: {
             games: [],
-            dataObjectsOfPlayers : []
+            dataObjectsOfPlayers : [],
+            currentUserName:""
         }
     })
     fetchJson("http://localhost:8080/api/games", {
@@ -22,6 +23,7 @@ $(function () {
         .then(function (json) {
             app.games = json.games;
             processPoints(json);
+            createLogin();
         }).catch(function (error) {
             console.log(error)
         });
@@ -69,4 +71,13 @@ $(function () {
                 }
             }
         }
+
+        /*function createLogin(){
+             $("#logoutButton").click(function(){
+            fetchJson("http://localhost:8080/api/games", {
+                    method: 'GET',
+                })
+
+        }
+        });*/
 })

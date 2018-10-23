@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Salvo</title>
+    <title>Salvo Games</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/games.css">
 
 </head>
 <body>
 <div  id="app">
-    <h1>Salvo!</h1>
+    <h1>Let's Play Salvo!</h1>
+    <h1 id="greeting" style="display:none">Welcome</h1>
     <ul>My list
         <li v-for="game in games" v-if="game.gamePlayers[1]"> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}} </li>
         <li  v-else> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
     </ul>
+
+    <form>
+        <div id="myForm">
+        <div> Login or Signup</div>
+        <label><input id="newUserButton" type="checkbox"  >Create a new user</label>
+        <div class="form-group">
+            <label for="writeUserName">Nickname</label>
+            <input   class="form-control" id="writeUserName" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="writePassword">Password</label>
+            <input type="password" class="form-control" id="writePassword" placeholder="Password">
+        </div>
+        <button type="button" class="btn btn-primary" id="loginButton">Login</button>
+        <button type="button" class="btn btn-primary" style="display:none" id="signupButton" >Signup</button>
+        </div>
+        <button type="button" class="btn btn-primary" style="display:none" id="logoutButton" >Logout</button>
+    </form>
+
 
     <table class="table">
         <thead>
@@ -36,12 +58,12 @@
     </table>
 
 </div>
-
     <!--JQUERY-->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!--Vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!--js-->
     <script src="scripts/games.js"></script>
+    <script src="scripts/gameslogin.js"></script>
 </body>
 </html>
