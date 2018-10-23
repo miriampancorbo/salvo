@@ -8,10 +8,14 @@ import com.minhubweb.salvo.repositories.GameRepository;
 import com.minhubweb.salvo.repositories.PlayerRepository;
 import com.minhubweb.salvo.repositories.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.SqlResultSetMapping;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -58,10 +62,38 @@ public class SalvoRestController {
 
     }
 
+
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
+
+    @RequestMapping(path = "/players", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> createUser(@RequestParam String userName, String password) {
+        if (userName.isEmpty() || password.isEmpty()) {
+            return new ResponseEntity<>(makeMap("error", "No name or password"), HttpStatus.FORBIDDEN);
+        }
+        Player player = playerRepository.findByUserName(userName);
+        if (player != null) {
+            return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);
+        }
+        Player newPlayer = playerRepository.save(new Player(userName, password));
+        return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
+    }
+
+    private Map<String, Object> makeMap(String key, Object value) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key, value);
+        return map;
+    }
 }
+    /*@PostMapping("/players")
+    public Map<String, Object> newUser(userName, password){
+
+    }
+        ResponseEntity
+    }
+
+
 
 
 /*
