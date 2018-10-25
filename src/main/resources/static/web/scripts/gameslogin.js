@@ -73,7 +73,16 @@ jQuery(document).ready(function($) {
         $.post( "/api/login",{ username: userName, password: userPassword })
             .done(function( ) {
                 console.log( "You are logged.");
-                fetchJson("http://localhost:8080/api/games", {
+                $.get("/api/games")
+                    .done(function(json){
+                        app.games = json.games;
+                        app.currentUserName=json.user.userName;
+                        checkIfGuest(json);
+                    })
+                    .fail (function (error){
+                        console.log(error);
+                    })
+                /*fetchJson("http://localhost:8080/api/games", {
                     method: 'GET',
                 })
                 .then(function (json) {
@@ -82,7 +91,7 @@ jQuery(document).ready(function($) {
                     checkIfGuest(json);
                 }).catch(function (error) {
                     console.log(error)
-                });
+                });*/
             })
             .fail(function( response ) {
                 console.log( response.status );
@@ -102,7 +111,19 @@ jQuery(document).ready(function($) {
         $.post( "/api/logout",{ username: userName, password: userPassword })
             .done(function( ) {
                 console.log( "You are logged out.");
-                fetchJson("http://localhost:8080/api/games", {
+                $.get("/api/games")
+                    .done(function(json){
+                        app.games = json.games;
+                        app.currentUserName=json.user.userName;
+                        checkIfGuest(json);
+                    })
+                    .fail (function (error){
+                        console.log(error);
+                    })
+
+
+
+                /*fetchJson("http://localhost:8080/api/games", {
                     method: 'GET',
                 })
                 .then(function (json) {
@@ -112,7 +133,7 @@ jQuery(document).ready(function($) {
                 })
                 .catch(function (error) {
                     console.log(error)
-                });
+                });*/
             })
             .fail(function( jqXHR, textStatus ) {
                 console.log( "error" + textStatus );

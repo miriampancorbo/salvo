@@ -31,7 +31,7 @@ public class SalvoRestController {
 
     @Autowired
     private GamePlayerRepository gamePlayerRepository;
-    private Object gameService;
+    //private Object gameService;
 
     @Autowired
     private ShipRepository shipRepository;
