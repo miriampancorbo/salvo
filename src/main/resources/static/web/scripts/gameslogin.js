@@ -77,21 +77,12 @@ jQuery(document).ready(function($) {
                     .done(function(json){
                         app.games = json.games;
                         app.currentUserName=json.user.userName;
+                        app.currentUserId=json.user.id;
                         checkIfGuest(json);
                     })
                     .fail (function (error){
                         console.log(error);
                     })
-                /*fetchJson("http://localhost:8080/api/games", {
-                    method: 'GET',
-                })
-                .then(function (json) {
-                    app.games = json.games;
-                    app.currentUserName=json.user.userName;
-                    checkIfGuest(json);
-                }).catch(function (error) {
-                    console.log(error)
-                });*/
             })
             .fail(function( response ) {
                 console.log( response.status );
@@ -115,25 +106,12 @@ jQuery(document).ready(function($) {
                     .done(function(json){
                         app.games = json.games;
                         app.currentUserName=json.user.userName;
+                        app.currentUserId=json.user.id;
                         checkIfGuest(json);
                     })
                     .fail (function (error){
                         console.log(error);
                     })
-
-
-
-                /*fetchJson("http://localhost:8080/api/games", {
-                    method: 'GET',
-                })
-                .then(function (json) {
-                    app.games = json.games;
-                    app.currentUserName=json.user.userName;
-                    checkIfGuest(json);
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });*/
             })
             .fail(function( jqXHR, textStatus ) {
                 console.log( "error" + textStatus );

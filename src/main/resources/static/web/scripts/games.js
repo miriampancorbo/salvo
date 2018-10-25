@@ -6,7 +6,8 @@ $(function () {
         data: {
             games: [],
             dataObjectsOfPlayers : [],
-            currentUserName:""
+            currentUserName:"",
+            currentUserId:""
         }
     })
 
@@ -17,6 +18,7 @@ $(function () {
             app.games = json.games;
             processPoints(json);
             app.currentUserName=json.user.userName;
+            app.currentUserId=json.user.id;
             checkIfGuest(json);
             console.log(json.user==="guest")
         })
@@ -67,6 +69,18 @@ $(function () {
                 }
             }
         }
+
+        /*function addStyleMyBattles(json){
+            for (var i =0; i<json.games.length; i++){
+                for (var j=0; j<2;j++){
+                    if (json.games[i].gamePlayers[j].player.id)==currentUserId){
+                        addClass("myBattleList");
+                    }
+                    }
+                }
+
+
+        }*/
 });
 
 function checkIfGuest(json){

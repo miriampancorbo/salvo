@@ -27,6 +27,12 @@ form{
     /*font-family: 'Syncopate', sans-serif;*/
     font-size:550%;
 }
+.myBattleList{
+    color:red;
+}
+.noMyBattles{
+    color:blue;
+}
 
 /*TABLES*/
  table{
