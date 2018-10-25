@@ -1,6 +1,64 @@
-table, td, th{
+/*table, td, th{
     border: 1px solid blue;
+}*/
+body{
+font-family: 'Krub', sans-serif;
 }
 .invalid-button{
 background-color:grey;
+}
+
+.subtitle{
+font-size: 140%;
+color:#ff6600;
+font-weight:bold;
+}
+
+form{
+margin-right:5px;
+align: right;
+margin-top: -6.5%;
+position:fixed;
+}
+.active-access{
+background-color:#ff9933;
+}
+#greeting{
+font-family: 'Syncopate', sans-serif;
+font-size:550%;
+}
+
+/*TABLES*/
+ table{
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:20px;
+  margin-bottom:3%;
+  width:85%;
+  /*border-collapse:collapse;
+  border:1px solid #004d4d;*/
+}
+
+table tr:nth-child(odd) td{
+  background:#ccffff;
+  opacity:0.85;
+}
+
+table tr:nth-child(even) td{
+  background:#ffff99;
+  opacity:0.85;
+}
+th{
+  padding:2% 5%;
+  text-align:center;
+  background:#ff6600;
+  color:white;
+  font-weight: bold;
+}
+td{
+  text-align:center;
+  padding:1% 1%;
+}
+.october{
+  padding-bottom: 10%;
 }

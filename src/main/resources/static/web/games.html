@@ -4,60 +4,77 @@
     <title>Salvo Games</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/games.css">
+    <link rel="stylesheet" href="styles/alertify.core.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Krub" rel="stylesheet">
 
 </head>
 <body>
-<div  id="app">
-    <h1>Let's Play Salvo!</h1>
-    <h1 id="greeting" style="display:none">Welcome</h1>
-    <ul>My list
-        <li v-for="game in games" v-if="game.gamePlayers[1]"> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}} </li>
-        <li  v-else> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
-    </ul>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <button type="button" class="btn btn-primary pull-right" id="firstSignupButton" >Create new user</button>
+        <button type="button" class="btn btn-primary pull-right" id="firstLoginButton" >Log to your Account</button>
+        <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >Logout</button>
+    </nav>
+    <div class="container" id="gamesHtml">
+        <div  id="app">
+            <div class="row">
+                <h1 id="greeting" style="display:none"><center>{{currentUserName}}</center></h1>
+                <h1><center id="main-title">Let's Play Salvo!</center></h1>
+                <center><button type="button" class="btn btn-success" id="newGameButton" style="display:none">New game</button></center>
+            </div>
 
-    <form>
-        <div id="myForm">
-        <div> Login or Signup</div>
-        <label><input id="newUserButton" type="checkbox"  >Create a new user</label>
-        <div class="form-group">
-            <label for="writeUserName">Nickname</label>
-            <input   class="form-control" id="writeUserName" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div class="row">
+                <div class="col-xs-4">
+                    <ul><center  class="subtitle">games</center>
+                        <li v-for="game in games" v-if="game.gamePlayers[1]"> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}} </li>
+                        <li  v-else> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
+                    </ul>
+                </div>
+
+                <center><div class="col-xs-4">
+                    <center class="subtitle">scores</center>
+                    <table class="table  table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Won</th>
+                            <th scope="col">Lost</th>
+                            <th scope="col">Tied</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr v-for ="player in dataObjectsOfPlayers">
+                            <td>{{player.userName}}</td>
+                            <td>{{player.points}}</td>
+                            <td>{{player.win}}</td>
+                            <td>{{player.lost}}</td>
+                            <td>{{player.tied}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div></center>
+
+                <div class="col-xs-3 pull-right">
+                    <form style="display:none" id="formEnter">
+                        <div class="form-group">
+                            <label for="writeUserName">Nickname</label>
+                            <input   class="form-control" id="writeUserName" aria-describedby="emailHelp" placeholder="Enter your Nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="writePassword">Password</label>
+                            <input type="password" class="form-control" id="writePassword" placeholder="Enter your Password">
+                        </div>
+                        <center><button type="button" class="btn btn-primary" style="display:none" id="loginButton">Login</button></center>
+                        <center><button type="button" class="btn btn-primary" style="display:none" id="signupButton" >Signup</button></center>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="writePassword">Password</label>
-            <input type="password" class="form-control" id="writePassword" placeholder="Password">
-        </div>
-        <button type="button" class="btn btn-primary" id="loginButton">Login</button>
-        <button type="button" class="btn btn-primary" style="display:none" id="signupButton" >Signup</button>
-        </div>
-        <button type="button" class="btn btn-primary" style="display:none" id="logoutButton" >Logout</button>
-    </form>
+    </div>
 
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Total</th>
-            <th>Won</th>
-            <th>Lost</th>
-            <th>Tied</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr v-for ="player in dataObjectsOfPlayers">
-            <td>{{player.userName}}</td>
-            <td>{{player.points}}</td>
-            <td>{{player.win}}</td>
-            <td>{{player.lost}}</td>
-            <td>{{player.tied}}</td>
-        </tr>
-        </tbody>
-    </table>
-
-</div>
+    <script src="scripts/alertify.min.js"></script>
     <!--JQUERY-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!--Vue-->

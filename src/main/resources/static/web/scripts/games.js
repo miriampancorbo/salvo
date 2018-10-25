@@ -17,14 +17,18 @@ $(function () {
             currentUserName:""
         }
     })
+
     fetchJson("http://localhost:8080/api/games", {
             method: 'GET',
         })
         .then(function (json) {
             app.games = json.games;
             processPoints(json);
-            createLogin();
-        }).catch(function (error) {
+            app.currentUserName=json.user.userName;
+            checkIfGuest(json);
+            console.log(json.user==="guest")
+        })
+        .catch(function (error) {
             console.log(error)
         });
 
@@ -71,13 +75,28 @@ $(function () {
                 }
             }
         }
+});
 
-        /*function createLogin(){
-             $("#logoutButton").click(function(){
-            fetchJson("http://localhost:8080/api/games", {
-                    method: 'GET',
-                })
-
-        }
-        });*/
-})
+function checkIfGuest(json){
+    if (json.user!=="guest"){       //there is a user
+        $(".logoutButton").show();
+        $("#myForm").hide();
+        $("#greeting").show();
+        $("#newGameButton").show();
+        $("#main-title").hide();
+        $("#firstSignupButton").hide();
+        $("#firstLoginButton").hide();
+        $("#signupButton").hide();
+        $("#loginButton").hide();
+        $("#formEnter").hide();
+    }
+    else{                           //there is no user
+        $(".logoutButton").hide();
+        $("#myForm").show();
+        $("#greeting").hide();
+        $("#newGameButton").hide();
+        $("#main-title").show();
+        $("#firstSignupButton").show();
+        $("#firstLoginButton").show();
+    }
+};

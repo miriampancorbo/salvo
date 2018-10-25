@@ -7,74 +7,80 @@
     <link rel="stylesheet" href="styles/game.css">
 </head>
 <body>
-
-<h1>Ship Locations!!</h1>
-
-<div class="container">
-
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <button type="button" class="logoutButton2 btn btn-primary pull-right">Logout</button>
+</nav>
+<div class="container" id="gameHtml">
     <div id="app">
-        <h2>{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2>
+        <h1>Ship Locations!!</h1>
 
-        <div  class="row">
-            <div class="col-xs-4">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
-                </tr>
-            </thead>
+        <div class="container">
 
-            <tbody>
-                <tr v-for="verticalCell in vertical">
-                    <td>{{verticalCell}}</td>
-                    <td :id="verticalCell+1"></td>
-                    <td :id="verticalCell+2"></td>
-                    <td :id="verticalCell+3"></td>
-                    <td :id="verticalCell+4"></td>
-                    <td :id="verticalCell+5"></td>
-                    <td :id="verticalCell+6"></td>
-                    <td :id="verticalCell+7"></td>
-                    <td :id="verticalCell+8"></td>
-                    <td :id="verticalCell+9"></td>
-                    <td :id="verticalCell+10"></td>
-                </tr>
-            </tbody>
-        </table>
-            </div>
+            <h2>{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2>
+
+            <div  class="row">
                 <div class="col-xs-4">
-        <table class="table">
-            <thead>
-            <tr>
-                <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
-            </tr>
-            </thead>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
+                        </tr>
+                        </thead>
 
-            <tbody>
-            <tr v-for="verticalCell in vertical">
-                <td>{{verticalCell}}</td>
-                <td :id="verticalCell+1+'S'"></td>
-                <td :id="verticalCell+2+'S'"></td>
-                <td :id="verticalCell+3+'S'"></td>
-                <td :id="verticalCell+4+'S'"></td>
-                <td :id="verticalCell+5+'S'"></td>
-                <td :id="verticalCell+6+'S'"></td>
-                <td :id="verticalCell+7+'S'"></td>
-                <td :id="verticalCell+8+'S'"></td>
-                <td :id="verticalCell+9+'S'"></td>
-                <td :id="verticalCell+10+'S'"></td>
-            </tr>
-            </tbody>
-        </table>
+                        <tbody>
+                        <tr v-for="verticalCell in vertical">
+                            <td>{{verticalCell}}</td>
+                            <td :id="verticalCell+1"></td>
+                            <td :id="verticalCell+2"></td>
+                            <td :id="verticalCell+3"></td>
+                            <td :id="verticalCell+4"></td>
+                            <td :id="verticalCell+5"></td>
+                            <td :id="verticalCell+6"></td>
+                            <td :id="verticalCell+7"></td>
+                            <td :id="verticalCell+8"></td>
+                            <td :id="verticalCell+9"></td>
+                            <td :id="verticalCell+10"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+                <div class="col-xs-4">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr v-for="verticalCell in vertical">
+                            <td>{{verticalCell}}</td>
+                            <td :id="verticalCell+1+'S'"></td>
+                            <td :id="verticalCell+2+'S'"></td>
+                            <td :id="verticalCell+3+'S'"></td>
+                            <td :id="verticalCell+4+'S'"></td>
+                            <td :id="verticalCell+5+'S'"></td>
+                            <td :id="verticalCell+6+'S'"></td>
+                            <td :id="verticalCell+7+'S'"></td>
+                            <td :id="verticalCell+8+'S'"></td>
+                            <td :id="verticalCell+9+'S'"></td>
+                            <td :id="verticalCell+10+'S'"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
     <!--JQUERY-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!--Vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!--js-->
     <script type="text/javascript" src="scripts/game.js"></script>
+    <script src="scripts/games.js"></script>
+    <script src="scripts/gameslogin.js"></script>
 </body>
 </html>

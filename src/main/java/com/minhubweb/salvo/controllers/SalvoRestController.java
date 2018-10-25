@@ -43,7 +43,7 @@ public class SalvoRestController {
     public Map<String, Object> getAllGames(Authentication authentication){
         Map<String, Object> dto = new LinkedHashMap<>();
         if(isGuest(authentication))
-            dto.put("user","Please, login");
+            dto.put("user","guest");
         else
             dto.put("user", playerRepository.findByUserName(authentication.getName()).currentPlayerDTO());
 
