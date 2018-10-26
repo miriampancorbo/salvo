@@ -31,7 +31,6 @@ public class SalvoRestController {
 
     @Autowired
     private GamePlayerRepository gamePlayerRepository;
-    //private Object gameService;
 
     @Autowired
     private ShipRepository shipRepository;
@@ -48,21 +47,21 @@ public class SalvoRestController {
             dto.put("user", playerRepository.findByUserName(authentication.getName()).currentPlayerDTO());
 
         dto.put("games",gameRepository
-                .findAll() //esto me trae todo
-                .stream() // esto crea un "array imaginario"
-                .sorted(Comparator.comparing(Game::getId)) //ordeno el stream
+                .findAll()
+                .stream()
+                .sorted(Comparator.comparing(Game::getId))
                 .map(Game::gamesDTO)
                 .collect(toList()));
-
         return dto;
     }
 
     @GetMapping("/game_view/{gamePlayerId}")
-    public ResponseEntity<Map<String, Object>> findGameId(@PathVariable Long gamePlayerId){
+    public ResponseEntity<Map<String, Object>> findGameId(@PathVariable Long gamePlayerId, Authentication authentication){
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
-
-        //SI EN EL GP ESTÁ EL ID DE LA PERSONA QUE ESTÁ CONECTADA, ENTONCES:
-        return  new ResponseEntity<>(gamePlayer.get().gameViewDTO(), HttpStatus.CREATED);
+        if (!gamePlayer.get().getPlayer().getUserName().equals(authentication.getName()) ) {
+            return new ResponseEntity<>(makeMap("error", "Unauthorized to watch this game."), HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(gamePlayer.get().gameViewDTO(), HttpStatus.CREATED);
     }
 
     private boolean isGuest(Authentication authentication) {
@@ -72,11 +71,11 @@ public class SalvoRestController {
     @PostMapping(path = "/players")
     public ResponseEntity<Map<String, Object>> createUser(@RequestParam String userName, @RequestParam String password) {
         if (userName.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>(makeMap("error", "No name or password"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(makeMap("error", "No name or password"), HttpStatus.FORBIDDEN);//403
         }
         Player player = playerRepository.findByUserName(userName);
         if (player != null) {
-            return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);//409
         }
         Player newPlayer = playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
         return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
