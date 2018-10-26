@@ -28,10 +28,10 @@ public class SalvoApplication {
 									  GamePlayerRepository gamePlayerRepository, ShipRepository shipRepository,
 									  ScoreRepository scoreRepository) {
 		return (args) -> {
-			Player player1 = new Player("miri", passwordEncoder.encode("123"));
-			Player player2 = new Player("rodri", passwordEncoder.encode("42"));
-			Player player3 = new Player("felipe", passwordEncoder.encode("kb"));
-			Player player4 = new Player("carlos", passwordEncoder.encode("mole"));
+			Player player1 = new Player("miri", passwordEncoder.encode("miri"));
+			Player player2 = new Player("rodri", passwordEncoder.encode("rodri"));
+			Player player3 = new Player("felipe", passwordEncoder.encode("felipe"));
+			Player player4 = new Player("carlos", passwordEncoder.encode("carlos"));
 			playerRepository.save(player1);
 			playerRepository.save(player2);
 			playerRepository.save(player3);

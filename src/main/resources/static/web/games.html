@@ -25,18 +25,44 @@
 
             <div class="row">
                 <div class="col-xs-4">
-                    <ul><center  class="subtitle">games</center>
+                    <ul>
 
-                         <li v-for="game in games" v-if="game.gamePlayers[1]"
-                             v-bind:class="{ myBattleList: game.gamePlayers[1].player.id==currentUserId || game.gamePlayers[0].player.id==currentUserId }">
-                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].player.id'>
+                        <center  class="subtitle">games</center>
+
+                         <li v-for="game in games" v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId"> <!--|| game.gamePlayers[1].player.id==currentUserId-->
+                             <!--v-bind:class="{ myBattleList: game.gamePlayers[1].player.id==currentUserId || game.gamePlayers[0].player.id==currentUserId }">-->
+                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                  {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                              </a>
                          </li>
-                         <li  v-else v-bind:class="{ myBattleList: game.gamePlayers[0].player.id==currentUserId}"> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
-                        <li><a href="http://localhost:8080/api/games">papa</a></li>
+
+                        <li v-else-if="game.gamePlayers[1]">
+                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
+                        </li>
+
+                        <li v-else-if="game.gamePlayers[0].player.id==currentUserId">
+                            <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
+                                {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
+                            </a>
+                        </li>
+
+                         <li  v-else> <!--v-bind:class="{ myBattleList: game.gamePlayers[0].player.id==currentUserId}"--> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
+
                     </ul>
                 </div>
+
+
+
+                <!--• Si hay dos jugadores (existe [1]) AND (game.gamePlayers[1].player.id==currentUserid || game.gamePlayers[0].player.id==currentUserId)
+                ▪       Pon un link que me enlace al gameplayer id de ese game en:
+                •           {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
+                • Else if (Si hay dos jugadores (existe [1]))
+                ▪       {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
+                • Else if (solo un jugador) ("and") (game.gamePlayers[0].player.id==currentUserId)
+                ▪       Pon un link que me enlace al gameplayer id de ese game en:
+                •           {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting
+                • Else
+                ◦       {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent-->
 
                 <center><div class="col-xs-4">
                     <center class="subtitle">scores</center>
