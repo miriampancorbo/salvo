@@ -26,15 +26,20 @@
             <div class="row">
                 <div class="col-xs-4">
                     <ul>
-
                         <center  class="subtitle">games</center>
-
-                         <li v-for="game in games" v-if="game.gamePlayers[1] && (game.gamePlayers[0].player.id==currentUserId || game.gamePlayers[1].player.id==currentUserId)">
+                         <li v-for="game in games"
+                             v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
                              <!--v-bind:class="{ myBattleList: game.gamePlayers[1].player.id==currentUserId || game.gamePlayers[0].player.id==currentUserId }">-->
-                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
-                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                             </a>
+                                 <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
+                                     {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
+                                 </a>
                          </li>
+
+                        <li  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
+                            <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
+                                {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
+                            </a>
+                        </li>
 
                         <li v-else-if="game.gamePlayers[1]">
                             {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
@@ -46,8 +51,9 @@
                             </a>
                         </li>
 
-                         <li  v-else> <!--v-bind:class="{ myBattleList: game.gamePlayers[0].player.id==currentUserId}"--> {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent </li>
-
+                         <li  v-else>
+                             {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent
+                         </li>
                     </ul>
                 </div>
 

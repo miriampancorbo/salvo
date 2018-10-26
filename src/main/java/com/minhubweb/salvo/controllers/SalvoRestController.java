@@ -58,12 +58,12 @@ public class SalvoRestController {
     }
 
     @GetMapping("/game_view/{gamePlayerId}")
-    public Map<String, Object> findGameId(@PathVariable Long gamePlayerId){
+    public ResponseEntity<Map<String, Object>> findGameId(@PathVariable Long gamePlayerId){
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
-        return gamePlayer.get().gameViewDTO();
 
+        //SI EN EL GP ESTÁ EL ID DE LA PERSONA QUE ESTÁ CONECTADA, ENTONCES:
+        return  new ResponseEntity<>(gamePlayer.get().gameViewDTO(), HttpStatus.CREATED);
     }
-
 
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
@@ -88,6 +88,47 @@ public class SalvoRestController {
         return map;
     }
 }
+/*    http://localhost:8080/web/game.html?gp=1
+
+@RestController
+@RequestMapping("/web")
+public class SalvoRestControllerTwo {
+
+    @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    private GamePlayerRepository gamePlayerRepository;
+    //private Object gameService;
+
+    @Autowired
+    private ShipRepository shipRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @PostMapping(path = "/game.html?gp={gamePlayerId}")
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*@PostMapping("/players")
     public Map<String, Object> newUser(userName, password){
 

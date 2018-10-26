@@ -86,6 +86,8 @@ jQuery(document).ready(function($) {
             })
             .fail(function( response ) {
                 console.log( response.status );
+
+
                 if (response.status==401){
                     console.log("Incorrect user or password.")
                     alertify.error("Incorrect user or password.")
