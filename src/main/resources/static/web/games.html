@@ -29,7 +29,7 @@
 
                         <center  class="subtitle">games</center>
 
-                         <li v-for="game in games" v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId"> <!--|| game.gamePlayers[1].player.id==currentUserId-->
+                         <li v-for="game in games" v-if="game.gamePlayers[1] && (game.gamePlayers[0].player.id==currentUserId || game.gamePlayers[1].player.id==currentUserId)">
                              <!--v-bind:class="{ myBattleList: game.gamePlayers[1].player.id==currentUserId || game.gamePlayers[0].player.id==currentUserId }">-->
                              <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                  {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
