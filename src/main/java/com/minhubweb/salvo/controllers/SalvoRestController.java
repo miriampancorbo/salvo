@@ -1,12 +1,7 @@
 package com.minhubweb.salvo.controllers;
 
-import com.minhubweb.salvo.models.Game;
-import com.minhubweb.salvo.models.GamePlayer;
-import com.minhubweb.salvo.models.Player;
-import com.minhubweb.salvo.repositories.GamePlayerRepository;
-import com.minhubweb.salvo.repositories.GameRepository;
-import com.minhubweb.salvo.repositories.PlayerRepository;
-import com.minhubweb.salvo.repositories.ShipRepository;
+import com.minhubweb.salvo.models.*;
+import com.minhubweb.salvo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +27,9 @@ public class SalvoRestController {
 
     @Autowired
     private GamePlayerRepository gamePlayerRepository;
+
+    @Autowired
+    private SalvoRepository salvoRepository;
 
     @Autowired
     private ShipRepository shipRepository;
@@ -54,16 +53,34 @@ public class SalvoRestController {
                 .collect(toList()));
         return dto;
     }
+    @PostMapping(path = "/games")
+    public ResponseEntity<Map<String, Object>> createGame(Authentication authentication){
 
-    @GetMapping("/game_view/{gamePlayerId}")
-    public ResponseEntity<Map<String, Object>> findGameId(@PathVariable Long gamePlayerId, Authentication authentication){
-        Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
-        if (!gamePlayer.get().getPlayer().getUserName().equals(authentication.getName()) ) {
-            return new ResponseEntity<>(makeMap("error", "Unauthorized to watch this game."), HttpStatus.UNAUTHORIZED);
+        Player player = playerRepository.findByUserName(authentication.getName());
+        if (player == null) {
+            return new ResponseEntity<>(makeMap("error", "You are not logged."), HttpStatus.UNAUTHORIZED);//409
         }
-        return new ResponseEntity<>(gamePlayer.get().gameViewDTO(), HttpStatus.CREATED);
+
+        Game game = gameRepository.save(new Game(LocalDateTime.now()));
+
+        GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
+        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
     }
 
+
+    @GetMapping("/game_view/{gamePlayerId}")// cambie findGameId por getGamePlayer
+    public ResponseEntity<Map<String, Object>> getGamePlayer(@PathVariable Long gamePlayerId, Authentication authentication) {
+        Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
+        if (gamePlayer.isPresent()) {
+            if (!gamePlayer.get().getPlayer().getUserName().equals(authentication.getName())) {
+                return new ResponseEntity<>(makeMap("error", "Unauthorized to watch this game."), HttpStatus.UNAUTHORIZED);
+            } else {
+                return new ResponseEntity<>(gamePlayer.get().gameViewDTO(), HttpStatus.CREATED);
+            }
+        } else {
+            return new ResponseEntity<>(makeMap("error", "Unauthorized to watch this game."), HttpStatus.UNAUTHORIZED);
+        }
+    }
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }

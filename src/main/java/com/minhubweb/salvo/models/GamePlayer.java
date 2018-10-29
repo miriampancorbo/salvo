@@ -49,7 +49,11 @@ public class GamePlayer {
         this.addShips(ships);
         this.addSalvoes(salvoes);
     }
-
+    public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
+        this.game = game;
+        this.player = player;
+        this.joinDate = joinDate;
+    }
     //Methods, others
     public void addShips(Set<Ship> ships){
         ships.stream().forEach(ship -> {
