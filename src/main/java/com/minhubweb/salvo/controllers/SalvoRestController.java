@@ -40,33 +40,31 @@ public class SalvoRestController {
     @GetMapping("/games")
     public Map<String, Object> getAllGames(Authentication authentication){
         Map<String, Object> dto = new LinkedHashMap<>();
-        if(isGuest(authentication))
-            dto.put("user","guest");
-        else
+        if(isGuest(authentication)) {
+            dto.put("user", "guest");
+        }
+        else {
             dto.put("user", playerRepository.findByUserName(authentication.getName()).currentPlayerDTO());
-
-        dto.put("games",gameRepository
+        }
+        dto.put("games", gameRepository
                 .findAll()
                 .stream()
                 .sorted(Comparator.comparing(Game::getId))
                 .map(Game::gamesDTO)
                 .collect(toList()));
+
         return dto;
     }
     @PostMapping(path = "/games")
     public ResponseEntity<Map<String, Object>> createGame(Authentication authentication){
-
-        Player player = playerRepository.findByUserName(authentication.getName());
-        if (player == null) {
-            return new ResponseEntity<>(makeMap("error", "You are not logged."), HttpStatus.UNAUTHORIZED);//409
+        if(isGuest(authentication)){
+            return new ResponseEntity<>(makeMap("error", "No user logged in"), HttpStatus.UNAUTHORIZED);//409 403
         }
-
-        Game game = gameRepository.save(new Game(LocalDateTime.now()));
-
+        Player player = playerRepository.findByUserName(authentication.getName());
+        Game game = gameRepository.save(new Game());
         GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
         return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
     }
-
 
     @GetMapping("/game_view/{gamePlayerId}")// cambie findGameId por getGamePlayer
     public ResponseEntity<Map<String, Object>> getGamePlayer(@PathVariable Long gamePlayerId, Authentication authentication) {
@@ -103,117 +101,41 @@ public class SalvoRestController {
         map.put(key, value);
         return map;
     }
-}
-/*    http://localhost:8080/web/game.html?gp=1
-
-@RestController
-@RequestMapping("/web")
-public class SalvoRestControllerTwo {
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
-    private GamePlayerRepository gamePlayerRepository;
-    //private Object gameService;
-
-    @Autowired
-    private ShipRepository shipRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @PostMapping(path = "/game.html?gp={gamePlayerId}")
-
-*/
 
 
+    //----------------------------------------------
+    //----------------------------------
 
 
+    /*@PostMapping(path = "/game/{gameId}/players")
+    public ResponseEntity<Map<String, Object>> joinAGame(@PathVariable Long gameId,Authentication authentication) {
+        if (isGuest(authentication)) {
+            return new ResponseEntity<>(makeMap("error", "Should login to join a game."), HttpStatus.FORBIDDEN);//403
+        }
+        Optional<Game> game = gameRepository.findById(gameId);
 
-
-
-
-
-
-
-
-
-
-
-
-    /*@PostMapping("/players")
-    public Map<String, Object> newUser(userName, password){
-
+        Player player = playerRepository.findByUserName(authentication.getName());
+       // Game game = gameRepository.findById(gamePlayer.get().getPlayer().get)
+        return ();
     }
-        ResponseEntity
+}*/
+
+
+       /* return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);//409
+        }
+        Player newPlayer = playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
+        return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
     }
 
-
-
-
-/*
-    @GetMapping("/games")
-    public Map<String, Object> (Authentication authentication)
-        Map<String,Object> dto = new LinkedHashMap<>();
-            dto.put("myInformation",
-                            playerRepository.findByUserName(authentication.getName()));
-            dto.put("games",
-                            gameRepository
-                            .findAll()
-                            .stream()
-                            .map(Game::gamesDTO)
-                            .collect(toList()));
-
-        return dto;
-    }
-
-    @GetMapping("/game_view/{id}")
-    public Map<String, Object> getGameView(@PathVariable("id") long id){
-        Optional<GamePlayer> optionalGamePlayer = gamePlayerRepository.findById(id);
-        return optionalGamePlayer.get().gameViewDTO();
-    }
-
-*/
-    /*public List<Map<String, Object>> getGames(){
-        return gamePlayerRepository
-                .findAll()
-                .stream()
-                .map(GamePlayer::gamePlayerDTOIndex)
-                .collect(toList());
-    }*/
-
-        /*public List<Game> getAll(Authentication authentication) {
-            return gameRepository.findByDate(authentication.getName());
-        }*/
-
-
-
-    /*@Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private PlayerRepository playerRepository;*/
-
-    /*@RequestMapping(path = "/persons", method = RequestMethod.POST)
-    public ResponseEntity<Object> register(
-            @RequestParam userName, @RequestParam String password) {
-
-        if (userName.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
+     if(!isGuest(authentication)){
+        Player player = playerRepository.findByUserName(authentication.getName());
+        if (player == null) {
+            return new ResponseEntity<>(makeMap("error", "You are not logged."), HttpStatus.UNAUTHORIZED);//409
         }
 
-        if (playerRepository.findByUserName(userName) !=  null) {
-            return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
-        }
+        Game game = gameRepository.save(new Game(LocalDateTime.now()));
 
-        playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
-
-
-
-
+        GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
+        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
+    }
+}*/

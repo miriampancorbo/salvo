@@ -69,18 +69,6 @@ $(function () {
                 }
             }
         }
-
-        /*function addStyleMyBattles(json){
-            for (var i =0; i<json.games.length; i++){
-                for (var j=0; j<2;j++){
-                    if (json.games[i].gamePlayers[j].player.id)==currentUserId){
-                        addClass("myBattleList");
-                    }
-                    }
-                }
-
-
-        }*/
 });
 
 function checkIfGuest(json){

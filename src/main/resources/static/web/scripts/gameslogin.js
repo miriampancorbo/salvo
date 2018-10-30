@@ -119,4 +119,23 @@ jQuery(document).ready(function($) {
                 console.log( "error" + textStatus );
             });
     };
+
+//CREATE NEW GAME--------------------------------------------------------------
+    $("#newGameButton").click(function(){
+        postNewGame();
+    });
+
+    function postNewGame(){
+        $.post("/api/games")
+            .done(function(response) {
+                console.log("You have created a game.");
+                console.log(response);
+                window.location.href = "game.html?gp=" + response.gpid;
+
+            })
+            .fail(function( response ) {
+                console.log( "Error in game creation:" + response);
+            });
+    }
+
 });
