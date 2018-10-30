@@ -102,23 +102,32 @@ public class SalvoRestController {
         return map;
     }
 
-
-    //----------------------------------------------
-    //----------------------------------
-
-
-    /*@PostMapping(path = "/game/{gameId}/players")
-    public ResponseEntity<Map<String, Object>> joinAGame(@PathVariable Long gameId,Authentication authentication) {
+    @PostMapping(path = "/game/{gameId}/players")
+    public ResponseEntity<Map<String, Object>> joinAGame(@PathVariable Long gameId,
+                                                         Authentication authentication) {
         if (isGuest(authentication)) {
-            return new ResponseEntity<>(makeMap("error", "Should login to join a game."), HttpStatus.FORBIDDEN);//403
+            return new ResponseEntity<>(makeMap("error", "Should login to join a game."), HttpStatus.UNAUTHORIZED);
         }
         Optional<Game> game = gameRepository.findById(gameId);
-
+        if(!game.isPresent()){
+            return new ResponseEntity<>(makeMap("error", "No such game."), HttpStatus.FORBIDDEN);//403
+        }
+        if(game.get().getGamePlayers().size()>1) {
+            return new ResponseEntity<>(makeMap("error", "Game is full"), HttpStatus.FORBIDDEN);//403
+        }
         Player player = playerRepository.findByUserName(authentication.getName());
-       // Game game = gameRepository.findById(gamePlayer.get().getPlayer().get)
-        return ();
+        GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game.get(), player, LocalDateTime.now()));
+        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
     }
-}*/
+}
+
+ /*   Game game = gameRepository.save(new Game());
+
+    Player player = playerRepository.findByUserName(authentication.getName());
+    Game game = gameRepository.save(new Game());
+    GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
+        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
+   */
 
 
        /* return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);//409
