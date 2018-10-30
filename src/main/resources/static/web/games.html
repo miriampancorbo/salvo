@@ -24,7 +24,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-5">
                     <ul>
                         <center  class="subtitle">games</center>
                          <li v-for="game in games"
@@ -50,11 +50,22 @@
                             </a>
                         </li>
 
-                         <li  v-else>
+                        <li v-else>
                              {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent
+                            <button type="button" :data-gpid="game.gamePlayers[0].id" class="joinButton btn btn-success" style="display:none" :id="'gpIdButton' + game.gamePlayers[0].id">{{joinVueButton}}</button>
                          </li>
                     </ul>
                 </div>
+
+
+
+                <span>HOLA <button type="button" class="joinButton btn btn-success " style="display:none">{{joinVueButton}}</button></span>
+                <span><button type="button" class="joinButton btn btn-success ">{{vueButton}}</button></span>
+
+
+
+
+
 
                 <center><div class="col-xs-4">
                     <center class="subtitle">scores</center>

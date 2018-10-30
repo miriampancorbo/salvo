@@ -138,4 +138,25 @@ jQuery(document).ready(function($) {
             });
     }
 
+//JOIN A GAME---------------------------------------------------
+    $(".joinButton").click(function(){
+        console.log("joinButton works")
+        joinGame();
+    });
+     function joinGame(){
+        console.log("joinButton actives the function")
+        $.post("/api/games")
+            .done(function(response) {
+                console.log("You have created a game.");
+                console.log(response);
+                window.location.href = "game.html?gp=" + 2 //response.gpid;
+
+            })
+            .fail(function( response ) {
+                console.log( "Error in game creation:" + response);
+            });
+        }
+
+
+
 });

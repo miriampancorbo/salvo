@@ -1,4 +1,5 @@
 var app;
+
 var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
 var numberVariable = takeNumberURL(currentURL)
 

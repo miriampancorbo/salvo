@@ -1,3 +1,12 @@
+$('body').bind('beforeunload',function(){
+
+            app.games = json.games;
+            processPoints(json);
+            app.currentUserName=json.user.userName;
+            app.currentUserId=json.user.id;
+            checkIfGuest(json);
+            console.log(json.user==="guest")
+            app.vueButton == vueButton.join();});
 var app;
 
 $(function () {
@@ -7,7 +16,9 @@ $(function () {
             games: [],
             dataObjectsOfPlayers : [],
             currentUserName:"",
-            currentUserId:""
+            currentUserId:"",
+            vueButton:"<button type='button' class='hola btn btn-success'>VUE BUTTON</button>",
+            joinVueButton:"Join"
         }
     })
 
@@ -21,6 +32,7 @@ $(function () {
             app.currentUserId=json.user.id;
             checkIfGuest(json);
             console.log(json.user==="guest")
+            app.vueButton == vueButton.join();
         })
         .catch(function (error) {
             console.log(error)
@@ -77,6 +89,7 @@ function checkIfGuest(json){
         $("#myForm").hide();
         $("#greeting").show();
         $("#newGameButton").show();
+        $(".joinButton").show();
         $("#main-title").hide();
         $("#firstSignupButton").hide();
         $("#firstLoginButton").hide();
@@ -89,6 +102,7 @@ function checkIfGuest(json){
         $("#myForm").show();
         $("#greeting").hide();
         $("#newGameButton").hide();
+        $(".joinButton").hide();
         $("#main-title").show();
         $("#firstSignupButton").show();
         $("#firstLoginButton").show();
