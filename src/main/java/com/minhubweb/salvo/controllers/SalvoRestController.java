@@ -106,7 +106,7 @@ public class SalvoRestController {
     public ResponseEntity<Map<String, Object>> joinAGame(@PathVariable Long gameId,
                                                          Authentication authentication) {
         if (isGuest(authentication)) {
-            return new ResponseEntity<>(makeMap("error", "Should login to join a game."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(makeMap("error", "Should login to join a game."), HttpStatus.UNAUTHORIZED);//401
         }
         Optional<Game> game = gameRepository.findById(gameId);
         if(!game.isPresent()){

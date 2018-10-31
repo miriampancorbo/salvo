@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/alertify.core.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Krub" rel="stylesheet">
-
 </head>
 <body>
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
@@ -51,22 +50,11 @@
                         </li>
 
                         <li v-else>
-                             {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent
-                            <button type="button" :data-gpid="game.gamePlayers[0].id" class="joinButton btn btn-success" style="display:none" :id="'gpIdButton' + game.gamePlayers[0].id">{{joinVueButton}}</button>
-                         </li>
+                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent
+                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">JOINN</button>
+                        </li>
                     </ul>
                 </div>
-
-
-
-                <span>HOLA <button type="button" class="joinButton btn btn-success " style="display:none">{{joinVueButton}}</button></span>
-                <span><button type="button" class="joinButton btn btn-success ">{{vueButton}}</button></span>
-
-
-
-
-
-
                 <center><div class="col-xs-4">
                     <center class="subtitle">scores</center>
                     <table class="table  table-striped">

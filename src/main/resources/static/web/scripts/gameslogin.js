@@ -76,9 +76,9 @@ jQuery(document).ready(function($) {
                 $.get("/api/games")
                     .done(function(json){
                         app.games = json.games;
-                        app.currentUserName=json.user.userName;
+                        app.currentUserName=json.user.userName ? json.user.userName : "guest";
                         app.currentUserId=json.user.id;
-                        checkIfGuest(json);
+                        checkIfGuest();
                     })
                     .fail (function (error){
                         console.log(error);
@@ -107,9 +107,9 @@ jQuery(document).ready(function($) {
                 $.get("/api/games")
                     .done(function(json){
                         app.games = json.games;
-                        app.currentUserName=json.user.userName;
+                        app.currentUserName=json.user.userName ? json.user.userName : "guest";
                         app.currentUserId=json.user.id;
-                        checkIfGuest(json);
+                        checkIfGuest();
                     })
                     .fail (function (error){
                         console.log(error);
@@ -137,26 +137,22 @@ jQuery(document).ready(function($) {
                 console.log( "Error in game creation:" + response);
             });
     }
+});
 
 //JOIN A GAME---------------------------------------------------
-    $(".joinButton").click(function(){
-        console.log("joinButton works")
-        joinGame();
-    });
-     function joinGame(){
-        console.log("joinButton actives the function")
-        $.post("/api/games")
-            .done(function(response) {
-                console.log("You have created a game.");
-                console.log(response);
-                window.location.href = "game.html?gp=" + 2 //response.gpid;
 
-            })
-            .fail(function( response ) {
-                console.log( "Error in game creation:" + response);
-            });
-        }
+ function joinGame(evt){
+    console.log("joinButton actives the function")
+    var gameId = $("#"+evt.target.id).data('gid');
+    console.log(gameId);
+    $.post("/api/game/" + gameId + "/players")
+        .done(function(response) {
+            console.log("You have created a game.");
+            console.log(response);
+            window.location.href = "game.html?gp=" + response.gpid;
 
-
-
-});
+        })
+        .fail(function( response ) {
+            console.log( "Error in game creation:" + response);
+        });
+}
