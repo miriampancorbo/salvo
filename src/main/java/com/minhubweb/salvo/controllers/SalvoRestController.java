@@ -116,7 +116,14 @@ public class SalvoRestController {
         if (game.get().getGamePlayers().size() > 1) {
             return new ResponseEntity<>(makeMap("error", "Game is full."), HttpStatus.FORBIDDEN);//403
         }
+        //if (getGamePlayer().gamePlayer.get().getPlayer().getUserName().equals(authentication.getName())){
+          //  return new ResponseEntity<>(makeMap("error", "You are already on the game."), HttpStatus.FORBIDDEN);//403
+        //}
         Player player = playerRepository.findByUserName(authentication.getName());
+        Optional<GamePlayer> firstGamePlayer = game.get().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getPlayer().getId() == player.getId()).findFirst();
+        if (firstGamePlayer.isPresent()){
+            return new ResponseEntity<>(makeMap("error", "You cannot be your opponent."), HttpStatus.FORBIDDEN);//403
+        }
         GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game.get(), player, LocalDateTime.now()));
         return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
     }

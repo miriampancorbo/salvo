@@ -140,7 +140,6 @@ jQuery(document).ready(function($) {
 });
 
 //JOIN A GAME---------------------------------------------------
-
  function joinGame(evt){
     console.log("joinButton actives the function")
     var gameId = $("#"+evt.target.id).data('gid');
@@ -156,3 +155,10 @@ jQuery(document).ready(function($) {
             console.log( "Error in game creation:" + response);
         });
 }
+
+//ADD SHIPS
+/*function addShips(){
+    var gpId=;
+    var shipType=;
+    var shipLocations=[];
+}*/
