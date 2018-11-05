@@ -116,9 +116,6 @@ public class SalvoRestController {
         if (game.get().getGamePlayers().size() > 1) {
             return new ResponseEntity<>(makeMap("error", "Game is full."), HttpStatus.FORBIDDEN);//403
         }
-        //if (getGamePlayer().gamePlayer.get().getPlayer().getUserName().equals(authentication.getName())){
-          //  return new ResponseEntity<>(makeMap("error", "You are already on the game."), HttpStatus.FORBIDDEN);//403
-        //}
         Player player = playerRepository.findByUserName(authentication.getName());
         Optional<GamePlayer> firstGamePlayer = game.get().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getPlayer().getId() == player.getId()).findFirst();
         if (firstGamePlayer.isPresent()){
@@ -129,22 +126,27 @@ public class SalvoRestController {
     }
 
     @PostMapping(path = "/games/players/{gamePlayerId}/ships")
-    public ResponseEntity<Map<String, Object>> saveShips(@RequestParam List<ShipType> type,
-                                                         @RequestParam List<String> shipLocation,
+    public ResponseEntity<Map<String, Object>> saveShips(@RequestBody Set<Ship> ships,
                                                          @PathVariable Long gamePlayerId,
                                                          Authentication authentication) {
         Optional<GamePlayer> gamePlayer = gamePlayerRepository.findById(gamePlayerId);
-        if (isGuest(authentication) || !gamePlayer.isPresent() || gamePlayer.get().getPlayer().getId() != gamePlayerId) {
-            return new ResponseEntity<>(makeMap("error", "Cannot save the ships."), HttpStatus.UNAUTHORIZED);//401
+        if (isGuest(authentication)) {
+            return new ResponseEntity<>(makeMap("error", "Login to add ships."), HttpStatus.UNAUTHORIZED);//401
+        }
+        if(!gamePlayer.isPresent() ){
+            return new ResponseEntity<>(makeMap("error", "There is no game with that player."), HttpStatus.FORBIDDEN);//403
+        }
+        Player player = playerRepository.findByUserName(authentication.getName());
+        if (gamePlayer.get().getPlayer().getId() != player.getId()) {
+            return new ResponseEntity<>(makeMap("error", "Cannot add ships in this game."), HttpStatus.UNAUTHORIZED);//401
         }
         if (!gamePlayer.get().getShips().isEmpty()) {
             return new ResponseEntity<>(makeMap("error", "Ships are already saved."), HttpStatus.FORBIDDEN);//403
         }
 
-        Set<Ship> newShipSet = new HashSet<>();
-        newShipSet.add(new Ship ());
-        gamePlayer.get().addShips(newShipSet);
-        return new ResponseEntity<>(makeMap("ships", newShipSet), HttpStatus.CREATED); //201
+        gamePlayer.get().addShips(ships);
+        gamePlayerRepository.save(gamePlayer.get());
+        return new ResponseEntity<>(makeMap("Success", "Ships added"), HttpStatus.CREATED); //201
     }
 }
 //Set<Ship> newShip = shipRepository.save(new Ship(List <ShipType> type, List <String> shipLocation));

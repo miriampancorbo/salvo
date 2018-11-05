@@ -18,15 +18,6 @@ public class Ship {
     private long id;
     private ShipType shipType;
 
-
-    //Methods, constructors:
-    public Ship (){}
-    public Ship (ShipType type, List<String> shipLocation) {
-        this.shipType = type;
-        this.shipLocation = shipLocation;
-    }
-
-    //Methods, others:
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
     private GamePlayer gamePlayer;
@@ -36,6 +27,14 @@ public class Ship {
     public List<String> shipLocation = new ArrayList<>();
 
 
+    //Methods, constructors:
+    public Ship (){}
+    public Ship (ShipType type, List<String> shipLocation) {
+        this.shipType = type;
+        this.shipLocation = shipLocation;
+    }
+
+    //Methods, others:
     public Map<String, Object> shipDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("type", this.getShipType());

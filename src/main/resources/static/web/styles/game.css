@@ -1,6 +1,17 @@
+#gridTwo{
+    width:50%;
+    border:0px solid red;
+    background-color:white;
+}
+
+.saveShipsButton{
+}
+
 table, td, th{
     border: 1px solid blue;
+    padding: 0;
 }
+
 
 
 .my-ship{
@@ -24,3 +35,24 @@ font-weight:bold;
 color:yellowgreen;
 font-weight:bold;
 }
+
+
+/*COLOR BEIGE FONDO GRILLA*/
+/*.grid-stack {
+  background: lightgoldenrodyellow;
+  border: 1px solid red;
+
+}*/
+
+.grid-stack-item-content {
+  color: #2c3e50;
+  text-align: center;
+  background-color: #18bc9c;
+}
+
+
+td {
+    height:45px;
+    padding-right:0;
+}
+

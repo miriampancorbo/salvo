@@ -149,7 +149,6 @@ jQuery(document).ready(function($) {
             console.log("You have created a game.");
             console.log(response);
             window.location.href = "game.html?gp=" + response.gpid;
-
         })
         .fail(function( response ) {
             console.log( "Error in game creation:" + response);
@@ -157,8 +156,36 @@ jQuery(document).ready(function($) {
 }
 
 //ADD SHIPS
-/*function addShips(){
-    var gpId=;
-    var shipType=;
-    var shipLocations=[];
-}*/
+$(".saveShipsButton").click(function(){
+    addShips();
+});
+    function addShips(){
+        $.post({
+             url: "/api/games/players/" + gamePlayerId + "/ships",
+             data: JSON.stringify([ { }]),
+             dataType: "text",
+             contentType: "application/json"
+           })
+}
+
+
+
+
+
+       /* var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
+        var gamePlayerId = takeNumberURL(currentURL);
+        function takeNumberURL(url){
+            var n = url.slice(url.indexOf("gp=")+3);
+            console.log(n)
+            return n;
+        }
+        var shipType;
+        var shipLocations=[];*/
+        //console.log("holaaaaaaaaaa");
+        //console.log(gamePlayerId);
+        //console.log("gamePlayerId:" + gamePlayerId)
+        //$.post("api/games/players/" + gamePlayerId + "/ships")
+          //      .done(function(response) {
+            //    })
+
+

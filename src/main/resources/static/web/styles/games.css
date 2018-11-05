@@ -1,6 +1,12 @@
 /*table, td, th{
     border: 1px solid blue;
 }*/
+
+/*body{
+background-image:  url("beach.jpg");
+background:blue;
+}*/
+
 body{
     font-family: 'Krub', sans-serif;
 }
