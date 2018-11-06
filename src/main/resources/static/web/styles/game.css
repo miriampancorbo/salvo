@@ -67,25 +67,60 @@ table, td, th{
     text-align: center;
 }
 
+
 .carrierHorizontal{
-    background-image: url('../dist/submarinehor.png');
+    background-image: url('../dist/aircraftHorizontal.png');
     background-size: contain;
 }
 
 .carrierHorizontalRed{
-    background-image: url('../dist/submarinehor_red.png');
+    background-image: url('../dist/aircraftVertical.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+}
+
+.battleshipHorizontal{
+    background-image: url('../dist/battleshipHorizontal.png');
+    background-size: contain;
+}
+
+.battleshipVertical{
+    background-image: url('../dist/battleshipVertical.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+}
+
+.submarineHorizontal{
+    background-image: url('../dist/submarinetHorizontal.png');
+    background-size: contain;
+}
+
+.submarineVertical{
+    background-image: url('../dist/submarineVertical.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+}
+
+.destroyerHorizontal{
+    background-image: url('../dist/destroyerHorizontal.png');
+    background-size: contain;
+}
+
+.destroyerVertical{
+    background-image: url('../dist/destroyerVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
 }
 
 .patroalHorizontal{
-    background-image: url('../dist/patrolboathor.png');
+    background-image: url('../dist/patrolHorizontal.png');
     background-size: contain;
 }
 
 .patroalHorizontalRed{
-    background-image: url('../dist/patrolboathor_red.png');
+    background-image: url('../dist/patrolVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
 }
+
 
