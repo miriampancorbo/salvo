@@ -15,15 +15,16 @@
 </head>
 <body>
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <button type="button" id="homeButton" class="btn btn-primary pull-left" onclick="window.location.href='http://localhost:8080/web/games.html'">Home</button>
     <button type="button" class="logoutButton2 btn btn-primary pull-right">Logout</button>
 </nav>
 <div class="container" id="gameHtml">
     <div id="app">
-        <h1>Ship Locations!!</h1>
-
         <div class="container">
+            <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
+            <center><p class="place-ships-title">Place your ships <img src="photos/cruzRoja.png" alt="red cross" height="40" width="40"></p></center>
 
-            <h2>{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2>
+
 
                         <!--se agrega un elemento (widget) a la grill
                         data-gs-x y data-gs-y posicion de inicio
@@ -42,63 +43,75 @@
 
 
             <div  class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-6">
                     <div class="grid-ships">
-                        <div id="grid" class="grid-stack grid-stack-10">
-
-
-                            <!--   <table class="table">
-                              <thead>
-                              <tr>
-                                   <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
-                               </tr>
-                                </thead>
-                                <tbody >
-                                <tr v-for="verticalCell in vertical">-->
-                                   <!-- <td>{{verticalCell}}</td>
-                                    <td :id="verticalCell+1"></td>
-                                    <td :id="verticalCell+2"></td>
-                                    <td :id="verticalCell+3"></td>
-                                    <td :id="verticalCell+4"></td>
-                                    <td :id="verticalCell+5"></td>
-                                    <td :id="verticalCell+6"></td>
-                                    <td :id="verticalCell+7"></td>
-                                    <td :id="verticalCell+8"></td>
-                                    <td :id="verticalCell+9"></td>
-                                    <td :id="verticalCell+10"></td>
-                                </tr>photos/big540.png
-                                </tbody>
-                            </table>-->
-                        </div>
+                        <div id="my-complete-grid"></div>
+                        <!--<img src="photos/cruzRoja.png" alt="red cross" height="45" width="45" style="position:absolute; margin-left: 90px; margin-right:0; z-index:1;">-->
+                        <div id="grid" class="grid-stack grid-stack-10"></div>
                     </div>
-                <!--</div>-->
                 </div>
 
-                <h2>Position your ships</h2>
-
-
-                    <div class="col-xs-6">
-                        <div class="grid-ships grid-stack grid-stack-10" id="gridTwo">
-                            <div id="carrier" class="grid-stack-item"
-                                 data-gs-x="0" data-gs-y="0"
-                                 data-gs-width="3" data-gs-height="1">
-                                <div class="grid-stack-item-content carrierHorizontal"></div>
-                            </div>
-                            <div id="patroal" class="grid-stack-item"
-                                 data-gs-x="4" data-gs-y="0"
-                                 data-gs-width="2" data-gs-height="1">
-                                <div class="grid-stack-item-content patroalHorizontal"></div>
-                            </div>
+                <!--<div class="col-xs-6">
+                    <div class="grid-only-ships grid-stack grid-stack-5" id="grid-two">
+                        <div id="carrier" class="grid-stack-item"
+                             data-gs-x="0" data-gs-y="0"
+                             data-gs-width="3" data-gs-height="1">
+                            <div class="grid-stack-item-content carrierHorizontal"></div>
+                        </div>
+                        <div id="patroal" class="grid-stack-item"
+                             data-gs-x="0" data-gs-y="1"
+                             data-gs-width="2" data-gs-height="1">
+                            <div class="grid-stack-item-content patroalHorizontal"></div>
                         </div>
                     </div>
-
+                </div>
 
 
                 <div class="col-xs-2">
                     <button type="button" class="saveShipsButton btn btn-success">Save Ships</button>
-                </div>
+                </div>-->
 
-                <div class="col-xs-12">
+
+                <div class="col-xs-6">
+                    <div class="grid-ships-opponent">
+                        <div id="opponent-complete-grid"></div>
+                        <div id="grid-opponent" class="grid-stack grid-stack-10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--   <table class="table">
+      <thead>
+      <tr>
+           <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
+       </tr>
+        </thead>
+        <tbody >
+        <tr v-for="verticalCell in vertical">-->
+                                               <!-- <td>{{verticalCell}}</td>
+                                                <td :id="verticalCell+1"></td>
+                                                <td :id="verticalCell+2"></td>
+                                                <td :id="verticalCell+3"></td>
+                                                <td :id="verticalCell+4"></td>
+                                                <td :id="verticalCell+5"></td>
+                                                <td :id="verticalCell+6"></td>
+                                                <td :id="verticalCell+7"></td>
+                                                <td :id="verticalCell+8"></td>
+                                      º          <td :id="verticalCell+9"></td>
+                                                <td :id="verticalCell+10"></td>
+                                            </tr>photos/big540.png
+                                            </tbody>
+                                        </table>-->
+                            <!--</div>-->
+
+                <!--<div class="col-xs-12">
                     <table class="table">
                         <thead>
                         <tr>
@@ -122,10 +135,9 @@
                         </tr>
                         </tbody>
                     </table>
-                </div>
-        </div>
-    </div>
-</div>
+                </div>-->
+
+
 
 <!-- div solo para colocar el borde y posicionar en base a la altura y anchur
 <div class="grid-ships">

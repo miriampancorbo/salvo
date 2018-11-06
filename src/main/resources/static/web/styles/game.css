@@ -1,58 +1,91 @@
-#gridTwo{
-    width:50%;
-    border:0px solid red;
-    background-color:white;
-}
-
-.saveShipsButton{
-}
-
 table, td, th{
     border: 1px solid blue;
     padding: 0;
 }
 
-
-
 .my-ship{
-background-color: black;
+    background-color: black;
 }
-.my-salvo{
-//background-color:red;
-color:red;
-font-size:120%;
-font-weight:bold;
 
+.my-salvo{
+    //background-color:red;
+    color:red;
+    font-size:120%;
+    font-weight:bold;
 }
+
 .opponent-salvo{
-//background-color:orange;
-color:orange;
-font-size:120%;
-font-weight:bold;
+    color:orange;
+    font-size:120%;
+    font-weight:bold;
 }
 
 .hit-my-ship{
-color:yellowgreen;
-font-weight:bold;
+    color:yellowgreen;
+    font-weight:bold;
+}
+.title-players{
+    font-size:450%;
+    margin-bottom:0;
 }
 
+.place-ships-title{
+    font-size:200%;
+}
 
-/*COLOR BEIGE FONDO GRILLA*/
-/*.grid-stack {
-  background: lightgoldenrodyellow;
-  border: 1px solid red;
+/*------------------------------------------------ STYLE.CSS*/
 
-}*/
+.grid-ships{                                                                /*mi grilla*/
+    height: 540px;
+    width: 540px;
+    padding: 45px;
+    background-image:url('../photos/big540.png');
+    margin-bottom:50px;
+}
+.grid-ships-opponent{                                                       /*grilla oponente*/
+    height: 540px;
+    width: 540px;
+    padding: 45px;
+    background-image:url('../photos/big540.png');
+}
 
+#grid-two{                                                                  /*lugar barcos inicio*/
+    height: 270px;
+    width: 270px;
+    /*background-image:url('../photos/big540.png');*/
+    border: 1px solid red;
+    }
+
+/*------------------------------------ BARCOS -----------------------------------------------------*/
 .grid-stack-item-content {
-  color: #2c3e50;
-  text-align: center;
-  background-color: #18bc9c;
+    //opacity: 0.9;
+    background-repeat: no-repeat;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    /*color: #2c3e50;
+    background-color: white;*/
+    text-align: center;
 }
 
+.carrierHorizontal{
+    background-image: url('../dist/submarinehor.png');
+    background-size: contain;
+}
 
-td {
-    height:45px;
-    padding-right:0;
+.carrierHorizontalRed{
+    background-image: url('../dist/submarinehor_red.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+}
+
+.patroalHorizontal{
+    background-image: url('../dist/patrolboathor.png');
+    background-size: contain;
+}
+
+.patroalHorizontalRed{
+    background-image: url('../dist/patrolboathor_red.png');
+    background-size: 100% 100%;
+    width: 45px !important;
 }
 
