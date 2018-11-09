@@ -53,6 +53,18 @@ jQuery(document).ready(function($) {
     }
 
 //LOGIN-----------------------------------------------------
+
+
+    $("#writePassword").keyup(function(event) {
+        if (event.keyCode === 13) {
+            if($("#signupButton").is(":hidden")) {
+                $("#loginButton").click();
+            }
+            else {
+                $("#signupButton").click();
+            }
+        }
+    });
     $("#loginButton").click(function(){
         loginData();
     });
@@ -128,15 +140,16 @@ jQuery(document).ready(function($) {
     function postNewGame(){
         $.post("/api/games")
             .done(function(response) {
+                window.location.href = "game.html?gp=" + response.gpid;
                 console.log("You have created a game.");
                 console.log(response);
-                window.location.href = "game.html?gp=" + response.gpid;
-
             })
             .fail(function( response ) {
                 console.log( "Error in game creation:" + response);
             });
     }
+
+
 });
 
 //JOIN A GAME---------------------------------------------------
@@ -155,37 +168,11 @@ jQuery(document).ready(function($) {
         });
 }
 
-//ADD SHIPS
-$(".saveShipsButton").click(function(){
-    addShips();
-});
-    function addShips(){
-        $.post({
-             url: "/api/games/players/" + gamePlayerId + "/ships",
-             data: JSON.stringify([ { }]),
-             dataType: "text",
-             contentType: "application/json"
-           })
-}
 
 
 
 
 
-       /* var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
-        var gamePlayerId = takeNumberURL(currentURL);
-        function takeNumberURL(url){
-            var n = url.slice(url.indexOf("gp=")+3);
-            console.log(n)
-            return n;
-        }
-        var shipType;
-        var shipLocations=[];*/
-        //console.log("holaaaaaaaaaa");
-        //console.log(gamePlayerId);
-        //console.log("gamePlayerId:" + gamePlayerId)
-        //$.post("api/games/players/" + gamePlayerId + "/ships")
-          //      .done(function(response) {
-            //    })
+
 
 

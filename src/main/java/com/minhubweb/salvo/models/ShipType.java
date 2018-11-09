@@ -1,5 +1,5 @@
 package com.minhubweb.salvo.models;
 
 public enum ShipType {
-    DESTROYER, SUBMARINE, PATROLBOAT
+    AIRCRAFT, BATTLESHIP, SUBMARINE, DESTROYER, PATROL
 }

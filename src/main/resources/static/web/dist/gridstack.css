@@ -4,6 +4,7 @@
 
 .grid-stack {
   position: relative;
+  height:450px !important;
 }
 
 .grid-stack.grid-stack-rtl {

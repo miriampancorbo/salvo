@@ -1,12 +1,7 @@
-/*table, td, th{
-    border: 1px solid blue;
-}*/
-
-/*body{
-background-image:  url("beach.jpg");
-background:blue;
-}*/
-
+li {
+    list-style-type: none;
+    /*background:black;*/
+}
 body{
     font-family: 'Krub', sans-serif;
 }
@@ -18,6 +13,8 @@ body{
     font-size: 140%;
     color:#ff6600;
     font-weight:bold;
+    margin-top:5%;
+    margin-bottom:0%;
 }
 
 form{

@@ -29,28 +29,31 @@ $(function () {
     })
     fetchJson("http://localhost:8080/api/game_view/" + numberVariable, {method: 'GET',})
         .then(function (json) {
-            console.log("esta bien el fetch!")
+            console.log("Good fetch!")
             getIds(json);
             app.ships = json.ship;
             app.playerA = json.gamePlayers[0].player.userName;
-            app.playerB = json.gamePlayers[1].player.userName;
+            if (json.gamePlayers[1]) { app.playerB = json.gamePlayers[1].player.userName;}
             app.salvo=json.salvo;
             getMsg(json);
             paintPositionOwnShips(app.ships);
             paintPositionSalvoes(json, app.salvo);
-            placeAlreadyShips(app.ships);
-            salvoCross(json, app.salvo);
+            placeSavedShips(app.ships);
+            if (json.gamePlayers[1]) { salvoCross(json, app.salvo); }
+
             })
         .catch(function (error) {
-            console.log("Esta mal el fetch...")
+            console.log("Wrong fetch...")
         });
 
     function getIds(json){
         if (json.gamePlayers[0].id==numberVariable){
             app.myGpId=json.gamePlayers[0].id;
             app.myId=json.gamePlayers[0].player.id;
-            app.opponentGpId=json.gamePlayers[1].id;
-            app.opponentId=json.gamePlayers[1].player.id;
+            if (json.gamePlayers[1]) {
+                app.opponentGpId=json.gamePlayers[1].id;
+                app.opponentId=json.gamePlayers[1].player.id;
+            }
         }
         else {
             app.myGpId=json.gamePlayers[1].id;
@@ -69,44 +72,8 @@ $(function () {
         }
     }
 
-    function placeAlreadyShips(ships){
-        console.log("número de barcos: " + ships.length)
-        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        for (var i = 0; i < ships.length; i++){
-            console.log("LAS CELDAS DE MI BARCO " + i + ": " + ships[i].locations)
-            console.log("Longitud del barco :" + i + ": " + ships[i].locations.length)
-            console.log("La primera celda es: " + ships[i].locations[0])
-            console.log("La letra de la primera celda es: " + ships[i].locations[0][0])
-            console.log("El número de la primera celda es: " + ships[i].locations[0][1])
-            console.log("El número de la segunda celda es: " + ships[i].locations[1][1])
-
-
-            if ((ships[i].locations[0][1] == ships[i].locations[1][1]) && ships[i].locations.length==3){
-                grid.addWidget($('<div class="grid-stack-item-content carrierHorizontalRed"></div>'),
-                ships[i].locations[0][1]-1, letters.indexOf(ships[i].locations[0][0]),1,3);
-            }
-            else if ((ships[i].locations[0][1] == ships[i].locations[1][1]) && ships[i].locations.length==2){
-                grid.addWidget($('<div class="grid-stack-item-content patroalHorizontalRed"></div>'),
-                ships[i].locations[0][1]-1, letters.indexOf(ships[i].locations[0][0]),1,2);
-            }
-            else if (ships[i].locations.length==3){
-                grid.addWidget($('<div class="grid-stack-item-content carrierHorizontal"></div>'),
-                ships[i].locations[0][1]-1, letters.indexOf(ships[i].locations[0][0]), 3, 1);
-            }
-            else{
-                grid.addWidget($('<div class="grid-stack-item-content patroalHorizontal"></div>'),
-                ships[i].locations[0][1]-1, letters.indexOf(ships[i].locations[0][0]), 2, 1);
-            }
-        }
-    }
-
-
-
-
-
-
-        //NO LO NECESITO-------------------------------
-        //.............................................
+    //NEED TO CHECK-------------------------------------------------------------------------------
+    //.............................................-----------------------------------------------
 
     function paintPositionOwnShips(ships){
         ships.forEach(function (ship) {
@@ -134,19 +101,18 @@ $(function () {
     function opponentSalvosStyle(location, json, i){
     if ($('#' + location).hasClass("my-ship")){
             $('#' + location).addClass("hit-my-ship").html(json.salvo[i].turn);
-            /*grid.addWidget($('<div id="patroal2"><div class="grid-stack-item-content patroalHorizontal"></div><div/>'),
-            1, location[1], 1, 1);*/
     }
     else{
         $('#' + location).addClass("opponent-salvo").html(json.salvo[i].turn);
         $('#' + location + 'S').css(style="padding:0");
         }
     }
+    //---------------------------------------------------------------------------------------??????
 
-    //-------------------------------------------
-    //------------------------------------------
-});
+}); //END MAIN FUNCTION
 
+
+//-------------------------------------------LOGOUT ...-------------------------------------
 $(".logoutButton2").click(function(){
     console.log("ok");
     postLoginPlayerOut2();
@@ -154,24 +120,16 @@ $(".logoutButton2").click(function(){
 function postLoginPlayerOut2(userName, userPassword) {
      $.post( "/api/logout",{ username: userName, password: userPassword })
          .done(function( ) {
-           console.log( "BIENNNN");
+           console.log( "Good fetch post login");
             location.reload();
             location.href="http://localhost:8080/web/games.html"
      })
          .fail(function( jqXHR, textStatus ) {
-           console.log( "ERRORRRR" + textStatus );
+           console.log( "Wrong fetch post login" + textStatus );
      });
 };
 
-
-
-
-//---------------------------------------------------------FUNCIONES PARA CRUCES
-//---------------------------------------------------------
-
-
-
-
+//---------------------------------------------------------FUNCIONES PARA PONER CRUCES-------
 
     function salvoCross(json, salvoes){
     console.log("primer salvo: " + salvoes[0].locations)
@@ -185,8 +143,8 @@ function postLoginPlayerOut2(userName, userPassword) {
         }
     }
 
+//ORANGE (yo lanzo)
     function mySalvoesLocation(location, json, i) {
-         console.log("yo le disparo: " + location);
         var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         var grid = $('#grid').data('gridstack');
         var horizontal = location[1]-1;
@@ -196,40 +154,30 @@ function postLoginPlayerOut2(userName, userPassword) {
     }
 
     function opponentSalvoesLocation(location, json, i) {
-        var grid = $('#grid').data('gridstack');
+        var grid = $('#gridFix').data('gridstack');
         console.log("Mi oponente me dispara: " + location);
         console.log("Mi oponente me dispara primer elemento:" + location[0])  //G
         console.log("Mi oponente me dispara segundo elemento:" + location[1]) //5
         var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         var horizontal = location[1]-1;
         var vertical = letters.indexOf(location[0]);
+//RED (me dan)
         if (!grid.isAreaEmpty(horizontal, vertical, 1, 1)){
-            //($('#' + location).hasClass("grid-stack-item-content")) {
             console.log("me disparan y me dan:" + location);
             document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzRoja.png' alt='red cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
         }
+//YELLOW (no me dan)
         else {
             console.log("me disparan pero no me dan:" + location);
             document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzAmarilla.png' alt='yellow cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
-
-            // grid.addWidget($('<img src="photos/cruzAmarilla.png" alt="red cross" height="40" width="40">'),location[1]-1, letters.indexOf(location[0]), 1, 1)
-             //.style.position = 'absolute';
         }
     }
 
 
-
-
-
-//---------------------------------------------------------FUNCIONES PARA BARCOS
-//---------------------------------------------------------
-
-
+//---------------------------------------------------------OPTIONS GRID----------------------------
 
 $(function () {
-
-    var options = {
-        //grilla de 10 x 10
+    var options= {
         width: 10,
         height: 10,
         padding:1,
@@ -237,74 +185,384 @@ $(function () {
         cellHeight: 45,
         disableResize: true,
 		float: true,
-        //removeTimeout: 100,
         disableOneColumnMode: true,//permite que el widget ocupe mas de una columna
         staticGrid: false,//false permite mover, true impide
         animate: true,//activa animaciones (cuando se suelta el elemento se ve más suave la caida)
-        acceptWidgets: true
+        acceptWidgets: true,
+        resizable:false
     }
-    var optionsTwo = {
-        //grilla de 10 x 10
-        width: 5,
-        height: 5,
+    $('#grid').gridstack(options);
+    grid = $('#grid').data('gridstack');
+
+    var optionsFix = {
+        width: 10,
+        height: 10,
         padding:1,
-        verticalMargin: 0,//separacion entre elementos (les llaman widgets)
+        verticalMargin: 0,
         cellHeight: 45,
         disableResize: true,
 		float: true,
-        //removeTimeout: 100,
-        disableOneColumnMode: true,//permite que el widget ocupe mas de una columna
-        staticGrid: false,//false permite mover, true impide
-        animate: true,//activa animaciones (cuando se suelta el elemento se ve más suave la caida)
-        acceptWidgets: true
+        disableOneColumnMode: true,
+        staticGrid: true,
+        animate: true,
+        acceptWidgets: true,
+        resizable:false
     }
-    //se inicializa el grid con las opciones
-    $('#grid').gridstack(options);
-    $('#grid-opponent').gridstack(options);
-    $('#grid-two').gridstack(optionsTwo);
+    $('#gridFix').gridstack(optionsFix);
+    gridFix = $('#gridFix').data('gridstack');
 
-    gridTwo = $('#grid-two').data('gridstack');
-    grid = $('#grid').data('gridstack');
-    //grid-opponent = $('#grid-opponent').data('gridstack');
 
-    //agregando un elmento(widget) desde el javascript a mi grilla directamente
-    /*grid.addWidget($('<div id="carrier2"><div class="grid-stack-item-content carrierHorizontal"></div><div/>'),
-        0, 0, 3, 1);
+/*-------------------------------------------GIRAR BARQUITOS---------------------------*/
 
-    grid.addWidget($('<div id="patroal2"><div class="grid-stack-item-content patroalHorizontal"></div><div/>'),
-        0, 1, 2, 1);*/
+    $("#aircraft").dblclick(function(){
+        var aircraftId = document.getElementById("aircraft");
+        var x = parseInt(aircraftId.getAttribute("data-gs-x"));
+        var y = aircraftId.getAttribute("data-gs-y");
+        if($(this).children().hasClass("aircraftHorizontal") && fromHorizontalToVertical(4, x, y)) {
+            grid.resize($(this),1,5);
+            $(this).children().removeClass("aircraftHorizontal");
+            $(this).children().addClass("aircraftVertical");
+        }else if ($(this).children().hasClass("aircraftVertical") && fromVerticalToHorizontal(4, x, y)) {
+            grid.resize($(this),5,1);
+            $(this).children().addClass("aircraftHorizontal");
+            $(this).children().removeClass("aircraftVertical");
+        }
+        else {
+            alertify.error("Incorrect movement.");
+        }
+    });
 
-    //verificando si un area se encuentra libre (false si no está libre)
-    console.log(grid.isAreaEmpty(1, 8, 3, 1));
-    console.log(grid.isAreaEmpty(1, 7, 3, 1));
+    $("#battleship").dblclick(function(){
+        var battleshipId = document.getElementById("battleship");
+        var x = parseInt(battleshipId.getAttribute("data-gs-x"));
+        var y = battleshipId.getAttribute("data-gs-y");
+        if($(this).children().hasClass("battleshipHorizontal") && fromHorizontalToVertical(3, x, y)) {
+            grid.resize($(this),1,4);
+            $(this).children().removeClass("battleshipHorizontal");
+            $(this).children().addClass("battleshipVertical");
+        }else  if ($(this).children().hasClass("battleshipVertical") &&  fromVerticalToHorizontal(3, x, y)) {
+            grid.resize($(this),4,1);
+            $(this).children().addClass("battleshipHorizontal");
+            $(this).children().removeClass("battleshipVertical");
+        }
+        else {
+            alertify.error("Incorrect movement.");
+        }
+    });
 
-    $("#carrier,#carrier2").click(function(){
-        if($(this).children().hasClass("carrierHorizontal")){
+    $("#submarine").dblclick(function(){
+        var submarineId = document.getElementById("submarine");
+        var x = parseInt(submarineId.getAttribute("data-gs-x"));
+        var y = submarineId.getAttribute("data-gs-y");
+        if($(this).children().hasClass("submarineHorizontal") && fromHorizontalToVertical(2, x, y)) {
             grid.resize($(this),1,3);
-            $(this).children().removeClass("carrierHorizontal");
-            $(this).children().addClass("carrierHorizontalRed");
-        }else{
+            $(this).children().removeClass("submarineHorizontal");
+            $(this).children().addClass("submarineVertical");
+        }else if ($(this).children().hasClass("submarineVertical") && fromVerticalToHorizontal(2, x, y)) {
             grid.resize($(this),3,1);
-            $(this).children().addClass("carrierHorizontal");
-            $(this).children().removeClass("carrierHorizontalRed");
+            $(this).children().addClass("submarineHorizontal");
+            $(this).children().removeClass("submarineVertical");
+        }
+        else {
+            alertify.error("Incorrect movement.");
         }
     });
 
-    $("#patroal,#patroal2").click(function(){
-        if($(this).children().hasClass("patroalHorizontal")){
-            grid.resize($(this),1,2);
-            $(this).children().removeClass("patroalHorizontal");
-            $(this).children().addClass("patroalHorizontalRed");
-        }else{
-            grid.resize($(this),2,1);
-            $(this).children().addClass("patroalHorizontal");
-            $(this).children().removeClass("patroalHorizontalRed");
+    $("#destroyer").dblclick(function(){
+        var destroyerId = document.getElementById("destroyer");
+        var x = parseInt(destroyerId.getAttribute("data-gs-x"));
+        var y = destroyerId.getAttribute("data-gs-y");
+        if($(this).children().hasClass("destroyerHorizontal") && fromHorizontalToVertical(2, x, y)) {
+            grid.resize($(this),1,3);
+            $(this).children().removeClass("destroyerHorizontal");
+            $(this).children().addClass("destroyerVertical");
+        }else if ($(this).children().hasClass("destroyerVertical") && fromVerticalToHorizontal(2, x, y)) {
+            grid.resize($(this),3,1);
+            $(this).children().addClass("destroyerHorizontal");
+            $(this).children().removeClass("destroyerVertical");
+        }
+        else {
+            alertify.error("Incorrect movement.");
         }
     });
+
+    $("#patrol").dblclick(function(){
+        var patrolId = document.getElementById("patrol");
+        var x = parseInt(patrolId.getAttribute("data-gs-x"));
+        var y = patrolId.getAttribute("data-gs-y");
+        if($(this).children().hasClass("patrolHorizontal") && fromHorizontalToVertical(1, x, y)) {
+            grid.resize($(this),1,2);
+            $(this).children().removeClass("patrolHorizontal");
+            $(this).children().addClass("patrolVertical");
+        }else if ($(this).children().hasClass("patrolVertical") && fromVerticalToHorizontal(1, x, y)) {
+            grid.resize($(this),2,1);
+            $(this).children().addClass("patrolHorizontal");
+            $(this).children().removeClass("patrolVertical");
+        }
+        else {
+            alertify.error("Incorrect movement.");
+        }
+    });
+
+
+    function fromHorizontalToVertical(length, x, y){
+        var i = length;
+        while (i > 0){
+            if(!((parseInt(y)+length < 10) && (grid.isAreaEmpty(x,(parseInt(y)+i),1,1)))) {
+                return false;
+            }
+            i--;
+        }
+        return true;
+    }
+    function fromVerticalToHorizontal(length, x, y) {
+        var i = length;
+            while (i > 0){
+                if(!((parseInt(x)+length < 10) && (grid.isAreaEmpty((parseInt(x)+i),y,1,1)))){
+                return false;
+            }
+            i--;
+        }
+        return true;
+    }
 
     //https://github.com/gridstack/gridstack.js/tree/develop/doc
-
-
-
 });
+
+
+
+//--------------------------------------SAVE SHIPS  (HASTA EL FIN)----------------------------------------------------------
+
+function saveShips(){
+    var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
+    var gamePlayerId = takeNumberURL(currentURL);
+    function takeNumberURL(url){
+        var n = url.slice(url.indexOf("gp=")+3);
+        console.log(n)
+        return n;
+    }
+    console.log("gamePlayerId: "+ gamePlayerId);
+
+    var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+    var myShips= new Set;
+    myShips = [
+        {
+            "shipType":"AIRCRAFT",        //0. length 5
+            "shipLocation":[]
+        },
+        {
+            "shipType":"BATTLESHIP",      //1. length 4
+            "shipLocation":[]
+        },
+        {
+            "shipType":"SUBMARINE",      //2. length 3
+            "shipLocation":[]
+        },
+        {
+            "shipType":"DESTROYER",       //3. length 3
+            "shipLocation":[]
+        },
+        {
+            "shipType":"PATROL",            //4. length 2
+            "shipLocation":[]
+        }
+    ];
+
+    function aircraftData(){
+        var aircraftId = document.getElementById("aircraft");
+        var x = parseInt(aircraftId.getAttribute("data-gs-x"));
+        var y = aircraftId.getAttribute("data-gs-y");
+        var number = x+1;
+        var letter = letters[y];
+        if(aircraftId.firstChild.classList.contains("aircraftVertical")){
+            var first = letter+number;
+            var second = (letters[letters.indexOf(letter)+1])+number;
+            var third = (letters[letters.indexOf(letter)+2])+number;
+            var fourth = (letters[letters.indexOf(letter)+3])+number;
+            var fifth = (letters[letters.indexOf(letter)+4])+number;
+            myShips[0].shipLocation = [first, second, third, fourth, fifth];
+        }
+        else{
+            var first = letter+number;
+            var second = letter + (number+1);
+            var third = letter + (number+2);
+            var fourth = letter + (number+3);
+            var fifth = letter + (number+4);
+            myShips[0].shipLocation = [first, second, third, fourth, fifth];
+        }
+    }
+    function battleshipData(){
+        var battleshipId = document.getElementById("battleship");
+        var x = parseInt(battleshipId.getAttribute("data-gs-x"));
+        var y = battleshipId.getAttribute("data-gs-y");
+        var number = x+1;
+        var letter = letters[y];
+        if(battleshipId.firstChild.classList.contains("battleshipVertical")){
+            var first = letter+number;
+            var second = (letters[letters.indexOf(letter)+1])+number;
+            var third = (letters[letters.indexOf(letter)+2])+number;
+            var fourth = (letters[letters.indexOf(letter)+3])+number;
+            myShips[1].shipLocation = [first, second, third, fourth];
+        }
+        else{
+            var first = letter+number;
+            var second = letter + (number+1);
+            var third = letter + (number+2);
+            var fourth = letter + (number+3);
+            myShips[1].shipLocation = [first, second, third, fourth];
+        }
+    }
+    function submarineData(){
+        var submarineId = document.getElementById("submarine");
+        var x = parseInt(submarineId.getAttribute("data-gs-x"));
+        var y = submarineId.getAttribute("data-gs-y");
+        var number = x+1;
+        var letter = letters[y];
+        if(submarineId.firstChild.classList.contains("submarineVertical")){
+            var first = letter+number;
+            var second = (letters[letters.indexOf(letter)+1])+number;
+            var third = (letters[letters.indexOf(letter)+2])+number;
+            myShips[2].shipLocation = [first, second, third];
+        }
+        else{
+            var first = letter+number;
+            var second = letter + (number+1);
+            var third = letter + (number+2);
+            myShips[2].shipLocation = [first, second, third];
+        }
+    }
+    function destroyerData(){
+        var destroyerId = document.getElementById("destroyer");
+        var x = parseInt(destroyerId.getAttribute("data-gs-x"));
+        var y = destroyerId.getAttribute("data-gs-y");
+        var number = x+1;
+        var letter = letters[y];
+        if(destroyerId.firstChild.classList.contains("destroyerVertical")){
+            var first = letter+number;
+            var second = (letters[letters.indexOf(letter)+1])+number;
+            var third = (letters[letters.indexOf(letter)+2])+number;
+            myShips[3].shipLocation = [first, second, third];
+        }
+        else{
+            var first = letter+number;
+            var second = letter + (number+1);
+            var third = letter + (number+2);
+            myShips[3].shipLocation = [first, second, third];
+        }
+    }
+    function patrolData(){
+        var patrolId = document.getElementById("patrol");
+        var x = parseInt(patrolId.getAttribute("data-gs-x"));
+        var y = patrolId.getAttribute("data-gs-y");
+        var number = x+1;
+        var letter = letters[y];
+        if(patrolId.firstChild.classList.contains("patrolVertical")){
+            var first = letter+number;
+            var second = (letters[letters.indexOf(letter)+1])+number;
+            myShips[4].shipLocation = [first, second];
+        }
+        else{
+            var first = letter+number;
+            var second = letter + (number+1);
+            myShips[4].shipLocation = [first, second];
+        }
+    }
+    aircraftData();
+    battleshipData();
+    submarineData();
+    destroyerData();
+    patrolData();
+    console.log(myShips);
+    addShips(myShips, gamePlayerId);
+    location.reload();
+};
+    function addShips(myShips, gamePlayerId) {
+        $.post({
+             url: "/api/games/players/" + gamePlayerId + "/ships",
+             data: JSON.stringify(myShips),
+             dataType: "text",
+             contentType: "application/json"
+           })
+            .done(function(response) {
+                console.log("la response: ")
+                console.log(response)
+                console.log(myShips)
+
+                $.get("/api/game_view/" + gamePlayerId)
+                    .done(function(json){
+                        app.ships = myShips;
+                        placeSavedShips(app.ships);
+                        console.log("app.ships: ")
+                        console.log(app.ships)
+                    });
+            })
+            .fail(function( response ) {
+                console.log("mal no entra bien  en save ships. response: ")
+                console.log(response.responseText);
+            })
+        console.log("Save ships ha entrado en la función")
+}
+
+function placeSavedShips(appShips){
+    var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+    for (var i = 0; i < appShips.length; i++){
+        switch (appShips[i].type){
+            case "AIRCRAFT":
+                if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
+                    gridFix.addWidget($('<div class="grid-stack-item-content aircraftHorizontal"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),5,1);
+                }
+                else {
+                    gridFix.addWidget($('<div class="grid-stack-item-content aircraftVertical"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,5);
+                };
+                break;
+
+            case "BATTLESHIP":
+                if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
+                    gridFix.addWidget($('<div class="grid-stack-item-content battleshipHorizontal"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),4,1);
+                }
+                else {
+                    gridFix.addWidget($('<div class="grid-stack-item-content battleshipVertical"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,4);
+                };
+                break;
+
+            case "SUBMARINE":
+                if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
+                    gridFix.addWidget($('<div class="grid-stack-item-content submarineHorizontal"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),3,1);
+                }
+                else {
+                    gridFix.addWidget($('<div class="grid-stack-item-content submarineVertical"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,3);
+                };
+                break;
+
+            case "DESTROYER":
+                if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
+                    gridFix.addWidget($('<div class="grid-stack-item-content destroyerHorizontal"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),3,1);
+                }
+                else {
+                    gridFix.addWidget($('<div class="grid-stack-item-content destroyerVertical"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,3);
+                };
+                break;
+
+            case "PATROL":
+                if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
+                    gridFix.addWidget($('<div class="grid-stack-item-content patrolHorizontal"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),2,1);
+                }
+                else {
+                    gridFix.addWidget($('<div class="grid-stack-item-content patrolVertical"></div>'),
+                    appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,2);
+                };
+                break;
+        };
+    }
+}
+
 

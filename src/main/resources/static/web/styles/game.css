@@ -33,6 +33,13 @@ table, td, th{
     font-size:200%;
 }
 
+/*--------------------------------------------------DESAPARECER MIS GRILLAS*/
+
+
+.hideGrid{
+    display:none;
+}
+
 /*------------------------------------------------ STYLE.CSS*/
 
 .grid-ships{                                                                /*mi grilla*/
@@ -52,28 +59,28 @@ table, td, th{
 #grid-two{                                                                  /*lugar barcos inicio*/
     height: 270px;
     width: 270px;
-    /*background-image:url('../photos/big540.png');*/
     border: 1px solid red;
     }
 
 /*------------------------------------ BARCOS -----------------------------------------------------*/
+.grid-stack {
+    /*background-color:pink;*/
+}
+
 .grid-stack-item-content {
-    //opacity: 0.9;
     background-repeat: no-repeat;
     cursor: -webkit-grab;
     cursor: -moz-grab;
-    /*color: #2c3e50;
-    background-color: white;*/
     text-align: center;
 }
 
 
-.carrierHorizontal{
+.aircraftHorizontal{
     background-image: url('../dist/aircraftHorizontal.png');
     background-size: contain;
 }
 
-.carrierHorizontalRed{
+.aircraftVertical{
     background-image: url('../dist/aircraftVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
@@ -82,45 +89,53 @@ table, td, th{
 .battleshipHorizontal{
     background-image: url('../dist/battleshipHorizontal.png');
     background-size: contain;
+    background-color: blue;
 }
 
 .battleshipVertical{
     background-image: url('../dist/battleshipVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
+    background-color: blue;
 }
 
 .submarineHorizontal{
-    background-image: url('../dist/submarinetHorizontal.png');
+    background-image: url('../dist/submarineHorizontal.png');
     background-size: contain;
+    background-color: orange;
 }
 
 .submarineVertical{
     background-image: url('../dist/submarineVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
+    background-color: orange;
 }
 
 .destroyerHorizontal{
     background-image: url('../dist/destroyerHorizontal.png');
     background-size: contain;
+    background-color: pink;
 }
 
 .destroyerVertical{
     background-image: url('../dist/destroyerVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
+    background-color: pink;
 }
 
-.patroalHorizontal{
+.patrolHorizontal{
     background-image: url('../dist/patrolHorizontal.png');
     background-size: contain;
+    background-color: green;
 }
 
-.patroalHorizontalRed{
+.patrolVertical{
     background-image: url('../dist/patrolVertical.png');
     background-size: 100% 100%;
     width: 45px !important;
+    background-color: green;
 }
 
 

@@ -10,48 +10,53 @@
 </head>
 <body>
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <button type="button" class="btn btn-primary pull-right" id="firstSignupButton" >Create new user</button>
-        <button type="button" class="btn btn-primary pull-right" id="firstLoginButton" >Log to your Account</button>
-        <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >Logout</button>
+        <button type="button" class="btn btn-primary pull-right" id="firstSignupButton" >create new user</button>
+        <button type="button" class="btn btn-primary pull-right" id="firstLoginButton" >log to your Account</button>
+        <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >logout</button>
     </nav>
     <div class="container" id="gamesHtml">
         <div  id="app">
             <div class="row">
-                <h1 id="greeting" style="display:none"><center>{{currentUserName}}</center></h1>
+                <h1 id="greeting" style="display:none"><center> <img src="photos/palmera2.png" alt="palmera" height="120">{{currentUserName}} </center></h1>
                 <h1><center id="main-title">Let's Play Salvo!</center></h1>
-                <center><button type="button" class="btn btn-success" id="newGameButton" style="display:none">New game</button></center>
+                <center><button type="button" class="btn btn-success" id="newGameButton" style="display:none">new game</button></center>
             </div>
 
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-xs-7">
                     <ul>
-                        <center  class="subtitle">games</center>
+                        <p class="subtitle" style="margin-left:10%">games</p>
                          <li v-for="game in games"
                              v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
+                                <img src="photos/timon.jpg" alt="palmera" height="30">
                                  <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                      {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                                  </a>
                          </li>
 
                         <li  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
+                            <img src="photos/timon.jpg" alt="palmera" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                             </a>
                         </li>
 
                         <li v-else-if="game.gamePlayers[1]">
+                            <img src="photos/timon.jpg" alt="palmera" height="30">
                             {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                         </li>
 
                         <li v-else-if="game.gamePlayers[0].player.id==currentUserId">
+                            <img src="photos/timon.jpg" alt="palmera" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
                             </a>
                         </li>
 
                         <li v-else>
-                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs waiting for an opponent
-                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">JOINN</button>
+                            <img src="photos/timon.jpg" alt="palmera" height="30">
+                            {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
+                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button>
                         </li>
                     </ul>
                 </div>
@@ -60,11 +65,11 @@
                     <table class="table  table-striped">
                         <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Won</th>
-                            <th scope="col">Lost</th>
-                            <th scope="col">Tied</th>
+                            <th scope="col">name</th>
+                            <th scope="col">total</th>
+                            <th scope="col">won</th>
+                            <th scope="col">lost</th>
+                            <th scope="col">tied</th>
                         </tr>
                         </thead>
 
@@ -90,8 +95,8 @@
                             <label for="writePassword">Password</label>
                             <input type="password" class="form-control" id="writePassword" placeholder="Enter your Password">
                         </div>
-                        <center><button type="button" class="btn btn-primary" style="display:none" id="loginButton">Login</button></center>
-                        <center><button type="button" class="btn btn-primary" style="display:none" id="signupButton" >Signup</button></center>
+                        <center><button type="button" class="btn btn-primary" style="display:none" id="loginButton">login</button></center>
+                        <center><button type="button" class="btn btn-primary" style="display:none" id="signupButton" >signup</button></center>
                     </form>
                 </div>
             </div>
