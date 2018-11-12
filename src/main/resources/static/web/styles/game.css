@@ -3,6 +3,11 @@ table, td, th{
     padding: 0;
 }
 
+.send-new-salvo{
+    background-image:url('../photos/orangePoint.png') !important;
+    background-size:contain;
+}
+
 .my-ship{
     background-color: black;
 }
@@ -32,7 +37,11 @@ table, td, th{
 .place-ships-title{
     font-size:200%;
 }
-
+.table-opponent td{
+    width: 45px !important;
+    height: 45px !important;
+    border:1px solid red;
+}
 /*--------------------------------------------------DESAPARECER MIS GRILLAS*/
 
 

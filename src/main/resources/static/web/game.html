@@ -23,11 +23,11 @@
     <div id="app">
         <div class="container">
             <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
-            <center><p class="place-ships-title">Place your ships <img src="photos/cruzRoja.png" alt="red cross" height="40" width="40"></p></center>
-
+            <center><p class="place-ships-title">Place your ships <img src="photos/orangePoint.png" alt="red cross" height="40" width="40"></p></center>
             <div  class="row">
 
                 <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
+                <p id="count-turn"></p>
                 <div :class=" {hideGrid : ships.length!=0}">
                     <div id="firstGrid">
                         <div class="col-xs-6">
@@ -85,13 +85,43 @@
                     <!-- TERCERA GRILLA (OPONENTE)  THIRDGRID-->
                     <div id="thirdGrid">
                         <div class="col-xs-6">
+                            <p id="count-salvoes"></p>
                             <div class="grid-ships-opponent">
                                 <div id="opponent-complete-grid"></div>
-                                <div id="grid-opponent" class="grid-stack grid-stack-10"></div>
-                            </div>
+                                <!--<div id="gridOpponent"   class="grid-stack grid-stack-10"></div>-->
+
+                                <!--<div class="col-xs-6">-->
+                                    <table class="table table-opponent"  >
+                                        <thead>
+                                        <!--<tr>
+                                            <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
+                                        </tr>-->
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="verticalCell in vertical">
+                                            <!--<td>{{verticalCell}}</td>-->
+                                            <td :id="verticalCell+1+'S'" class="cells"></td>
+                                            <td :id="verticalCell+2+'S'" class="cells"></td>
+                                            <td :id="verticalCell+3+'S'" class="cells"></td>
+                                            <td :id="verticalCell+4+'S'" class="cells"></td>
+                                            <td :id="verticalCell+5+'S'" class="cells"></td>
+                                            <td :id="verticalCell+6+'S'" class="cells"></td>
+                                            <td :id="verticalCell+7+'S'" class="cells"></td>
+                                            <td :id="verticalCell+8+'S'" class="cells"></td>
+                                            <td :id="verticalCell+9+'S'" class="cells"></td>
+                                            <td :id="verticalCell+10+'S'" class="cells"></td>
+                                            <!--<td></td>-->
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                            </div> <!--grid-ships-opponent-->
                         </div>
                     </div>
+                        <div class="col-xs-2">
+                            <button type="button" onclick="postSalvo()" class="saveSalvoesButton btn btn-success">save salvoes</button>
+                        </div>
                 </div><!--V-else-->
+                <!--</div>-->
 
 
             </div> <!--row-->

@@ -148,45 +148,51 @@ public class SalvoRestController {
         gamePlayerRepository.save(gamePlayer.get());
         return new ResponseEntity<>(makeMap("Success", "Ships added"), HttpStatus.CREATED); //201
     }
-}
-//Set<Ship> newShip = shipRepository.save(new Ship(List <ShipType> type, List <String> shipLocation));
-//Set<Ship> newShip = shipRepository.save(new Ship(Set<Ship>));
-
-    //Player player = playerRepository.findByUserName(authentication.getName());
-    //Game game = gameRepository.save(new Game());
-    //GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
-        //return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
-
-
-    //Set<Ship> shipSet13 = new HashSet<>();
-    //shipSet1.add(new Ship (ShipType.DESTROYER, new ArrayList<>(Arrays.asList("H2", "H3", "H4"))));
 
 
 
- /*   Game game = gameRepository.save(new Game());
+    @PostMapping(path = "/games/players/{gamePlayerId}/salvoes")
+    public ResponseEntity<Map<String, Object>> saveSalvoes(@RequestBody Salvo salvo,
+                                                           @PathVariable Long gamePlayerId,
+                                                           Authentication authentication) {
 
-    Player player = playerRepository.findByUserName(authentication.getName());
-    Game game = gameRepository.save(new Game());
-    GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
-        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
-   */
+        Optional<GamePlayer> currentGamePlayer = gamePlayerRepository.findById(gamePlayerId);
 
-
-       /* return new ResponseEntity<>(makeMap("error", "This user name already exists. Please, try with another one."), HttpStatus.CONFLICT);//409
+        if (isGuest(authentication)) {
+            return new ResponseEntity<>(makeMap("error", "Login to add salvoes."), HttpStatus.UNAUTHORIZED);//401
         }
-        Player newPlayer = playerRepository.save(new Player(userName, passwordEncoder.encode(password)));
-        return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
-    }
 
-     if(!isGuest(authentication)){
+        if(!currentGamePlayer.isPresent() ){
+            return new ResponseEntity<>(makeMap("error", "Cannot save salvoes because there is no game with that player."), HttpStatus.FORBIDDEN);//403
+        }
+
+        Optional<GamePlayer> opponentGamePlayer = currentGamePlayer.get().getGame().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() !=currentGamePlayer.get().getId()).findFirst();
+
+        if (!opponentGamePlayer.isPresent()) {
+            return new ResponseEntity<>(makeMap("error", "There is no opponent."), HttpStatus.FORBIDDEN);//403
+        }
+
+        int currentTurn = currentGamePlayer.get().getSalvoes().stream().sorted(Comparator.comparing(Salvo::getTurnNumber).reversed()).findFirst().orElse(new Salvo(0,null)).getTurnNumber() + 1;
+        int opponentTurn = opponentGamePlayer.get().getSalvoes().stream().sorted(Comparator.comparing(Salvo::getTurnNumber).reversed()).findFirst().orElse(new Salvo(0,null)).getTurnNumber();
+
+        if(currentTurn - opponentTurn > 1 || currentTurn - opponentTurn < -1) {
+            return new ResponseEntity<>(makeMap("error", "Your opponent turn."), HttpStatus.FORBIDDEN);//403
+        }
+
         Player player = playerRepository.findByUserName(authentication.getName());
-        if (player == null) {
-            return new ResponseEntity<>(makeMap("error", "You are not logged."), HttpStatus.UNAUTHORIZED);//409
+        if (currentGamePlayer.get().getPlayer().getId() != player.getId()) {
+            return new ResponseEntity<>(makeMap("error", "Cannot add salvoes in this game."), HttpStatus.UNAUTHORIZED);//401
+        }
+        if (salvo.getSalvoLocation().size()==0) {
+            return new ResponseEntity<>(makeMap("error", "Need to send at least one salvo."), HttpStatus.FORBIDDEN);//403
+        }
+        if(salvo.getSalvoLocation().size() > currentGamePlayer.get().getShips().size()){ //AQUI RESTAR EL Sinks
         }
 
-        Game game = gameRepository.save(new Game(LocalDateTime.now()));
-
-        GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(game, player, LocalDateTime.now()));
-        return new ResponseEntity<>(makeMap("gpid", newGamePlayer.getId()), HttpStatus.CREATED);
+        salvo.setTurnNumber(currentTurn);
+        currentGamePlayer.get().addSalvo(salvo);
+        gamePlayerRepository.save(currentGamePlayer.get());
+        return new ResponseEntity<>(makeMap("Success", "Salvoes added"), HttpStatus.CREATED); //201
     }
-}*/
+}
+

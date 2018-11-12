@@ -1,4 +1,5 @@
 var app;
+var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
 var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
 var numberVariable = takeNumberURL(currentURL)
@@ -73,7 +74,6 @@ $(function () {
     }
 
     //NEED TO CHECK-------------------------------------------------------------------------------
-    //.............................................-----------------------------------------------
 
     function paintPositionOwnShips(ships){
         ships.forEach(function (ship) {
@@ -86,7 +86,7 @@ $(function () {
     function paintPositionSalvoes(json, salvoes){
         for (var i = 0; i < salvoes.length; i++) {
             if (salvoes[i].player.id == app.myGpId) {
-                salvoes[i].locations.forEach(location => mySalvosStyle(location, json, i));
+                salvoes[i].locations.forEach(location => mySalvoesLocation(location, json, i));//mySalvosStyle
             }
             else {
                 salvoes[i].locations.forEach(location => opponentSalvosStyle(location, json, i));
@@ -94,9 +94,9 @@ $(function () {
         }
     }
 
-    function mySalvosStyle(location, json, i) {
+    /*function mySalvosStyle(location, json, i) {
         $('#' + location + 'S').addClass("my-salvo").html(json.salvo[i].turn);
-    }
+    }*/
 
     function opponentSalvosStyle(location, json, i){
     if ($('#' + location).hasClass("my-ship")){
@@ -107,9 +107,52 @@ $(function () {
         $('#' + location + 'S').css(style="padding:0");
         }
     }
-    //---------------------------------------------------------------------------------------??????
 
 }); //END MAIN FUNCTION
+
+
+
+//---------------------------------------------------------FUNCIONES PARA PONER CRUCES-------
+
+    function salvoCross(json, salvoes){
+    console.log("primer salvo: " + salvoes[0].locations)
+        for (var i = 0; i < salvoes.length; i++) {
+            if (salvoes[i].player.id == app.myGpId) {
+                salvoes[i].locations.forEach(location => mySalvoesLocation(location, json, i));
+            }
+            else {
+                salvoes[i].locations.forEach(location => opponentSalvoesLocation(location, json, i));
+            }
+        }
+    }
+
+//ORANGE (yo lanzo)
+    function mySalvoesLocation(location, json, i) {
+        //var grid = $('#grid').data('gridstack');
+        var horizontal = location.substr(1) - 1;
+        var vertical = letters.indexOf(location[0]);
+        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+
+    }
+
+    function opponentSalvoesLocation(location, json, i) {
+        var grid = $('#gridFix').data('gridstack');
+        console.log("Mi oponente me dispara: " + location);
+        console.log("Mi oponente me dispara primer elemento:" + location[0])  //G
+        console.log("Mi oponente me dispara segundo elemento:" + location[1]) //5
+        var horizontal = location.substr(1) - 1;
+        var vertical = letters.indexOf(location[0]);
+//RED (me dan)
+        if (!grid.isAreaEmpty(horizontal, vertical, 1, 1)){
+            console.log("me disparan y me dan:" + location);
+            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzRoja.png' alt='red cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+        }
+//YELLOW (no me dan)
+        else {
+            console.log("me disparan pero no me dan:" + location);
+            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzAmarilla.png' alt='yellow cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+        }
+    }
 
 
 //-------------------------------------------LOGOUT ...-------------------------------------
@@ -128,52 +171,6 @@ function postLoginPlayerOut2(userName, userPassword) {
            console.log( "Wrong fetch post login" + textStatus );
      });
 };
-
-//---------------------------------------------------------FUNCIONES PARA PONER CRUCES-------
-
-    function salvoCross(json, salvoes){
-    console.log("primer salvo: " + salvoes[0].locations)
-        for (var i = 0; i < salvoes.length; i++) {
-            if (salvoes[i].player.id == app.myGpId) {
-                salvoes[i].locations.forEach(location => mySalvoesLocation(location, json, i));
-            }
-            else {
-                salvoes[i].locations.forEach(location => opponentSalvoesLocation(location, json, i));
-            }
-        }
-    }
-
-//ORANGE (yo lanzo)
-    function mySalvoesLocation(location, json, i) {
-        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        var grid = $('#grid').data('gridstack');
-        var horizontal = location[1]-1;
-        var vertical = letters.indexOf(location[0]);
-        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
-
-    }
-
-    function opponentSalvoesLocation(location, json, i) {
-        var grid = $('#gridFix').data('gridstack');
-        console.log("Mi oponente me dispara: " + location);
-        console.log("Mi oponente me dispara primer elemento:" + location[0])  //G
-        console.log("Mi oponente me dispara segundo elemento:" + location[1]) //5
-        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        var horizontal = location[1]-1;
-        var vertical = letters.indexOf(location[0]);
-//RED (me dan)
-        if (!grid.isAreaEmpty(horizontal, vertical, 1, 1)){
-            console.log("me disparan y me dan:" + location);
-            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzRoja.png' alt='red cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
-        }
-//YELLOW (no me dan)
-        else {
-            console.log("me disparan pero no me dan:" + location);
-            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzAmarilla.png' alt='yellow cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
-        }
-    }
-
-
 //---------------------------------------------------------OPTIONS GRID----------------------------
 
 $(function () {
@@ -331,7 +328,7 @@ $(function () {
 
 
 
-//--------------------------------------SAVE SHIPS  (HASTA EL FIN)----------------------------------------------------------
+//--------------------------------------SAVE SHIPS----------------------------------------------------------
 
 function saveShips(){
     var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
@@ -343,7 +340,6 @@ function saveShips(){
     }
     console.log("gamePlayerId: "+ gamePlayerId);
 
-    var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
     var myShips= new Set;
     myShips = [
         {
@@ -476,7 +472,7 @@ function saveShips(){
     addShips(myShips, gamePlayerId);
     location.reload();
 };
-    function addShips(myShips, gamePlayerId) {
+function addShips(myShips, gamePlayerId) {
         $.post({
              url: "/api/games/players/" + gamePlayerId + "/ships",
              data: JSON.stringify(myShips),
@@ -504,7 +500,6 @@ function saveShips(){
 }
 
 function placeSavedShips(appShips){
-    var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
     for (var i = 0; i < appShips.length; i++){
         switch (appShips[i].type){
             case "AIRCRAFT":
@@ -565,4 +560,120 @@ function placeSavedShips(appShips){
     }
 }
 
+//----------------------------------------SALVOES--------------------------------------
+//paint salvoes when click
+jQuery(document).ready(function($) {
+    printEachSalvo();
+    countTurn();
+})
+function printEachSalvo() {
+    var json = getJson ();
+    var count = json.ship.length;
+    document.getElementById("count-salvoes").innerHTML= "salvoes availables: " + count;
+    $(".cells").click(function() {
 
+        if ($(this).hasClass("send-new-salvo") && count>=0){
+            $(this).removeClass("send-new-salvo");
+            count++;
+            document.getElementById("count-salvoes").innerHTML= "salvoes availables: " + count;
+        }
+        else if (count>0){
+            $(this).addClass("send-new-salvo");
+            count--;
+            document.getElementById("count-salvoes").innerHTML= "salvoes availables: " + count;
+        }
+        else {
+            alertify.error("No more salvoes availables.");
+        }
+        getJson ()
+    })
+}
+
+function takeSalvoCells() {
+    var salvoesLocations=[];
+    for(var i = 0; i<10; i++) {
+        for (var j = 1; j < 11; j++) {
+            if($('#' + letters[i] + j + "S").hasClass("send-new-salvo")) {
+                salvoesLocations.push(letters[i] + j);
+            }
+        }
+    }
+    console.log(salvoesLocations);
+    return salvoesLocations;
+}
+
+
+function getJson (){
+    var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
+    var gamePlayerId = takeNumberURL(currentURL);
+    function takeNumberURL(url){
+        var n = url.slice(url.indexOf("gp=")+3);
+        console.log(n)
+        return n;
+    }
+    var myJson;
+    $.ajax({
+       type: "GET",
+       url: "/api/game_view/" + gamePlayerId,
+       async: false,
+       success: function(json) { myJson = json }
+    });
+    //console.log(myJson)
+    return myJson;
+}
+
+function countTurn() {
+    var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
+    var gamePlayerId = takeNumberURL(currentURL);
+    function takeNumberURL(url){
+        var n = url.slice(url.indexOf("gp=")+3);
+        console.log(n)
+        return n;
+    }
+    var json = getJson ();
+    var turn = 1;
+    for (var i = 0; i < json.salvo.length; i++) {
+        if (json.salvo[i].player.id == gamePlayerId) {
+            turn++;
+        }
+    }
+    console.log("turno: " + turn);
+    document.getElementById("count-turn").innerHTML= "Your turn number: " + turn;
+    return turn;
+}
+
+function postSalvo(){
+    getJson ()
+    var currentURL=window.location.href; //http://localhost:8080/web/game.html?gp=1
+    var gamePlayerId = takeNumberURL(currentURL);
+    function takeNumberURL(url){
+        var n = url.slice(url.indexOf("gp=")+3);
+        //console.log(n)
+        return n;
+    }
+    var mySalvo = {
+        //"turnNumber": countTurn(),
+        "salvoLocation": takeSalvoCells()
+    };
+    console.log("gamePlayerId: "+ gamePlayerId);
+    $.post({
+         url: "/api/games/players/" + gamePlayerId + "/salvoes",
+         data: JSON.stringify(mySalvo),
+         dataType: "text",
+         contentType: "application/json"
+       })
+        .done(function(response) {
+            console.log("la response: ")
+            console.log(response)
+            console.log(mySalvo)
+            location.reload();
+        })
+        .fail(function( response ) {
+            console.log("mal no entra bien  en save salvoes. response: ")
+            var empty={
+                        "error" : "Need to send at least one salvo."
+                      }
+            if(response.responseText == JSON.stringify(empty)){alertify.error("Need to send at least one salvo")}//NO FUNCTIONA
+            console.log(response.responseText);
+        })
+}

@@ -3,10 +3,7 @@ package com.minhubweb.salvo.models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class Salvo {
@@ -28,7 +25,7 @@ public class Salvo {
 
     //Methods, constructors:
     public Salvo (){}
-    public Salvo (Integer turnNumber, List<String> salvoLocation) {
+    public Salvo (int turnNumber, List<String> salvoLocation) {
         this.turnNumber = turnNumber;
         this.salvoLocation = salvoLocation;
     }
@@ -41,6 +38,7 @@ public class Salvo {
         dto.put("locations", this.salvoLocation);
         return dto;
     }
+
     //Set and get
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}

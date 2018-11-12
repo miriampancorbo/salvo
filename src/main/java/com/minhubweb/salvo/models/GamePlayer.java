@@ -66,10 +66,14 @@ public class GamePlayer {
         });
     }
 
+    public void addSalvo(Salvo salvo){
+        salvo.setGamePlayer(this);
+        this.salvoes.add(salvo);
+    }
+
     public void addSalvoes(Set<Salvo> salvoes){
         salvoes.stream().forEach(salvo -> {
-            salvo.setGamePlayer(this);
-            this.salvoes.add(salvo);
+            this.addSalvo(salvo);
         });
     }
 
