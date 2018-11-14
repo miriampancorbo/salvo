@@ -107,9 +107,12 @@ public class GamePlayer {
                                                     .salvoes
                                                     .stream()
                                                     .map(Salvo::salvoDTO)));
+        dto.put("currentHits",this.getSalvoes().stream().map(Salvo::salvoCurrentTurnDTO));
+        dto.put("currentLeftBoats", "");
+        //dto.put("opponentHits", this.getSalvoes().stream().map(Salvo::salvoOpponentTurnDTO));
+        dto.put("opponentLeftBoats", "");
         return dto;
     }
-
 
     public Map<String, Object> gamePlayerId(){
         Map<String,Object> dto = new LinkedHashMap<>();
