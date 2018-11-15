@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -107,7 +108,8 @@ public class GamePlayer {
                                                     .salvoes
                                                     .stream()
                                                     .map(Salvo::salvoDTO)));
-        dto.put("currentHits",this.getSalvoes().stream().map(Salvo::salvoCurrentTurnDTO));
+        dto.put("myHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getMyHits)));
+        dto.put("otherHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentHits)));
         dto.put("currentLeftBoats", "");
         //dto.put("opponentHits", this.getSalvoes().stream().map(Salvo::salvoOpponentTurnDTO));
         dto.put("opponentLeftBoats", "");
