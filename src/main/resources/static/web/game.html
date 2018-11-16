@@ -23,7 +23,7 @@
     <div id="app">
         <div class="container">
             <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
-            <center><p class="place-ships-title">Place your ships <img src="photos/orangePoint.png" alt="red cross" height="40" width="40"></p></center>
+            <center><p class="place-ships-title">Place your ships <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
             <div  class="row">
 
                 <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
@@ -126,6 +126,47 @@
 
             </div> <!--row-->
         </div> <!--container pequeño-->
+
+        <div  class="col-xs-6">
+            <table class="table  table-striped">
+                <thead>
+                <tr>
+                    <th>turn</th>
+                    <th  colspan="2">hits on you</th>
+                    <th  colspan="2">hits on opponent</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>hits</th>
+                    <th>left</th>
+                    <th>hits</th>
+                    <th>left</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <!--<tr  v-for="turn in turnNumbers">
+                    <td>{{turn}}</td>
+                    <td></td>
+                    <span v-for="myLeft in myLefts" >
+                        <td>{{myLeft}}</td>
+                    </span>
+                    <td></td>
+                    <span v-for="otherLeft in otherLefts">
+                        <td>{{otherLeft}}</td>
+                    </span>
+                </tr>-->
+
+                <tr  v-for="data in tableGame">
+                    <td>{{data.turn}}</td>
+                    <td>{{data.otherHitsTable}}</td>
+                    <td>{{data.myLeftsTable}}</td>
+                    <td>{{data.myHitsTable}}</td>
+                    <td>{{data.otherLeftsTable}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div> <!--esta tabla-->
     </div><!--app-->
 </div><!--container total-->
 

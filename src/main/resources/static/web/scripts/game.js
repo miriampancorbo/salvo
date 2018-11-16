@@ -25,7 +25,23 @@ $(function () {
             myGpId:"",
             opponentGpId:"",
             myId:"",
-            opponentId:""
+            opponentId:"",
+            myHits:{},
+            otherHits:{},
+            currentSunkBoats:{},
+            opponentSunkBoats:{},
+            turnNumbers:[],
+            myLefts:[],
+            otherLefts:[],
+            tableGame:[
+                {
+                    turn:"",
+                    myHitsTable:[],
+                    myLeftsTable:"",
+                    otherHitsTable:[],
+                    otherLeftsTable:""
+                }
+            ]
         }
     })
     fetchJson("http://localhost:8080/api/game_view/" + numberVariable, {method: 'GET',})
@@ -36,6 +52,14 @@ $(function () {
             app.playerA = json.gamePlayers[0].player.userName;
             if (json.gamePlayers[1]) { app.playerB = json.gamePlayers[1].player.userName;}
             app.salvo=json.salvo;
+            app.myHits = json.myHits;
+            app.otherHits = json.otherHits;
+            app.currentSunkBoats = json.currentSunkBoats;
+            app.opponentSunkBoats = json.opponentSunkBoats;
+            app.turnNumbers = getOnlyTurnNumbers(json, app.salvo);
+            app.myLefts = getLeftBoats(json.currentSunkBoats);
+            app.otherLefts = getLeftBoats(json.opponentSunkBoats);
+            app.tableGame = fillTableGame()
             getMsg(json);
             paintPositionOwnShips(app.ships);
             paintPositionSalvoes(json, app.salvo);
@@ -72,6 +96,115 @@ $(function () {
             app.msgB="(you)"
         }
     }
+
+    function getOnlyTurnNumbers(json, salvo) {
+        var lastTurn = salvo.length/2;
+        if (salvo.length % 2 !== 0 ) {
+            lastTurn = (salvo.length/2) + 0.5;
+        }
+        var arrayTurns = [];
+        while (lastTurn > 0) {
+            arrayTurns.push(lastTurn);
+            lastTurn--;
+        }
+        return arrayTurns;
+    }
+
+    function getLeftBoats(sunkBoats) {
+        var liveBoats = [];
+        var totalBoats = 5;
+        //var totalBoats = app.myLefts[0];
+        for (var i = Object.keys(sunkBoats).length; i > 0 ; i--) {
+            liveBoats.push(totalBoats - (Object.keys(sunkBoats[i]).length));
+        }
+        return liveBoats;
+    }
+        function fillTableGame() {
+        var arrayTable=[];
+        var allTurns = app.turnNumbers;
+        var allMyLefts = app.myLefts;
+        var allOtherLefts = app.otherLefts;
+        var allMyHits = app.myHits;
+        var allOtherHits = app.otherHits;
+        var niceMyHits = [];
+        var niceOtherHits = [];
+        var mySunks = app.currentSunkBoats;
+        var otherSunks = app.opponentSunkBoats;
+        var allMySunks = [];
+        var showMySunks = "";
+        //var showOtherSunks;
+        for (var i = 0; i < allTurns[0]; i++) {
+            //if(allMyHits[i+1].AIRCRAFT) {
+            if(allMyHits[Object.keys(allMyHits).length-i].AIRCRAFT) {
+                niceMyHits.push("Aircraft: " + allMyHits[Object.keys(allMyHits).length-i].AIRCRAFT.length);
+            }
+            if(allMyHits[Object.keys(allMyHits).length-i].BATTLESHIP) {
+                niceMyHits.push("Battleship: " + allMyHits[Object.keys(allMyHits).length-i].BATTLESHIP.length);
+            }
+            if(allMyHits[Object.keys(allMyHits).length-i].SUBMARINE) {
+                niceMyHits.push("Submarine: " + allMyHits[Object.keys(allMyHits).length-i].SUBMARINE.length);
+            }
+            if(allMyHits[Object.keys(allMyHits).length-i].DESTROYER) {
+                niceMyHits.push("Destroyer: " + allMyHits[Object.keys(allMyHits).length-i].DESTROYER.length);
+            }
+            if(allMyHits[Object.keys(allMyHits).length-i].PATROL) {
+                niceMyHits.push("Patrol: " + allMyHits[Object.keys(allMyHits).length-i].PATROL.length);
+            }
+            /*if(mySunks[i+1].length !== 0) {
+                for (var x = 0; x < Object.keys(mySunks[i+1]).length; x++) {
+
+                        if (!allMySunks.length==0) {
+                            for (var m = 0; m<=allMySunks.length; m++) {
+                                if (allMySunks[m] !==  mySunks[i+1][x].type) {
+                                   allMySunks.push(mySunks[i+1][x].type);
+                                    showMySunks = mySunks[i+1][x].type + " SUNK!!";
+                                }
+                            }
+                        }*/
+
+                    //if (mySunks[i+1][x].type !== mySunks[i+1][x].type) {
+                        //niceMyHits.push(mySunks[i+1][x].type + " SUNK!!");
+                    //}
+                //}
+            //}
+            if(niceMyHits.length == 0) {
+                niceMyHits = "-";
+            }
+
+
+            if(allOtherHits[Object.keys(allMyHits).length-i].AIRCRAFT) {
+                niceOtherHits.push("Aircraft: " + allOtherHits[Object.keys(allMyHits).length-i].AIRCRAFT.length);
+            }
+            if(allOtherHits[Object.keys(allMyHits).length-i].BATTLESHIP) {
+                niceOtherHits.push("Battleship: " + allOtherHits[Object.keys(allMyHits).length-i].BATTLESHIP.length);
+            }
+            if(allOtherHits[Object.keys(allMyHits).length-i].SUBMARINE) {
+                niceOtherHits.push("Submarine: " + allOtherHits[Object.keys(allMyHits).length-i].SUBMARINE.length);
+            }
+            if(allOtherHits[Object.keys(allMyHits).length-i].DESTROYER) {
+                niceOtherHits.push("Destroyer: " + allOtherHits[Object.keys(allMyHits).length-i].DESTROYER.length);
+            }
+            if(allOtherHits[Object.keys(allMyHits).length-i].PATROL) {
+                niceOtherHits.push("Patrol: " + allOtherHits[Object.keys(allMyHits).length-i].PATROL.length);
+            }
+            if(niceOtherHits.length == 0) {
+                niceOtherHits= "-";
+            }
+
+            arrayTable.push({
+                           turn: allTurns[i],
+                           myHitsTable: niceMyHits,// + showMySunks,//allMyHits[i+1],//niceMyHits,
+                           myLeftsTable: allMyLefts[i],
+                           otherHitsTable: niceOtherHits, //allOtherHits[i+1],
+                           otherLeftsTable: allOtherLefts[i]
+                       })
+        var niceMyHits = [];
+        var niceOtherHits = [];
+        //var showMySunks;
+        }
+        return arrayTable;
+    };
+
 
     //NEED TO CHECK-------------------------------------------------------------------------------
 
@@ -131,7 +264,47 @@ $(function () {
         //var grid = $('#grid').data('gridstack');
         var horizontal = location.substr(1) - 1;
         var vertical = letters.indexOf(location[0]);
-        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+        for (var i = 1; i <= Object.keys(json.myHits).length; i++) {
+            if (json.myHits[i].AIRCRAFT) {
+                for(var j = 0; j < json.myHits[i].AIRCRAFT.length; j++) {
+                    if (location == json.myHits[i].AIRCRAFT[j]) {
+                        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                    }
+                }
+            }
+            if (json.myHits[i].BATTLESHIP) {
+                for(var j = 0; j < json.myHits[i].BATTLESHIP.length; j++) {
+                    if (location == json.myHits[i].BATTLESHIP[j]) {
+                        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                    }
+                }
+            }
+            if (json.myHits[i].SUBMARINE) {
+                for(var j = 0; j < json.myHits[i].SUBMARINE.length; j++) {
+                    if (location == json.myHits[i].SUBMARINE[j]) {
+                        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                    }
+                }
+            }
+            if (json.myHits[i].DESTROYER) {
+                for(var j = 0; j < json.myHits[i].DESTROYER.length; j++) {
+                    if (location == json.myHits[i].DESTROYER[j]) {
+                        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                    }
+                }
+            }
+            if (json.myHits[i].PATROL) {
+                for(var j = 0; j < json.myHits[i].PATROL.length; j++) {
+                    if (location == json.myHits[i].PATROL[j]) {
+                        document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                    }
+                }
+            }
+            else {
+                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+            }
+        }
+
 
     }
 

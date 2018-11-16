@@ -32,24 +32,20 @@ public class Salvo {
         this.salvoLocation = salvoLocation;
     }
 
-    /**
-     * Generates the salvoDTO from current state
-     * @return the corresponding DTO
-     */
+    //Generates the salvoDTO from current state
+
     public Map<String, Object> salvoDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("turn", this.turnNumber);
         dto.put("player", this.getGamePlayer().gamePlayerDTO());
         dto.put("locations", this.salvoLocation);
-        dto.put("sunks", getSunks());
+        dto.put("hits", getMyHits());
+        //dto.put("sunks", getSunks());
         return dto;
     }
 
 
-    /**
-     * Get map of ships with hits that the current player has performed
-     * @return
-     */
+    //Get map of ships with hits that the current player has performed
     public Map<String, List<String>> getMyHits() {
         Optional<GamePlayer> opponent = getOpponentGamePlayerOptional();
         return opponent.isPresent() ? getHitsOver(opponent.get(), salvoLocation) : new HashMap<>();
@@ -86,7 +82,6 @@ public class Salvo {
                 }
             }
         }
-
         return hits;
     }
 
@@ -110,9 +105,8 @@ public class Salvo {
                 .findFirst();
     }
 
-    private List<Map<String, Object>> getSunks() {
+    public List<Map<String, Object>> getMySunks() {
         Optional<GamePlayer> opponentGamePlayer = getOpponentGamePlayerOptional();
-
 
         List <String> allSalvoes= new ArrayList<>();
         this.gamePlayer.getSalvoes()
@@ -131,6 +125,28 @@ public class Salvo {
                     .map(Ship::shipDTO)
                     .collect(toList());
         }
+        return allSinks;
+    }
+
+    public List<Map<String, Object>> getOpponentSunks() {
+        Optional<GamePlayer> opponentGamePlayer = getOpponentGamePlayerOptional();
+
+        List <String> allSalvoes= new ArrayList<>();
+        opponentGamePlayer.get().getSalvoes()
+                .stream()
+                .filter(salvo -> salvo.getTurnNumber() <= this.getTurnNumber())
+                .forEach(salvo -> allSalvoes.addAll(salvo.getSalvoLocation()));
+        List<Map<String, Object>> allSinks = new ArrayList<>();
+
+        //if (opponentGamePlayer.isPresent()) {
+            allSinks =
+                    this.gamePlayer
+                            .getShips()
+                            .stream()
+                            .filter(ship -> allSalvoes.containsAll(ship.getShipLocation()))
+                            .map(Ship::shipDTO)
+                            .collect(toList());
+        //}
         return allSinks;
     }
 
