@@ -113,7 +113,7 @@ public class SalvoApplication {
 			salvoSet5.add(new Salvo (2, new ArrayList<>(Arrays.asList("A2", "A3", "D8"))));
 			salvoSet7.add(new Salvo (1, new ArrayList<>(Arrays.asList("A3", "A4", "F7"))));
 			salvoSet7.add(new Salvo (2, new ArrayList<>(Arrays.asList("A2", "G6", "H6"))));
-			salvoSet9.add(new Salvo (1, new ArrayList<>(Arrays.asList("A1", "G6", "H6"))));
+			salvoSet9.add(new Salvo (1, new ArrayList<>(Arrays.asList("A1", "H5", "H6"))));
 			salvoSet9.add(new Salvo (2, new ArrayList<>(Arrays.asList("G6", "G7", "G8"))));
 			salvoSet9.add(new Salvo (3, new ArrayList<>()));
 			salvoSet2.add(new Salvo (1, new ArrayList<>(Arrays.asList("B4", "B5", "B6"))));
