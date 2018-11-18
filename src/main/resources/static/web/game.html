@@ -14,174 +14,151 @@
     <link rel="stylesheet" href="dist/gridstack-extra.css" />
     <link rel="stylesheet" href="dist/style.css" />
 </head>
-<body>
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <button type="button" id="homeButton" class="btn btn-primary pull-left" onclick="window.location.href='http://localhost:8080/web/games.html'">home</button>
-    <button type="button" class="logoutButton2 btn btn-primary pull-right">logout</button>
-</nav>
-<div class="container" id="gameHtml">
-    <div id="app">
-        <div class="container">
-            <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
-            <center><p class="place-ships-title">Place your ships <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
-            <div  class="row">
+    <body>
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <button type="button" id="homeButton" class="btn btn-primary pull-left" onclick="window.location.href='http://localhost:8080/web/games.html'">home</button>
+        <button type="button" class="logoutButton2 btn btn-primary pull-right">logout</button>
+    </nav>
+    <div class="container" id="gameHtml">
+        <div id="app">
+            <div class="container">
+                <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
+                <center><p class="place-ships-title">Place your ships <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
+                <div  class="row">
 
-                <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
-                <p id="count-turn"></p>
-                <div :class=" {hideGrid : ships.length!=0}">
-                    <div id="firstGrid">
-                        <div class="col-xs-6">
-                            <div class="grid-ships">
-                                <div id="my-grid-place"></div>
-                                <div id="grid" style="height:450px !important" class="grid-stack grid-stack-10" >
-                                    <div id="aircraft" class="grid-stack-item"
-                                         data-gs-x="0" data-gs-y="0"
-                                         data-gs-width="5" data-gs-height="1">
-                                        <div class="grid-stack-item-content aircraftHorizontal"></div>
-                                    </div>
-                                    <div id="battleship" class="grid-stack-item"
-                                         data-gs-x="0" data-gs-y="2"
-                                         data-gs-width="4" data-gs-height="1">
-                                        <div class="grid-stack-item-content battleshipHorizontal"></div>
-                                    </div>
-                                    <div id="submarine" class="grid-stack-item"
-                                         data-gs-x="0" data-gs-y="4"
-                                         data-gs-width="3" data-gs-height="1">
-                                        <div class="grid-stack-item-content submarineHorizontal"></div>
-                                    </div>
-                                    <div id="destroyer" class="grid-stack-item"
-                                         data-gs-x="0" data-gs-y="6"
-                                         data-gs-width="3" data-gs-height="1">
-                                        <div class="grid-stack-item-content destroyerHorizontal"></div>
-                                    </div>
-                                    <div id="patrol" class="grid-stack-item"
-                                         data-gs-x="0" data-gs-y="9"
-                                         data-gs-width="2" data-gs-height="1">
-                                        <div class="grid-stack-item-content patrolHorizontal"></div>
+                    <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
+                    <p id="count-turn"></p>
+                    <div :class=" {hideGrid : ships.length!=0}">
+                        <div id="firstGrid">
+                            <div class="col-xs-6">
+                                <div class="grid-ships">
+                                    <div id="my-grid-place"></div>
+                                    <div id="grid" style="height:450px !important" class="grid-stack grid-stack-10" >
+                                        <div id="aircraft" class="grid-stack-item"
+                                             data-gs-x="0" data-gs-y="0"
+                                             data-gs-width="5" data-gs-height="1">
+                                            <div class="grid-stack-item-content aircraftHorizontal"></div>
+                                        </div>
+                                        <div id="battleship" class="grid-stack-item"
+                                             data-gs-x="0" data-gs-y="2"
+                                             data-gs-width="4" data-gs-height="1">
+                                            <div class="grid-stack-item-content battleshipHorizontal"></div>
+                                        </div>
+                                        <div id="submarine" class="grid-stack-item"
+                                             data-gs-x="0" data-gs-y="4"
+                                             data-gs-width="3" data-gs-height="1">
+                                            <div class="grid-stack-item-content submarineHorizontal"></div>
+                                        </div>
+                                        <div id="destroyer" class="grid-stack-item"
+                                             data-gs-x="0" data-gs-y="6"
+                                             data-gs-width="3" data-gs-height="1">
+                                            <div class="grid-stack-item-content destroyerHorizontal"></div>
+                                        </div>
+                                        <div id="patrol" class="grid-stack-item"
+                                             data-gs-x="0" data-gs-y="9"
+                                             data-gs-width="2" data-gs-height="1">
+                                            <div class="grid-stack-item-content patrolHorizontal"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!--BOTÓN-->
-                    <div class="col-xs-2">
-                        <button type="button" onclick="saveShips()" class="saveShipsButton btn btn-success">save ships</button>
-                    </div>
-                </div> <!--V-if-->
-
-                <!--SEGUNDA GRILLA CON BARCOS ESTATICOS SECONDGRID-->
-                <div  :class=" {hideGrid : ships.length==0}">
-                    <div id="secondGrid">
-                        <div class="col-xs-6">
-                            <div class="grid-ships">
-                                <div id="my-complete-grid"></div>
-                                <div id="gridFix" style="height:450px !important" class="grid-stack grid-stack-10" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TERCERA GRILLA (OPONENTE)  THIRDGRID-->
-                    <div id="thirdGrid">
-                        <div class="col-xs-6">
-                            <p id="count-salvoes"></p>
-                            <div class="grid-ships-opponent">
-                                <div id="opponent-complete-grid"></div>
-                                <!--<div id="gridOpponent"   class="grid-stack grid-stack-10"></div>-->
-
-                                <!--<div class="col-xs-6">-->
-                                    <table class="table table-opponent"  >
-                                        <thead>
-                                        <!--<tr>
-                                            <th v-for="horizontalCell in horizontal">{{horizontalCell}}</th>
-                                        </tr>-->
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="verticalCell in vertical">
-                                            <!--<td>{{verticalCell}}</td>-->
-                                            <td :id="verticalCell+1+'S'" class="cells"></td>
-                                            <td :id="verticalCell+2+'S'" class="cells"></td>
-                                            <td :id="verticalCell+3+'S'" class="cells"></td>
-                                            <td :id="verticalCell+4+'S'" class="cells"></td>
-                                            <td :id="verticalCell+5+'S'" class="cells"></td>
-                                            <td :id="verticalCell+6+'S'" class="cells"></td>
-                                            <td :id="verticalCell+7+'S'" class="cells"></td>
-                                            <td :id="verticalCell+8+'S'" class="cells"></td>
-                                            <td :id="verticalCell+9+'S'" class="cells"></td>
-                                            <td :id="verticalCell+10+'S'" class="cells"></td>
-                                            <!--<td></td>-->
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                            </div> <!--grid-ships-opponent-->
-                        </div>
-                    </div>
+                        <!--BOTÓN-->
                         <div class="col-xs-2">
-                            <button type="button" onclick="postSalvo()" class="saveSalvoesButton btn btn-success">save salvoes</button>
+                            <button type="button" onclick="saveShips()" class="saveShipsButton btn btn-success">save ships</button>
                         </div>
-                </div><!--V-else-->
-                <!--</div>-->
+                    </div> <!--V-if-->
 
+                    <!--SEGUNDA GRILLA CON BARCOS ESTATICOS SECONDGRID-->
+                    <div  :class=" {hideGrid : ships.length==0}">
+                        <div id="secondGrid">
+                            <div class="col-xs-6">
+                                <div class="grid-ships">
+                                    <div id="my-complete-grid"></div>
+                                    <div id="gridFix" style="height:450px !important" class="grid-stack grid-stack-10" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            </div> <!--row-->
-        </div> <!--container pequeño-->
+                        <!-- TERCERA GRILLA (OPONENTE)  THIRDGRID-->
+                        <div id="thirdGrid">
+                            <div class="col-xs-6">
+                                <p id="count-salvoes"></p>
+                                <div class="grid-ships-opponent">
+                                    <div id="opponent-complete-grid"></div>
 
-        <div  class="col-xs-9" style="white-space:pre">
-            <table class="table  table-striped">
-                <thead>
-                <tr>
-                    <th>turn</th>
-                    <th  colspan="3">hits on you</th>
-                    <th  colspan="3">hits on opponent</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th>hits</th>
-                    <th>sunks</th>
-                    <th>left</th>
-                    <th>hits</th>
-                    <th>sunks</th>
-                    <th>left</th>
-                </tr>
-                </thead>
+                                    <!--<div class="col-xs-6">-->
+                                        <table class="table table-opponent"  >
+                                            <thead>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="verticalCell in vertical">
+                                                <td :id="verticalCell+1+'S'" class="cells"></td>
+                                                <td :id="verticalCell+2+'S'" class="cells"></td>
+                                                <td :id="verticalCell+3+'S'" class="cells"></td>
+                                                <td :id="verticalCell+4+'S'" class="cells"></td>
+                                                <td :id="verticalCell+5+'S'" class="cells"></td>
+                                                <td :id="verticalCell+6+'S'" class="cells"></td>
+                                                <td :id="verticalCell+7+'S'" class="cells"></td>
+                                                <td :id="verticalCell+8+'S'" class="cells"></td>
+                                                <td :id="verticalCell+9+'S'" class="cells"></td>
+                                                <td :id="verticalCell+10+'S'" class="cells"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                </div> <!--grid-ships-opponent-->
+                            </div>
+                        </div>
+                            <div class="col-xs-2">
+                                <button type="button" onclick="postSalvo()" class="saveSalvoesButton btn btn-success">save salvoes</button>
+                            </div>
+                    </div><!--V-else-->
 
-                <tbody>
-                <!--<tr  v-for="turn in turnNumbers">
-                    <td>{{turn}}</td>
-                    <td></td>
-                    <span v-for="myLeft in myLefts" >
-                        <td>{{myLeft}}</td>
-                    </span>
-                    <td></td>
-                    <span v-for="otherLeft in otherLefts">
-                        <td>{{otherLeft}}</td>
-                    </span>
-                </tr>-->
+                </div> <!--row-->
+            </div> <!--container pequeño-->
 
-                <tr  v-for="data in tableGame">
-                    <td>{{data.turn}}</td>
-                    <td>{{data.otherHitsTable}}</td>
-                    <td>{{data.otherSunks}}</td>
-                    <td>{{data.otherLeftsTable}}</td>
-                    <td>{{data.myHitsTable}}</td>
-                    <td>{{data.mySunks}}</td>
-                    <td>{{data.myLeftsTable}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div> <!--esta tabla-->
-    </div><!--app-->
-</div><!--container total-->
+            <div  class="col-xs-9" style="white-space:pre">
+                <table class="table  table-striped">
+                    <thead>
+                    <tr>
+                        <th>turn</th>
+                        <th  colspan="3">hits on you</th>
+                        <th  colspan="3">hits on opponent</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>hits</th>
+                        <th>sunks</th>
+                        <th>left</th>
+                        <th>hits</th>
+                        <th>sunks</th>
+                        <th>left</th>
+                    </tr>
+                    </thead>
 
-</div>
+                    <tbody>
+                    <tr  v-for="data in tableGame">
+                        <td>{{data.turn}}</td>
+                        <td>{{data.opponentHitsOnPlayerTable}}</td>
+                        <td>{{data.sunksPlayerTable}}</td>
+                        <td>{{data.playerLeftsTable}}</td>
+                        <td>{{data.playerHitsOnOpponentTable}}</td>
+                        <td>{{data.sunksOpponentTable}}</td>
+                        <td>{{data.opponentLeftsTable}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div> <!--esta tabla-->
+        </div><!--app-->
+    </div><!--container total-->
 
     <script src="scripts/alertify.min.js"></script>
     <!--JQUERY-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <!--Vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
 
     <!-- libreria y demás dependencias-->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
@@ -195,9 +172,5 @@
     <script src="scripts/functionFetch.js"></script>
     <!--<script src="scripts/games.js"></script>-->
     <script src="scripts/gameslogin.js"></script>
-<script>
-</script>
-
-
 </body>
 </html>

@@ -108,10 +108,9 @@ public class GamePlayer {
                                                     .salvoes
                                                     .stream()
                                                     .map(Salvo::salvoDTO)));
-        dto.put("myHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getMyHits)));
-        //dto.put("myHits",this.getSalvoes().stream().map(Salvo::salvoDTO);
-        dto.put("otherHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentHits)));
-        dto.put("currentSunkBoats", this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getMySunks)));
+        dto.put("playerHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getPlayerHits)));
+        dto.put("opponentHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentHits)));
+        dto.put("playerSunkBoats", this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getPlayerSunks)));
         dto.put("opponentSunkBoats", this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentSunks)));
         return dto;
     }
