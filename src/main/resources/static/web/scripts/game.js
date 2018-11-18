@@ -14,7 +14,7 @@ $(function () {
     app = new Vue({
         el: '#app',
         data: {
-            vertical: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
+            vertical: letters,
             horizontal: ["", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
             ships:[],
             playerA:"",
@@ -37,8 +37,10 @@ $(function () {
                 {
                     turn:"",
                     myHitsTable:[],
+                    mySunks:[],
                     myLeftsTable:"",
                     otherHitsTable:[],
+                    otherSunks:[],
                     otherLeftsTable:""
                 }
             ]
@@ -59,7 +61,7 @@ $(function () {
             app.turnNumbers = getOnlyTurnNumbers(json, app.salvo);
             app.myLefts = getLeftBoats(json.currentSunkBoats);
             app.otherLefts = getLeftBoats(json.opponentSunkBoats);
-            app.tableGame = fillTableGame()
+            app.tableGame = fillTableGame();
             getMsg(json);
             paintPositionOwnShips(app.ships);
             paintPositionSalvoes(json, app.salvo);
@@ -119,7 +121,25 @@ $(function () {
         }
         return liveBoats;
     }
-        function fillTableGame() {
+
+    function takeSunkInTurn(playerSunks, numberOfTurns, turn) {
+        var computedSunks = []; // unique set of sunks already computed in turn i
+        var sinkingNow = []; //
+        var sinkInTurn = [];
+        for (var i = 0; i < numberOfTurns; i++) {
+            var position = i+1;
+            for (var m = 0; m < Object.keys(playerSunks[position]).length; m++) {
+                if (!computedSunks.includes(playerSunks[position][m].type)) {
+                    computedSunks.push(playerSunks[position][m].type);
+                    sinkingNow.push(playerSunks[position][m].type);
+                }
+            }
+            sinkInTurn.push(sinkingNow);
+            sinkingNow = [];
+        }
+        return sinkInTurn[turn].join("\n");
+    }
+    function fillTableGame() {
         var arrayTable=[];
         var allTurns = app.turnNumbers;
         var allMyLefts = app.myLefts;
@@ -128,83 +148,63 @@ $(function () {
         var allOtherHits = app.otherHits;
         var niceMyHits = [];
         var niceOtherHits = [];
-        var mySunks = app.currentSunkBoats;
+        var sunksAccumulated = app.currentSunkBoats;
         var otherSunks = app.opponentSunkBoats;
-        var allMySunks = [];
-        var showMySunks = "";
-        //var showOtherSunks;
-        for (var i = 0; i < allTurns[0]; i++) {
-            //if(allMyHits[i+1].AIRCRAFT) {
-            if(allMyHits[Object.keys(allMyHits).length-i].AIRCRAFT) {
-                niceMyHits.push("Aircraft: " + allMyHits[Object.keys(allMyHits).length-i].AIRCRAFT.length);
-            }
-            if(allMyHits[Object.keys(allMyHits).length-i].BATTLESHIP) {
-                niceMyHits.push("Battleship: " + allMyHits[Object.keys(allMyHits).length-i].BATTLESHIP.length);
-            }
-            if(allMyHits[Object.keys(allMyHits).length-i].SUBMARINE) {
-                niceMyHits.push("Submarine: " + allMyHits[Object.keys(allMyHits).length-i].SUBMARINE.length);
-            }
-            if(allMyHits[Object.keys(allMyHits).length-i].DESTROYER) {
-                niceMyHits.push("Destroyer: " + allMyHits[Object.keys(allMyHits).length-i].DESTROYER.length);
-            }
-            if(allMyHits[Object.keys(allMyHits).length-i].PATROL) {
-                niceMyHits.push("Patrol: " + allMyHits[Object.keys(allMyHits).length-i].PATROL.length);
-            }
-            /*if(mySunks[i+1].length !== 0) {
-                for (var x = 0; x < Object.keys(mySunks[i+1]).length; x++) {
 
-                        if (!allMySunks.length==0) {
-                            for (var m = 0; m<=allMySunks.length; m++) {
-                                if (allMySunks[m] !==  mySunks[i+1][x].type) {
-                                   allMySunks.push(mySunks[i+1][x].type);
-                                    showMySunks = mySunks[i+1][x].type + " SUNK!!";
-                                }
-                            }
-                        }*/
 
-                    //if (mySunks[i+1][x].type !== mySunks[i+1][x].type) {
-                        //niceMyHits.push(mySunks[i+1][x].type + " SUNK!!");
-                    //}
-                //}
-            //}
+
+        for (var i = 0; i < allTurns.length; i++) {
+
+            var lastHits = allMyHits[Object.keys(allMyHits).length-i];
+            for (var ship in lastHits) {
+                niceMyHits.push(("" + ship).toLowerCase());
+                var numberHits = lastHits[ship].length;
+                niceMyHits.push(getStars(numberHits));
+            }
+
             if(niceMyHits.length == 0) {
                 niceMyHits = "-";
             }
 
 
-            if(allOtherHits[Object.keys(allMyHits).length-i].AIRCRAFT) {
-                niceOtherHits.push("Aircraft: " + allOtherHits[Object.keys(allMyHits).length-i].AIRCRAFT.length);
+            var lastOtherHits = allOtherHits[Object.keys(allMyHits).length-i];
+            for (var ship in lastOtherHits) {
+                niceOtherHits.push(("" + ship).toLowerCase()); // we make a copy otherwise the key goes to lowercase
+                var numberHits = lastOtherHits[ship].length;
+                niceOtherHits.push(getStars(numberHits));
             }
-            if(allOtherHits[Object.keys(allMyHits).length-i].BATTLESHIP) {
-                niceOtherHits.push("Battleship: " + allOtherHits[Object.keys(allMyHits).length-i].BATTLESHIP.length);
-            }
-            if(allOtherHits[Object.keys(allMyHits).length-i].SUBMARINE) {
-                niceOtherHits.push("Submarine: " + allOtherHits[Object.keys(allMyHits).length-i].SUBMARINE.length);
-            }
-            if(allOtherHits[Object.keys(allMyHits).length-i].DESTROYER) {
-                niceOtherHits.push("Destroyer: " + allOtherHits[Object.keys(allMyHits).length-i].DESTROYER.length);
-            }
-            if(allOtherHits[Object.keys(allMyHits).length-i].PATROL) {
-                niceOtherHits.push("Patrol: " + allOtherHits[Object.keys(allMyHits).length-i].PATROL.length);
-            }
+
             if(niceOtherHits.length == 0) {
-                niceOtherHits= "-";
+                niceOtherHits = "-";
             }
 
             arrayTable.push({
                            turn: allTurns[i],
-                           myHitsTable: niceMyHits,// + showMySunks,//allMyHits[i+1],//niceMyHits,
+                           myHitsTable: joinHits(niceMyHits),//allMyHits[i+1],//niceMyHits,
+                           mySunks:takeSunkInTurn(sunksAccumulated, allTurns.length, allTurns.length-i-1),
                            myLeftsTable: allMyLefts[i],
-                           otherHitsTable: niceOtherHits, //allOtherHits[i+1],
+                           otherHitsTable: joinHits(niceOtherHits), //allOtherHits[i+1],
+                           otherSunks:takeSunkInTurn(otherSunks, allTurns.length, allTurns.length-i-1),
                            otherLeftsTable: allOtherLefts[i]
                        })
-        var niceMyHits = [];
-        var niceOtherHits = [];
-        //var showMySunks;
+            var niceMyHits = [];
+            var niceOtherHits = [];
         }
         return arrayTable;
     };
 
+    function getStars (numberHits) {
+        return "*".repeat(numberHits);
+    }
+
+    // Join hits per ship per line with stars
+    function joinHits(hits) {
+        var result = [];
+        for (var i = 0; i < hits.length; i += 2) {
+            result.push(hits[i] + " " + hits[i+1]);
+        }
+        return result.join("\n");
+    }
 
     //NEED TO CHECK-------------------------------------------------------------------------------
 

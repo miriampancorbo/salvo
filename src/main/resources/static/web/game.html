@@ -127,19 +127,21 @@
             </div> <!--row-->
         </div> <!--container pequeño-->
 
-        <div  class="col-xs-6">
+        <div  class="col-xs-9" style="white-space:pre">
             <table class="table  table-striped">
                 <thead>
                 <tr>
                     <th>turn</th>
-                    <th  colspan="2">hits on you</th>
-                    <th  colspan="2">hits on opponent</th>
+                    <th  colspan="3">hits on you</th>
+                    <th  colspan="3">hits on opponent</th>
                 </tr>
                 <tr>
                     <th></th>
                     <th>hits</th>
+                    <th>sunks</th>
                     <th>left</th>
                     <th>hits</th>
+                    <th>sunks</th>
                     <th>left</th>
                 </tr>
                 </thead>
@@ -160,9 +162,11 @@
                 <tr  v-for="data in tableGame">
                     <td>{{data.turn}}</td>
                     <td>{{data.otherHitsTable}}</td>
-                    <td>{{data.myLeftsTable}}</td>
-                    <td>{{data.myHitsTable}}</td>
+                    <td>{{data.otherSunks}}</td>
                     <td>{{data.otherLeftsTable}}</td>
+                    <td>{{data.myHitsTable}}</td>
+                    <td>{{data.mySunks}}</td>
+                    <td>{{data.myLeftsTable}}</td>
                 </tr>
                 </tbody>
             </table>
