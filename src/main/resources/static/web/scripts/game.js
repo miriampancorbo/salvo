@@ -55,6 +55,7 @@ $(function () {
             app.playerA = json.gamePlayers[0].player.userName;
             if (json.gamePlayers[1]) { app.playerB = json.gamePlayers[1].player.userName;}
             app.salvo=json.salvo;
+            placeSavedShips(app.ships);
             app.playerHits = json.playerHits;
             app.opponentHits = json.opponentHits;
             app.playerSunkBoats = json.playerSunkBoats;
@@ -64,7 +65,6 @@ $(function () {
             app.opponentLefts = getLeftBoats(json.opponentSunkBoats);
             app.tableGame = fillTableGame();
             getMsg(json);
-            placeSavedShips(app.ships);
             if (json.gamePlayers[1]) { salvoCross(json, app.salvo); }
 
             })
@@ -203,7 +203,7 @@ $(function () {
     function salvoCross(json, salvoes){
         for (var i = 0; i < salvoes.length; i++) {
             if (salvoes[i].player.id == app.playerGpId) {
-                salvoes[i].locations.forEach(location => mySalvoesLocation(location, json, i));
+                salvoes[i].locations.forEach(location => playerSalvoesLocation(location, json, i));
             }
             else {
                 salvoes[i].locations.forEach(location => opponentSalvoesLocation(location, json, i));
@@ -213,24 +213,24 @@ $(function () {
 
 
 //ORANGE (Player sends)
-    function mySalvoesLocation(location, json, i) {
+    function playerSalvoesLocation(location, json, i) {
         var horizontal = location.substr(1) - 1;
         var vertical = letters.indexOf(location[0]);
         for (var i = 1; i <= Object.keys(json.playerHits).length; i++) {
             if (json.playerHits[i].AIRCRAFT) {
-                putCrossPerBoat('AIRCRAFT', i, json, location, horizontal, vertical);
+                putTickPlayerHitsOpponent('AIRCRAFT', i, json, location, horizontal, vertical);
             }
             if (json.playerHits[i].BATTLESHIP) {
-                putCrossPerBoat('BATTLESHIP', i, json, location, horizontal, vertical);
+                putTickPlayerHitsOpponent('BATTLESHIP', i, json, location, horizontal, vertical);
             }
             if (json.playerHits[i].SUBMARINE) {
-                putCrossPerBoat('SUBMARINE', i, json, location, horizontal, vertical);
+                putTickPlayerHitsOpponent('SUBMARINE', i, json, location, horizontal, vertical);
             }
             if (json.playerHits[i].DESTROYER) {
-                putCrossPerBoat('DESTROYER', i, json, location, horizontal, vertical);
+                putTickPlayerHitsOpponent('DESTROYER', i, json, location, horizontal, vertical);
             }
             if (json.playerHits[i].PATROL) {
-                putCrossPerBoat('PATROL', i, json, location, horizontal, vertical);
+                putTickPlayerHitsOpponent('PATROL', i, json, location, horizontal, vertical);
             }
             else {
                 document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
@@ -238,10 +238,10 @@ $(function () {
         }
     }
 
-    function putCrossPerBoat(type, i, json, location, horizontal, vertical) {
+    function putTickPlayerHitsOpponent(type, i, json, location, horizontal, vertical) {
         for(var j = 0; j < json.playerHits[i][type].length; j++) {
             if (location == json.playerHits[i][type][j]) {
-                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='green tick' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
             }
         }
     }
@@ -380,8 +380,8 @@ function saveShips(){
     var gamePlayerId = numberVariable;
     console.log("gamePlayerId: "+ gamePlayerId);
 
-    var myShips= new Set;
-    myShips = [
+    var playerShips= new Set;
+    playerShips = [
         {
             "shipType":"AIRCRAFT",        //0. length 5
             "shipLocation":[]
@@ -415,51 +415,51 @@ function saveShips(){
         if(typeId.firstChild.classList.contains(vertical)){
             if(sizeBoat == 2) {
                 var second = (letters[letters.indexOf(letter)+1])+number;
-                myShips[boatNumber].shipLocation = [first, second];
+                playerShips[boatNumber].shipLocation = [first, second];
             }
 
             if(sizeBoat == 3) {
                 var second = (letters[letters.indexOf(letter)+1])+number;
                 var third = (letters[letters.indexOf(letter)+2])+number;
-                myShips[boatNumber].shipLocation = [first, second, third];
+                playerShips[boatNumber].shipLocation = [first, second, third];
             }
             if(sizeBoat == 4) {
                 var second = (letters[letters.indexOf(letter)+1])+number;
                 var third = (letters[letters.indexOf(letter)+2])+number;
                 var fourth = (letters[letters.indexOf(letter)+3])+number;
-                myShips[boatNumber].shipLocation = [first, second, third, fourth];
+                playerShips[boatNumber].shipLocation = [first, second, third, fourth];
             }
             if(sizeBoat == 5) {
                 var second = (letters[letters.indexOf(letter)+1])+number;
                 var third = (letters[letters.indexOf(letter)+2])+number;
                 var fourth = (letters[letters.indexOf(letter)+3])+number;
                 var fifth = (letters[letters.indexOf(letter)+4])+number;
-                myShips[boatNumber].shipLocation = [first, second, third, fourth, fifth];
+                playerShips[boatNumber].shipLocation = [first, second, third, fourth, fifth];
             }
         }
         else{  //horizontal
             if(sizeBoat == 2) {
                 var second = letter + (number+1);
-                myShips[boatNumber].shipLocation = [first, second];
+                playerShips[boatNumber].shipLocation = [first, second];
             }
 
             if(sizeBoat == 3) {
                 var second = letter + (number+1);
                 var third = letter + (number+2);
-                myShips[boatNumber].shipLocation = [first, second, third];
+                playerShips[boatNumber].shipLocation = [first, second, third];
             }
             if(sizeBoat == 4) {
                 var second = letter + (number+1);
                 var third = letter + (number+2);
                 var fourth = letter + (number+3);
-                myShips[boatNumber].shipLocation = [first, second, third, fourth];
+                playerShips[boatNumber].shipLocation = [first, second, third, fourth];
             }
             if(sizeBoat == 5) {
                 var second = letter + (number+1);
                 var third = letter + (number+2);
                 var fourth = letter + (number+3);
                 var fifth = letter + (number+4);
-                myShips[boatNumber].shipLocation = [first, second, third, fourth, fifth];
+                playerShips[boatNumber].shipLocation = [first, second, third, fourth, fifth];
             }
         }
     }
@@ -483,24 +483,24 @@ function saveShips(){
     submarineData();
     destroyerData();
     patrolData();
-    addShips(myShips, gamePlayerId);
+    addShips(playerShips, gamePlayerId);
     location.reload();
 };
-function addShips(myShips, gamePlayerId) {
+function addShips(playerShips, gamePlayerId) {
         $.post({
              url: "/api/games/players/" + gamePlayerId + "/ships",
-             data: JSON.stringify(myShips),
+             data: JSON.stringify(playerShips),
              dataType: "text",
              contentType: "application/json"
            })
             .done(function(response) {
                 console.log("la response: ")
                 console.log(response)
-                console.log(myShips)
+                console.log(playerShips)
 
                 $.get("/api/game_view/" + gamePlayerId)
                     .done(function(json){
-                        app.ships = myShips;
+                        app.ships = playerShips;
                         placeSavedShips(app.ships);
                         console.log("app.ships: ")
                         console.log(app.ships)
@@ -537,7 +537,6 @@ function placeSavedShips(appShips){
         };
     }
 }
-
 function placeEachShip(appShips, i, shipHorizontal, shipVertical, shipSize) {
     if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
         gridFix.addWidget($('<div class="grid-stack-item-content ' + shipHorizontal + '"></div>'),
@@ -557,7 +556,17 @@ jQuery(document).ready(function($) {
 })
 function printEachSalvo() {
     var json = getJson ();
-    var count = json.ship.length;
+    //var count = json.ship.length;
+
+    var count;
+    if (json.playerSunkBoats[2]) {
+        count = json.ship.length - [Object.keys(json.playerSunkBoats[2]).length];
+    }
+    else {
+        count = json.ship.length;
+    }
+
+
     document.getElementById("count-salvoes").innerHTML= "salvoes availables: " + count;
     $(".cells").click(function() {
         if ($(this).hasClass("send-new-salvo") && count >= 0){
@@ -617,20 +626,20 @@ function countTurn() {
 function postSalvo(){
     getJson ()
     var gamePlayerId = numberVariable;
-    var mySalvo = {
+    var playerSalvo = {
         "salvoLocation": takeSalvoCells()
     };
     console.log("gamePlayerId: "+ gamePlayerId);
     $.post({
          url: "/api/games/players/" + gamePlayerId + "/salvoes",
-         data: JSON.stringify(mySalvo),
+         data: JSON.stringify(playerSalvo),
          dataType: "text",
          contentType: "application/json"
        })
         .done(function(response) {
             console.log("la response: ")
             console.log(response)
-            console.log(mySalvo)
+            console.log(playerSalvo)
             location.reload();
         })
         .fail(function( response) {

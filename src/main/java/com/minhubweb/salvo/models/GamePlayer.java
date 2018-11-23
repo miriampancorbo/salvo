@@ -5,10 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -20,6 +17,8 @@ public class GamePlayer {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
+
+    private State state;
 
     private LocalDateTime joinDate;
 
@@ -49,11 +48,13 @@ public class GamePlayer {
         this.joinDate = joinDate;
         this.addShips(ships);
         this.addSalvoes(salvoes);
+        this.state = State.PLACE_SHIPS;
     }
     public GamePlayer(Game game, Player player, LocalDateTime joinDate) {
         this.game = game;
         this.player = player;
         this.joinDate = joinDate;
+        this.state = State.PLACE_SHIPS;
     }
     public GamePlayer(Set<Ship> ships, Set<Salvo> salvoes) {
         this.addShips(ships);
@@ -94,6 +95,7 @@ public class GamePlayer {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id",this.game.getId());
         dto.put("created",this.game.getDate());
+        dto.put("statusPlayer", this.state);
         dto.put("gamePlayers",this.game
                                 .getGamePlayers()
                                 .stream()
@@ -110,10 +112,69 @@ public class GamePlayer {
                                                     .map(Salvo::salvoDTO)));
         dto.put("playerHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getPlayerHits)));
         dto.put("opponentHits",this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentHits)));
-        dto.put("playerSunkBoats", this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getPlayerSunks)));
-        dto.put("opponentSunkBoats", this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentSunks)));
+        dto.put("playerSunkBoats", getPlayerSunks());
+        dto.put("opponentSunkBoats", getOpponentSunks());
+        dto.put("lefts", this.getGame()
+                .getGamePlayers()
+                .stream()
+                .flatMap(gamePlayer -> gamePlayer
+                        .salvoes
+                        .stream()
+                        .map(Salvo::numberLefts)));
         return dto;
     }
+
+    private Map<Integer, List<Map<String, Object>>> getOpponentSunks() {
+        return this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getOpponentSunks));
+    }
+
+    private Map<Integer, List<Map<String, Object>>> getPlayerSunks() {
+        return this.getSalvoes().stream().collect(Collectors.toMap(Salvo::getTurnNumber, Salvo::getPlayerSunks));
+    }
+
+
+    public int getNumberOfSunkInTurn(int turn) {
+        return getPlayerSunks().get(turn).size();
+    }
+
+
+    private Optional<GamePlayer> getOpponentGamePlayerOptional() {
+        return getGame()
+                .getGamePlayers()
+                .stream()
+                .filter(gp -> gp.getId() != this.getId())
+                .findFirst();
+    }
+
+    public  void updateState(GamePlayer current, GamePlayer opponent, int turn){
+        // I am second player
+        if (current.getId() > opponent.getId()) {
+            int playerSunks = current.getNumberOfSunkInTurn(turn);
+            int opponentSunks = opponent.getNumberOfSunkInTurn(turn);
+
+            if (playerSunks == 5 && opponentSunks == 5) {
+                current.setState(State.TIE);
+                opponent.setState(State.TIE);
+            } else if (opponentSunks == 5) {
+                current.setState(State.WIN);
+                opponent.setState(State.LOSE);
+            } else if (playerSunks == 5) {
+                current.setState(State.LOSE);
+                opponent.setState(State.WIN);
+            } else {
+                current.setState(State.WAIT);
+                opponent.setState(State.PLAY);
+            }
+
+        } else {
+            current.setState(State.WAIT);
+            opponent.setState(State.PLAY);
+        }
+    }
+
+
+
+
 
     public Map<String, Object> gamePlayerId(){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -144,4 +205,8 @@ public class GamePlayer {
 
     public Set<Salvo> getSalvoes() {return salvoes;}
     public void setSalvoes(Set<Salvo> salvoes) {this.salvoes = salvoes;}
+
+    public State getState() {return state;}
+
+    public void setState(State state) {this.state = state;}
 }

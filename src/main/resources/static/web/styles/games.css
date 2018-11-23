@@ -4,6 +4,7 @@ li {
 }
 body{
     font-family: 'Krub', sans-serif;
+    /*background-image:url('../photos/blue-background.jpg');*/
 }
 .invalid-button{
     background-color:grey;

@@ -92,7 +92,7 @@ public class Salvo {
         return shipHits;
     }
 
-    private Optional<GamePlayer> getOpponentGamePlayerOptional() {
+    public Optional<GamePlayer> getOpponentGamePlayerOptional() {
         return getGamePlayer()
                 .getGame()
                 .getGamePlayers()
@@ -123,6 +123,7 @@ public class Salvo {
         return allSinks;
     }
 
+
     public List<Map<String, Object>> getOpponentSunks() {
         Optional<GamePlayer> opponentGamePlayer = getOpponentGamePlayerOptional();
 
@@ -145,6 +146,40 @@ public class Salvo {
         }
         return allSinks;
     }
+
+    public Map<String, Object> numberLefts() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("gamePlayerId", this.getGamePlayer().getId());
+        long playerId =this.getGamePlayer().getPlayer().getId();
+        dto.put("playerId", playerId);
+        dto.put("turn", this.turnNumber);
+        dto.put("lefts", 5 - this.getPlayerSunks().size());
+        return dto;
+    }
+/*    public List<Map<String, Integer>> opponentNumberSunks() {
+        Optional<GamePlayer> opponentGamePlayer = getOpponentGamePlayerOptional();
+        List <String> allSalvoes= new ArrayList<>();
+        Integer numberOfSunks = 5;
+        return numberOfSunks;
+        /*
+        this.gamePlayer.getSalvoes()
+                .stream()
+                .filter(salvo -> salvo.getTurnNumber() <= this.getTurnNumber())
+                .forEach(salvo -> allSalvoes.addAll(salvo.getSalvoLocation()));
+        List<Map<String, Object>> allSinks = new ArrayList<>();
+
+        if (opponentGamePlayer.isPresent()) {
+            allSinks =
+                    opponentGamePlayer
+                            .get()
+                            .getShips()
+                            .stream()
+                            .filter(ship -> allSalvoes.containsAll(ship.getShipLocation()))
+                            .map(Ship::shipDTO)
+                            .collect(toList());
+        }
+        return allSinks;*/
+    //}
 
         /*
     }
