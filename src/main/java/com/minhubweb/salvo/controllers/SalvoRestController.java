@@ -211,7 +211,7 @@ public class SalvoRestController {
 
         salvo.setTurnNumber(currentTurn);
         currentGamePlayer.get().addSalvo(salvo);
-        currentGamePlayer.get().updateState(currentGamePlayer.get(), opponentGamePlayer.get(), currentTurn);
+        currentGamePlayer.get().updateState(opponentGamePlayer.get(), currentTurn);
 
         gamePlayerRepository.save(currentGamePlayer.get());
         gamePlayerRepository.save(opponentGamePlayer.get());

@@ -4,7 +4,10 @@ li {
 }
 body{
     font-family: 'Krub', sans-serif;
-    /*background-image:url('../photos/blue-background.jpg');*/
+    /*background-color:rgb(214, 229, 255);*/
+    background-image: linear-gradient(to right, orange , white,orange);
+  height: 100%;
+  width: 100%;
 }
 .invalid-button{
     background-color:grey;

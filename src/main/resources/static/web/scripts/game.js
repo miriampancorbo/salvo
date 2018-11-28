@@ -1,4 +1,6 @@
 //https://github.com/gridstack/gridstack.js/tree/develop/doc
+
+//ERROR 150 PQ NO HAY LASTHITS
 var app;
 var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
@@ -27,6 +29,9 @@ $(function () {
             opponentGpId:"",
             playerId:"",
             opponentId:"",
+            state:"",
+            playState:"",
+            gameOverState:"",
             playerHits:{},
             opponentHits:{},
             playerSunkBoats:{},
@@ -50,7 +55,10 @@ $(function () {
     fetchJson("http://localhost:8080/api/game_view/" + numberVariable, {method: 'GET',})
         .then(function (json) {
             console.log("Good fetch!")
+            getMsg(json);
             getIds(json);
+            app.state = json.statusPlayer;
+            app.playState = getState(json.statusPlayer);
             app.ships = json.ship;
             app.playerA = json.gamePlayers[0].player.userName;
             if (json.gamePlayers[1]) { app.playerB = json.gamePlayers[1].player.userName;}
@@ -64,10 +72,10 @@ $(function () {
             app.playerLefts = getLeftBoats(json.playerSunkBoats);
             app.opponentLefts = getLeftBoats(json.opponentSunkBoats);
             app.tableGame = fillTableGame();
-            getMsg(json);
             if (json.gamePlayers[1]) { salvoCross(json, app.salvo); }
-
-            })
+            app.gameOverState = getGameOverStates(json.statusPlayer);
+            checkStatusForTimeAndGrid(json);
+        })
         .catch(function (error) {
             console.log("Wrong fetch...")
         });
@@ -92,6 +100,55 @@ $(function () {
     function getMsg(json){
         numberVariable == json.gamePlayers[0].id ? app.msgA = "(you)" : app.msgB="(you)";
     }
+
+    function getState(state) {
+        if (state == "PLACE_SHIPS") {
+            return "place your ships";
+        }
+        else if (state ==  "WAIT_OPPONENT") {
+            return "your opponent is not ready";
+        }
+        else if (state ==  "PLAY") {
+            return "your turn";
+        }
+        else if (state ==  "WAIT") {
+            return "opponent's turn";
+        }
+        else {
+            return "game over";
+        }
+    }
+
+    function getGameOverStates(state) {
+        if (state == "WIN") {
+            return "you win!";
+        }
+        else if (state ==  "LOSE") {
+            return "you lose";
+        }
+        else if (state ==  "TIE") {
+            return "tie";
+        }
+    }
+
+    function checkStatusForTimeAndGrid(json) {
+            if (json.statusPlayer == "WAIT" || json.statusPlayer == "WAIT_OPPONENT") {
+                waiting();
+            }
+            else {
+                play();
+            }
+    }
+
+    function waiting() {
+        $(".table-opponent ").hide();
+        setInterval(function(){location.reload(); }, 10000);
+    }
+
+    function play() {
+        $(".table-opponent ").show();
+    }
+
 
     function getReverseTurnNumbers(json, salvo) { //Take the quantity of turns per player in reverse order
         var lastTurn = salvo.length/2;
@@ -122,12 +179,14 @@ $(function () {
         var sinkInTurn = [];
         for (var i = 0; i < numberOfTurns; i++) {
             var position = i+1; //No index 0
-            for (var j = 0; j < Object.keys(playerSunks[position]).length; j++) {
-                if (!computedSunks.includes(playerSunks[position][j].type)) { //If it is sunk in this turn
-                    computedSunks.push(playerSunks[position][j].type);
-                    sinkingNow.push(playerSunks[position][j].type);
+            //if (position < numberOfTurns) {
+                for (var j = 0; j < Object.keys(playerSunks[position]).length; j++) {
+                    if ((playerSunks[position][j].type) && !computedSunks.includes(playerSunks[position][j].type)) { //If it is sunk in this turn
+                        computedSunks.push(playerSunks[position][j].type);
+                        sinkingNow.push(playerSunks[position][j].type);
+                    }
                 }
-            }
+            //}
             sinkInTurn.push(sinkingNow); //The ones for this turn
             sinkingNow = []; //To not accumulate
         }
@@ -559,11 +618,11 @@ function printEachSalvo() {
     //var count = json.ship.length;
 
     var count;
-    if (json.playerSunkBoats[2]) {
-        count = json.ship.length - [Object.keys(json.playerSunkBoats[2]).length];
+    if (json.playerSunkBoats[2]) { //json.opponentSunkBoats[Object.keys(json.playerSunkBoats).length].length
+        count = json.ship.length - json.playerSunkBoats[Object.keys(json.playerSunkBoats).length].length + 1;
     }
     else {
-        count = json.ship.length;
+        count = json.ship.length + 1;
     }
 
 

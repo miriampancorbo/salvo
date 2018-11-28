@@ -37,7 +37,14 @@ public class Score {
         this.player = player;
         this.points = points;
         this.finishDate = finishDate;
-    };
+    }
+
+    public Score(GamePlayer gamePlayer,  int points, LocalDateTime finishDate) {
+        this.game = gamePlayer.getGame();
+        this.player = gamePlayer.getPlayer();
+        this.points = points;
+        this.finishDate = finishDate;
+    }
 
 
     public Map<String, Object> scoreDTO(){

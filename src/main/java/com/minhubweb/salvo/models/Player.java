@@ -5,10 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -76,7 +73,7 @@ public class Player {
 
 
 
-    public Score getGameScore(Game game){return scores.stream().filter(score -> score.getGame().getId() == game.getId()).findAny().orElse(null);}
+    public Optional<Score> getGameScore(Game game){return scores.stream().filter(score -> score.getGame().getId() == game.getId()).findAny();}
 
     //Set and get:
     public void setId(long id) {this.id = id;}

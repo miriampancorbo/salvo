@@ -1,3 +1,7 @@
+body {
+    background-image:url('../photos/sea3.png');
+}
+
 table, td, th{
     border: 1px solid blue;
     padding: 0;
@@ -13,7 +17,7 @@ table, td, th{
 }
 
 .my-salvo{
-    //background-color:red;
+    /*background-color:red;*/
     color:red;
     font-size:120%;
     font-weight:bold;
@@ -43,7 +47,6 @@ table, td, th{
     border:1px solid red;
 }
 /*--------------------------------------------------DESAPARECER MIS GRILLAS*/
-
 
 .hideGrid{
     display:none;
@@ -148,3 +151,19 @@ table, td, th{
 }
 
 
+.gameOver {
+    font-size: 900%;
+    position: absolute;
+    z-index:2;
+    margin-right:15%;
+    margin-left:15%;
+    padding-top:10%;
+    width:60%;
+    height:80%;
+    color:red;
+    background-color:rgba(254, 231, 166, 0.9);
+    border: 5px dotted black;
+}
+.gameOverSubtitle {
+    font-size:20%;
+}

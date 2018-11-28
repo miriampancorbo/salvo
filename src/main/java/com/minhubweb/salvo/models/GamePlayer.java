@@ -83,8 +83,8 @@ public class GamePlayer {
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
         dto.put("player", this.getPlayer().playerDTO());
-        if (this.getScore()!=null) {
-            dto.put("scores", this.getScore().getPoints());
+        if (this.getScore().isPresent()) {
+            dto.put("scores", this.getScore().get().getPoints());
         }
         else{
             dto.put("scores", this.getScore());}
@@ -146,28 +146,43 @@ public class GamePlayer {
                 .findFirst();
     }
 
-    public  void updateState(GamePlayer current, GamePlayer opponent, int turn){
+
+    public  void updateState(GamePlayer opponent, int turn){
         // I am second player
+        if (this.getId() > opponent.getId()) {
+            int playerSunks = this.getNumberOfSunkInTurn(turn);
+            int opponentSunks = opponent.getNumberOfSunkInTurn(turn);
+            LocalDateTime now = LocalDateTime.now();
+
+    /*public  void updateState(GamePlayer current, GamePlayer opponent, int turn){
+         I am second player
         if (current.getId() > opponent.getId()) {
             int playerSunks = current.getNumberOfSunkInTurn(turn);
             int opponentSunks = opponent.getNumberOfSunkInTurn(turn);
+            LocalDateTime now = LocalDateTime.now();*/
 
             if (playerSunks == 5 && opponentSunks == 5) {
-                current.setState(State.TIE);
+                this.setState(State.TIE);
+                this.getGame().addScore(new Score(this, 2, now));
                 opponent.setState(State.TIE);
+                opponent.getGame().addScore(new Score(opponent, 2, now));
             } else if (opponentSunks == 5) {
-                current.setState(State.WIN);
+                this.setState(State.WIN);
+                this.getGame().addScore(new Score(this, 3, now));
                 opponent.setState(State.LOSE);
+                opponent.getGame().addScore(new Score(opponent, 0, now));
             } else if (playerSunks == 5) {
-                current.setState(State.LOSE);
+                this.setState(State.LOSE);
+                this.getGame().addScore(new Score(this, 0, now));
                 opponent.setState(State.WIN);
+                opponent.getGame().addScore(new Score(opponent, 3, now));
             } else {
-                current.setState(State.WAIT);
+                this.setState(State.WAIT);
                 opponent.setState(State.PLAY);
             }
 
         } else {
-            current.setState(State.WAIT);
+            this.setState(State.WAIT);
             opponent.setState(State.PLAY);
         }
     }
@@ -182,7 +197,7 @@ public class GamePlayer {
         return dto;
     }
 
-    public Score getScore(){return this.player.getGameScore(this.game);}
+    public Optional<Score> getScore(){return this.player.getGameScore(this.game);}
 
     //Set and get
     public long getId() {return id;}
@@ -207,6 +222,5 @@ public class GamePlayer {
     public void setSalvoes(Set<Salvo> salvoes) {this.salvoes = salvoes;}
 
     public State getState() {return state;}
-
     public void setState(State state) {this.state = state;}
 }

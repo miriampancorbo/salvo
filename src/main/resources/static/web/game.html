@@ -23,7 +23,11 @@
         <div id="app">
             <div class="container">
                 <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
-                <center><p class="place-ships-title">Place your ships <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
+                <center><p class="place-ships-title">{{playState}} <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
+                <center><p v-if="gameOverState == 'you win!'" class="gameOver win"><span class="gameOverSubtitle">Congratulations, </span> <br>{{gameOverState}}</p></center>
+                <p v-if="gameOverState == 'you lose'" class="gameOver win">{{gameOverState}}</p>
+                <p v-if="gameOverState == 'tie'" class="gameOver win">{{gameOverState}}</p>
+
                 <div  class="row">
 
                     <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
