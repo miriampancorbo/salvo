@@ -9,13 +9,14 @@
     <link href="https://fonts.googleapis.com/css?family=Krub" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <!--<nav class="navbar navbar-light" style="background-color: black;">
         <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >logout</button>
-    </nav>
+    </nav>-->
+    <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >logout</button>
     <div class="container" id="gamesHtml">
         <div  id="app">
             <div class="row">
-                <h1 id="greeting" style="display:none"><center> <img src="photos/palmera2.png" alt="palmera" height="120">{{currentUserName}} </center></h1>
+                <h1 id="greeting" style="display:none"><center> <img src="photos/gaviota.png" alt="palmera" height="80"><span class="title-name">{{currentUserName}}</span><img src="photos/gaviota.png" alt="palmera" height="80"> </center></h1>
                 <h1><center id="main-title">Let's Play Salvo!</center></h1>
                 <center><button type="button" class="btn btn-primary" id="firstSignupButton" >create new user</button>
                 <button type="button" class="btn btn-primary" id="firstLoginButton" >log to your Account</button></center>
@@ -28,33 +29,33 @@
                         <p class="subtitle" style="margin-left:10%">games</p>
                          <li v-for="game in games"
                              v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
-                                <img src="photos/timon.jpg" alt="palmera" height="30">
+                                <img src="photos/ancla.png" alt="palmera" height="30">
                                  <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                      {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                                  </a>
                          </li>
 
                         <li  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
-                            <img src="photos/timon.jpg" alt="palmera" height="30">
+                            <img src="photos/ancla.png" alt="palmera" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                             </a>
                         </li>
 
                         <li v-else-if="game.gamePlayers[1]">
-                            <img src="photos/timon.jpg" alt="palmera" height="30">
+                            <img src="photos/ancla.png" alt="palmera" height="30">
                             {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
                         </li>
 
                         <li v-else-if="game.gamePlayers[0].player.id==currentUserId">
-                            <img src="photos/timon.jpg" alt="palmera" height="30">
+                            <img src="photos/ancla.png" alt="palmera" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
                             </a>
                         </li>
 
                         <li v-else>
-                            <img src="photos/timon.jpg" alt="palmera" height="30">
+                            <img src="photos/ancla.png" alt="palmera" height="30">
                             {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
                             <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button>
                         </li>

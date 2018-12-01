@@ -5,16 +5,32 @@ li {
 body{
     font-family: 'Krub', sans-serif;
     /*background-color:rgb(214, 229, 255);*/
-    background-image: linear-gradient(to right, orange , white,orange);
-  height: 100%;
-  width: 100%;
+    /*background-image: linear-gradient(to right, orange , white,orange);*/
+    background: url('../photos/fondo21.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 2%;
+    /*height: 100%;
+    width: 100%;*/
 }
 .invalid-button{
     background-color:grey;
 }
 
+#main-title {
+    font-size: 150%;
+    margin-bottom: 2%;
+    font-weight:bold;
+}
+
+.title-name {
+    font-weight:bold;
+}
+
 .subtitle{
-    font-size: 140%;
+    font-size: 200%;
     color:#ff6600;
     font-weight:bold;
     margin-top:5%;

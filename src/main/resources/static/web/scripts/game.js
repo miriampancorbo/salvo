@@ -1,6 +1,5 @@
 //https://github.com/gridstack/gridstack.js/tree/develop/doc
 
-//ERROR 150 PQ NO HAY LASTHITS
 var app;
 var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
