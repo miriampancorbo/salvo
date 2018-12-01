@@ -1,7 +1,3 @@
-li {
-    list-style-type: none;
-    /*background:black;*/
-}
 body{
     font-family: 'Krub', sans-serif;
     /*background-color:rgb(214, 229, 255);*/
@@ -21,8 +17,9 @@ body{
 
 #main-title {
     font-size: 150%;
-    margin-bottom: 2%;
     font-weight:bold;
+    color:white;
+    background-color:rgba(150,150,150,0.7);
 }
 
 .title-name {
@@ -30,19 +27,122 @@ body{
 }
 
 .subtitle{
-    font-size: 200%;
-    color:#ff6600;
+    font-size: 250%;
+    color:white;
+    background-color:rgba(150,150,150,0.7);
     font-weight:bold;
     margin-top:5%;
     margin-bottom:0%;
 }
 
 form{
-    margin-right:5px;
+    margin-top:7%;;
+    padding-right:20%;
+    padding-left:20%;
+    color:white;
+    font-size:150%;
+    /*margin-right:5px;
     align: right;
     margin-top: -6.5%;
-    position:fixed;
+    position:fixed;*/
 }
+
+#firstSignupButton, #firstLoginButton {
+    border: 1px solid black;
+    background-color:black;
+    font-size:110%;
+    font-weight:bold;
+}
+
+#firstSignupButton:hover, #firstLoginButton:hover {
+    border: 1px solid black;
+    background-color:rgb(150,150,150);
+    font-size:112%;
+    font-weight:bold;
+}
+
+#firstSignupButton:focus, #firstLoginButton:focus {
+    outline:0;
+    border: 1px solid black;
+    background-color:rgb(150,150,150);
+    font-size:120%;
+    font-weight:bold;
+}
+
+#signupButton, #loginButton {
+    border: 1px solid black;
+    background-color:black;
+    font-weight:bold;
+    width: 60%;
+}
+
+#signupButton:hover, #loginButton:hover {
+    border: 1px solid black;
+    background-color:rgb(150,150,150);
+}
+
+#writeUserName, #writePassword{
+    border: 1px solid black;
+    text-align:center;
+    color:#960f0f;
+    font-weight:bold;
+}
+
+.logoutButton {
+    outline:0;
+    font-size:120%;
+    border:none;
+    background-color:#960f0f;
+    width: 10%;
+    margin-top: -2%;
+    font-weight: bold;
+    height: 40px;
+    margin-right:1%;
+    margin-top:-1%;
+}
+
+.logoutButton:hover {
+    background-color: #560000;
+    font-size:130%;
+}
+
+#newGameButton {
+    background-color:#085104;
+    margin-top: 25%;
+    width: 80%;
+    height: 60px;
+    font-weight: bold;
+    font-size: 150%;
+    border: none;
+}
+ #newGameButton:hover {
+    background-color:#ad7b08;
+    border: none;
+    font-size:160%;
+ }
+.joinButton {
+    background-color: #085104;
+    margin-left: 2%;
+    font-weight: bold;
+    font-size: 110%;
+    border: none;
+}
+
+.joinButton:hover {
+    background-color: #a7c401;
+    border: none;
+    font-size: 115%;
+}
+
+.form-title {
+    background:rgba(100,100,100,0.7);
+    margin-bottom:3%;
+}
+
+input {
+    border: 1px solid black;
+}
+
 .active-access{
     background-color:#ff9933;
 }
@@ -63,31 +163,50 @@ form{
     margin-right:auto;
     margin-top:20px;
     margin-bottom:3%;
-    width:85%;
+    font-weight:bold;
+    border:none;
+    /*width:85%*/
     /*border-collapse:collapse;
     border:1px solid #004d4d;*/
 }
 
-table tr:nth-child(odd) td{
-    background:#ccffff;
-    opacity:0.85;
+td{
+    padding:1% 1%;
 }
 
-table tr:nth-child(even) td{
-    background:#ffff99;
-    opacity:0.85;
+#table-scores td {
+    text-align:center;
 }
-th{
+
+#table-scores tr:nth-child(odd) td{
+    background:#BAB9B9;
+    opacity:0.95;
+}
+
+#table-scores tr:nth-child(even) td{
+    background:#D7D4D4;
+    opacity:0.95;
+}
+#table-scores th{
     padding:2% 5%;
     text-align:center;
-    background:#ff6600;
+    background:black;
     color:white;
     font-weight: bold;
 }
-td{
-    text-align:center;
-    padding:1% 1%;
+
+#table-games{
+    width:100%
 }
-.october{
-    padding-bottom: 10%;
+
+#table-games tr:nth-child(odd) td{
+    padding-left: 4%;
+    background:#D7D4D4;
+    opacity:0.95;
+}
+
+#table-games tr:nth-child(even) td{
+    padding-left: 4%;
+    background:#BAB9B9;
+    opacity:0.95;
 }

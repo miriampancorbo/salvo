@@ -17,69 +17,71 @@
         <div  id="app">
             <div class="row">
                 <h1 id="greeting" style="display:none"><center> <img src="photos/gaviota.png" alt="palmera" height="80"><span class="title-name">{{currentUserName}}</span><img src="photos/gaviota.png" alt="palmera" height="80"> </center></h1>
-                <h1><center id="main-title">Let's Play Salvo!</center></h1>
+                <h1><center id="main-title">Let's play salvo!</center></h1>
                 <center><button type="button" class="btn btn-primary" id="firstSignupButton" >create new user</button>
-                <button type="button" class="btn btn-primary" id="firstLoginButton" >log to your Account</button></center>
-                <center><button type="button" class="btn btn-success" id="newGameButton" style="display:none">new game</button></center>
+                <button type="button" class="btn btn-primary" id="firstLoginButton" >log to your account</button></center>
             </div>
 
             <div class="row">
-                <div class="col-xs-6">
-                    <ul>
-                        <p class="subtitle" style="margin-left:10%">games</p>
-                         <li v-for="game in games"
+                <div class="col-xs-4">
+                    <center class="subtitle">games</center>
+                    <table  class="table" id="table-games">
+                        <tbody>
+                         <tr v-for="game in games"
                              v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
-                                <img src="photos/ancla.png" alt="palmera" height="30">
+                             <td><img src="photos/ancla.png" alt="ancla" height="30">
                                  <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                      {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                                 </a>
-                         </li>
+                                 </a></td>
+                         </tr>
 
-                        <li  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
-                            <img src="photos/ancla.png" alt="palmera" height="30">
+                        <tr  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
+                            <td><img src="photos/ancla.png" alt="ancla" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                            </a>
-                        </li>
+                            </a></td>
+                        </tr>
 
-                        <li v-else-if="game.gamePlayers[1]">
-                            <img src="photos/ancla.png" alt="palmera" height="30">
-                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                        </li>
+                        <tr v-else-if="game.gamePlayers[1]">
+                            <td><img src="photos/ancla.png" alt="ancla" height="30">
+                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}</td>
+                        </tr>
 
-                        <li v-else-if="game.gamePlayers[0].player.id==currentUserId">
-                            <img src="photos/ancla.png" alt="palmera" height="30">
+                        <tr v-else-if="game.gamePlayers[0].player.id==currentUserId">
+                            <td><img src="photos/ancla.png" alt="ancla" height="30">
                             <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
-                            </a>
-                        </li>
+                            </a></td>
+                        </tr>
 
-                        <li v-else>
-                            <img src="photos/ancla.png" alt="palmera" height="30">
+                        <tr v-else>
+                            <td><img src="photos/ancla.png" alt="ancla" height="30">
                             {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
-                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button>
-                        </li>
-                    </ul>
+                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="col-xs-2">
+                <div class="col-xs-4">
+                    <center><button type="button" class="btn btn-success" id="newGameButton" style="display:none">create new game</button></center>
                     <form style="display:none" id="formEnter">
                         <div class="form-group">
-                            <label for="writeUserName">nickname</label>
-                            <input   class="form-control" id="writeUserName" aria-describedby="emailHelp" placeholder="Enter your Nickname">
+                            <center class="form-title"><label for="writeUserName">nickname</label></center>
+                            <input class="form-control" id="writeUserName" aria-describedby="emailHelp" placeholder="enter your nickname">
                         </div>
                         <div class="form-group">
-                            <label for="writePassword">password</label>
-                            <input type="password" class="form-control" id="writePassword" placeholder="Enter your Password">
+                            <center class="form-title"><label for="writePassword">password</label></center>
+                            <center><input type="password" class="form-control" id="writePassword" placeholder="enter your password"></center>
                         </div>
                         <center><button type="button" class="btn btn-primary" style="display:none" id="loginButton">login</button></center>
                         <center><button type="button" class="btn btn-primary" style="display:none" id="signupButton" >signup</button></center>
                     </form>
                 </div>
 
-                <center><div class="col-xs-4">
+                <div class="col-xs-4">
                     <center class="subtitle">scores</center>
-                    <table class="table  table-striped">
+                    <table class="table" id="table-scores">
                         <thead>
                         <tr>
                             <th scope="col">name</th>
@@ -100,7 +102,7 @@
                         </tr>
                         </tbody>
                     </table>
-                </div></center>
+                </div>
 
             </div>
         </div>
