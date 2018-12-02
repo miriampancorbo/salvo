@@ -126,7 +126,7 @@ $(function () {
             return "you lose";
         }
         else if (state ==  "TIE") {
-            return "tie";
+            return "it's a tie";
         }
     }
 
@@ -291,7 +291,7 @@ $(function () {
                 putTickPlayerHitsOpponent('PATROL', i, json, location, horizontal, vertical);
             }
             else {
-                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/cruzNaranja.png' alt='orange cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/torpedo3.png' alt='orange cross' height='45' width='30' style='position:absolute; margin-left:" + (horizontal*45+8) + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
             }
         }
     }
@@ -299,7 +299,7 @@ $(function () {
     function putTickPlayerHitsOpponent(type, i, json, location, horizontal, vertical) {
         for(var j = 0; j < json.playerHits[i][type].length; j++) {
             if (location == json.playerHits[i][type][j]) {
-                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/greenTick.png' alt='green tick' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+                document.getElementById("opponent-complete-grid").innerHTML+= "<img src='photos/explosion.png' alt='green tick' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:2;'>"
             }
         }
     }
@@ -310,11 +310,11 @@ $(function () {
         var vertical = letters.indexOf(location[0]);
 //RED (opponent hits player)
         if (!grid.isAreaEmpty(horizontal, vertical, 1, 1)){
-            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzRoja.png' alt='red cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/explosion.png' alt='red cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
         }
 //YELLOW (opponent send but doesnt hit player)
         else {
-            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/cruzAmarilla.png' alt='yellow cross' height='45' width='45' style='position:absolute; margin-left:" + horizontal*45 + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
+            document.getElementById("my-complete-grid").innerHTML+= "<img src='photos/torpedo4.png' alt='yellow cross' height='45' width='30' style='position:absolute; margin-left:" + (horizontal*45+8) + "px; margin-top: " + vertical*45 + "px; z-index:1;'>"
         }
     }
 
@@ -677,7 +677,7 @@ function countTurn() {
             turn++;
         }
     }
-    document.getElementById("count-turn").innerHTML= "Your turn number: " + turn;
+    document.getElementById("count-turn").innerHTML= "your turn number: " + turn;
     return turn;
 }
 

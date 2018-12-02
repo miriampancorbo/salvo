@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="dist/style.css" />
 </head>
     <body>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-light" id="navGame">
         <button type="button" id="homeButton" class="btn btn-primary pull-left" onclick="window.location.href='http://localhost:8080/web/games.html'">home</button>
         <button type="button" class="logoutButton2 btn btn-primary pull-right">logout</button>
     </nav>
@@ -23,15 +23,25 @@
         <div id="app">
             <div class="container">
                 <center><h2 class="title-players">{{playerA}} {{msgA}} <span v-if="playerA.length>0 && playerB.length>0"> vs </span> {{playerB}} {{msgB}}</h2></center>
-                <center><p class="place-ships-title">{{playState}} <img src="photos/greenTick.png" alt="red cross" height="40" width="40"></p></center>
-                <center><p v-if="gameOverState == 'you win!'" class="gameOver win"><span class="gameOverSubtitle">Congratulations, </span> <br>{{gameOverState}}</p></center>
-                <p v-if="gameOverState == 'you lose'" class="gameOver win">{{gameOverState}}</p>
-                <p v-if="gameOverState == 'tie'" class="gameOver win">{{gameOverState}}</p>
+                <center><p class="place-ships-title">{{playState}}</p></center>
+                <center><p v-if="gameOverState == 'you win!'" class="gameOver win"><span class="gameOverSubtitle">congratulations, </span><br>{{gameOverState}}</p></center>
+                <center><p v-if="gameOverState == 'you lose'" class="gameOver lose"><span class="gameOverSubtitle">sorry, </span><br>{{gameOverState}}<br><span class="gameOverSubtitle">maybe next time...</span></p></center>
+                <center><p v-if="gameOverState == 'it\'s a tie'" class="gameOver tie"><span class="gameOverSubtitle">not bad, </span><br>{{gameOverState}}</p></center>
 
                 <div  class="row">
-
                     <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
-                    <p id="count-turn"></p>
+                    <div class="row" :class=" {hideGrid : ships.length==0}">
+                        <div class="col-xs-4">
+                            <center><p id="count-turn"></p></center>
+                        </div>
+                        <div class="col-xs-4">
+                            <center><p id="count-salvoes"></p></center>
+                        </div>
+                        <div class="col-xs-4">
+                            <button type="button" onclick="postSalvo()" class="saveSalvoesButton btn btn-success">attack opponent!</button>
+                        </div>
+                    </div>
+
                     <div :class=" {hideGrid : ships.length!=0}">
                         <div id="firstGrid">
                             <div class="col-xs-6">
@@ -69,8 +79,8 @@
                         </div>
 
                         <!--BOTÓN-->
-                        <div class="col-xs-2">
-                            <button type="button" onclick="saveShips()" class="saveShipsButton btn btn-success">save ships</button>
+                        <div class="col-xs-4">
+                            <center><button type="button" onclick="saveShips()" class="saveShipsButton btn btn-success">save ships</button></center>
                         </div>
                     </div> <!--V-if-->
 
@@ -89,12 +99,11 @@
                         <!-- TERCERA GRILLA (OPONENTE)  THIRDGRID-->
                         <div id="thirdGrid">
                             <div class="col-xs-6">
-                                <p id="count-salvoes"></p>
                                 <div class="grid-ships-opponent">
                                     <div id="opponent-complete-grid"></div>
 
                                     <!--<div class="col-xs-6">-->
-                                        <table class="table table-opponent"  >
+                                        <table class="table-opponent"  > <!--class="table"-->
                                             <thead>
                                             </thead>
                                             <tbody>
@@ -115,17 +124,14 @@
                                 </div> <!--grid-ships-opponent-->
                             </div>
                         </div>
-                            <div class="col-xs-2">
-                                <button type="button" onclick="postSalvo()" class="saveSalvoesButton btn btn-success">save salvoes</button>
-                            </div>
                     </div><!--V-else-->
 
                 </div> <!--row-->
             </div> <!--container pequeño-->
 
-            <div  class="col-xs-9" style="white-space:pre">
-                <p>History table</p>
-                <table class="table  table-striped">
+            <div style="white-space:pre"  :class=" {hideGrid : ships.length==0}">
+                <center><p class="history-title">History table</p></center>
+                <table class="table  table-bordered table-history">
                     <thead>
                     <tr>
                         <th>turn</th>

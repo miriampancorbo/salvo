@@ -1,4 +1,5 @@
 body {
+    font-family: 'Krub', sans-serif;
     background:url('../photos/fondo5.jpg') no-repeat center center fixed;
      -webkit-background-size: cover;
      -moz-background-size: cover;
@@ -6,13 +7,144 @@ body {
      background-size: cover;
 }
 
-table, td, th{
+#navGame {
+    background-color: rgba(150,150,150,0.7);
+}
+
+.logoutButton2 {
+    outline:0;
+    font-size:120%;
+    border:none;
+    background-color:#960f0f;
+    width: 10%;
+    margin-top: -2%;
+    font-weight: bold;
+    height: 40px;
+    margin:0.2%;
+}
+
+.logoutButton2:hover {
+    background-color: #560000;
+    font-size:130%;
+}
+
+#homeButton {
+    outline:0;
+    font-size:120%;
+    border:none;
+    background-color:#085104;
+    width: 10%;
+    margin-top: -2%;
+    font-weight: bold;
+    height: 40px;
+    margin: 0.2%;
+}
+
+#homeButton:hover {
+    background-color: #159301;
+    font-size:130%;
+}
+
+.place-ships-title, .history-title {
+    color:white;
+    background-color:rgba(150,150,150,0.7);
+    font-weight:bold;
+    width: 50%;
+    font-size: 250%;
+}
+
+.history-title {
+    margin:0;
+}
+
+#count-turn {
+    color:white;
+    background-color:black;
+    font-weight:bold;
+    width: 100%;
+    font-size: 120%;
+    padding-right:5%;
+    margin-right:10%;
+    height:40px;
+    padding-top: 8px;
+}
+
+#count-salvoes {
+    color:white;
+    background-color:black;
+    font-weight:bold;
+    width: 100%;
+    font-size: 120%;
+    padding-left:5%;
+    height:40px;
+    padding-top: 8px;
+}
+
+.saveSalvoesButton {
+    width:100%;
+    font-weight:bold;
+    font-size: 120%;
+    margin-top: 17px;
+    background-color:#c15303;
+    border:none;
+}
+
+.saveSalvoesButton:hover {
+    background-color:#d18f1d;
+}
+
+.saveShipsButton {
+    background-color:#085104;
+    margin-top: 60%;
+    width: 100%;
+    height: 60px;
+    font-weight: bold;
+    font-size: 150%;
+    border: none;
+}
+.saveShipsButton:hover {
+    background-color:#ad7b08;
+    border: none;
+    font-size:160%;
+ }
+
+/*table, td, th{
     border: 1px solid blue;
     padding: 0;
+}*/
+.table-history{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:20px;
+    margin-bottom:3%;
+    font-weight:bold;
+    width: 70%;
+}
+
+.table-history td {
+    text-align:center;
+    padding:1% 1%;
+}
+
+.table-history tr:nth-child(odd) td{
+    background:#BAB9B9;
+    opacity:0.95;
+}
+
+.table-history tr:nth-child(even) td{
+    background:#D7D4D4;
+    opacity:0.95;
+}
+.table-history th{
+    padding:2% 5%;
+    text-align:center;
+    background:black;
+    color:white;
+    font-weight: bold;
 }
 
 .send-new-salvo{
-    background-image:url('../photos/orangePoint.png') !important;
+    background-image:url('../photos/mirilla.png') !important;
     background-size:contain;
 }
 
@@ -40,15 +172,15 @@ table, td, th{
 .title-players{
     font-size:450%;
     margin-bottom:0;
+    margin-top:0;
+    font-weight:bold;
 }
 
-.place-ships-title{
-    font-size:200%;
-}
 .table-opponent td{
     width: 45px !important;
     height: 45px !important;
-    border:1px solid red;
+    border: 0px solid yellow;
+
 }
 /*--------------------------------------------------DESAPARECER MIS GRILLAS*/
 
@@ -62,21 +194,23 @@ table, td, th{
     height: 540px;
     width: 540px;
     padding: 45px;
-    background-image:url('../photos/big540.png');
+    background-image:url('../photos/blackgrid3.png');
     margin-bottom:50px;
+    margin-top:5%;
 }
 .grid-ships-opponent{                                                       /*grilla oponente*/
     height: 540px;
     width: 540px;
     padding: 45px;
-    background-image:url('../photos/big540.png');
+    background-image:url('../photos/blackgrid3.png');
+    margin-top:5%;
 }
 
 #grid-two{                                                                  /*lugar barcos inicio*/
     height: 270px;
     width: 270px;
-    border: 1px solid red;
-    }
+    /*border: 1px solid red; PARA COMPROBAR SI ES POSIBLE O NO ENVIAR SALVOES"*/
+}
 
 /*------------------------------------ BARCOS -----------------------------------------------------*/
 .grid-stack {
@@ -92,7 +226,7 @@ table, td, th{
 
 
 .aircraftHorizontal{
-    background-image: url('../dist/aircraftHorizontal.png');
+    background-image: url('../dist/barco.png');
     background-size: contain;
 }
 
@@ -158,15 +292,28 @@ table, td, th{
 .gameOver {
     font-size: 900%;
     position: absolute;
-    z-index:2;
+    z-index:4;
+    margin-top:7%;
     margin-right:15%;
-    margin-left:15%;
-    padding-top:10%;
-    width:60%;
-    height:80%;
-    color:red;
-    background-color:rgba(254, 231, 166, 0.9);
-    border: 5px dotted black;
+    margin-left:-1%;
+    padding-bottom:20%;
+    font-weight:bold;
+    width:90%;
+    height:84%;
+    color:black;
+    background-color:rgba(150,150,150,0.7);
+}
+
+.win{
+    color:#085104;
+}
+
+.lose{
+    color:#960f0f;
+}
+
+.tie{
+    color:#ad7b08;
 }
 .gameOverSubtitle {
     font-size:20%;

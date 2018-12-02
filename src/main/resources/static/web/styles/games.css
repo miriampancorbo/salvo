@@ -55,7 +55,7 @@ form{
 }
 
 #firstSignupButton:hover, #firstLoginButton:hover {
-    border: 1px solid black;
+    border: none;
     background-color:rgb(150,150,150);
     font-size:112%;
     font-weight:bold;
