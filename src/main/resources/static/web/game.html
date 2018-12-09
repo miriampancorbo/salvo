@@ -29,7 +29,6 @@
                 <center><p v-if="gameOverState == 'it\'s a tie'" class="gameOver tie"><span class="gameOverSubtitle">not bad, </span><br>{{gameOverState}}</p></center>
 
                 <div  class="row">
-                    <!--PRIMERA GRILLA CON BARCOS QUE SE MUEVEN FIRSTGRID-->
                     <div class="row" :class=" {hideGrid : ships.length==0}">
                         <div class="col-xs-4">
                             <center><p id="count-turn"></p></center>
@@ -78,35 +77,28 @@
                             </div>
                         </div>
 
-                        <!--BOTÓN-->
                         <div class="col-xs-4">
                             <center><button type="button" onclick="saveShips()" class="saveShipsButton btn btn-success">save ships</button></center>
                         </div>
-                    </div> <!--V-if-->
+                    </div>
 
-                    <!--SEGUNDA GRILLA CON BARCOS ESTATICOS SECONDGRID-->
                     <div  :class=" {hideGrid : ships.length==0}">
                         <div id="secondGrid">
                             <div class="col-xs-6">
                                 <div class="grid-ships">
                                     <div id="my-complete-grid"></div>
-                                    <div id="gridFix" style="height:450px !important" class="grid-stack grid-stack-10" >
-                                    </div>
+                                    <div id="gridFix" style="height:450px !important" class="grid-stack grid-stack-10" ></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- TERCERA GRILLA (OPONENTE)  THIRDGRID-->
                         <div id="thirdGrid">
                             <div class="col-xs-6">
                                 <div class="grid-ships-opponent">
                                     <div id="opponent-complete-grid" class="grid-stack grid-stack-10" ></div>
-
-                                    <!--<div class="col-xs-6">-->
-                                        <table class="table-opponent"  > <!--class="table"-->
-                                            <thead>
-                                            </thead>
-                                            <tbody>
+                                    <table class="table-opponent"  > <!--class="table"-->
+                                        <thead></thead>
+                                        <tbody>
                                             <tr v-for="verticalCell in vertical">
                                                 <td :id="verticalCell+1+'S'" class="cells"></td>
                                                 <td :id="verticalCell+2+'S'" class="cells"></td>
@@ -119,69 +111,62 @@
                                                 <td :id="verticalCell+9+'S'" class="cells"></td>
                                                 <td :id="verticalCell+10+'S'" class="cells"></td>
                                             </tr>
-                                            </tbody>
-                                        </table>
-                                </div> <!--grid-ships-opponent-->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div><!--V-else-->
-
-                </div> <!--row-->
-            </div> <!--container pequeño-->
+                    </div>
+                </div>
+            </div>
 
             <div style="white-space:pre"  :class=" {hideGrid : ships.length==0}">
                 <center><p class="history-title">History table</p></center>
                 <table class="table  table-bordered table-history">
                     <thead>
-                    <tr>
-                        <th>turn</th>
-                        <th  colspan="3">hits on you</th>
-                        <th  colspan="3">hits on opponent</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>hits</th>
-                        <th>sunks</th>
-                        <th>left</th>
-                        <th>hits</th>
-                        <th>sunks</th>
-                        <th>left</th>
-                    </tr>
+                        <tr>
+                            <th>turn</th>
+                            <th  colspan="3">hits on you</th>
+                            <th  colspan="3">hits on opponent</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>hits</th>
+                            <th>sunks</th>
+                            <th>left</th>
+                            <th>hits</th>
+                            <th>sunks</th>
+                            <th>left</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr  v-for="data in tableGame">
-                        <td>{{data.turn}}</td>
-                        <td>{{data.opponentHitsOnPlayerTable}}</td>
-                        <td>{{data.sunksPlayerTable}}</td>
-                        <td>{{data.opponentLeftsTable}}</td>
-                        <td>{{data.playerHitsOnOpponentTable}}</td>
-                        <td>{{data.sunksOpponentTable}}</td>
-                        <td>{{data.playerLeftsTable}}</td>
-                    </tr>
+                        <tr  v-for="data in tableGame">
+                            <td>{{data.turn}}</td>
+                            <td>{{data.opponentHitsOnPlayerTable}}</td>
+                            <td>{{data.sunksPlayerTable}}</td>
+                            <td>{{data.opponentLeftsTable}}</td>
+                            <td>{{data.playerHitsOnOpponentTable}}</td>
+                            <td>{{data.sunksOpponentTable}}</td>
+                            <td>{{data.playerLeftsTable}}</td>
+                        </tr>
                     </tbody>
                 </table>
-            </div> <!--esta tabla-->
-        </div><!--app-->
-    </div><!--container total-->
+            </div>
+        </div>
+    </div>
 
     <script src="scripts/alertify.min.js"></script>
-    <!--JQUERY-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <!--Vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <!-- libreria y demás dependencias-->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
     <script src="dist/jquery-ui.min.js"></script>
     <script src="dist/gridstack.js"></script>
     <script src="dist/gridstack.jQueryUI.js"></script>
     <script src="dist/jquery.ui.touch-punch.min.js"></script>
 
-    <!--js-->
     <script type="text/javascript" src="scripts/game.js"></script>
     <script src="scripts/functionFetch.js"></script>
-    <!--<script src="scripts/games.js"></script>-->
     <script src="scripts/gameslogin.js"></script>
 </body>
 </html>

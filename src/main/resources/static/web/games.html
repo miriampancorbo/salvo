@@ -9,9 +9,6 @@
     <link href="https://fonts.googleapis.com/css?family=Krub" rel="stylesheet">
 </head>
 <body>
-    <!--<nav class="navbar navbar-light" style="background-color: black;">
-        <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >logout</button>
-    </nav>-->
     <button type="button" class="logoutButton btn btn-primary pull-right" style="display:none" >logout</button>
     <div class="container" id="gamesHtml">
         <div  id="app">
@@ -21,44 +18,39 @@
                 <center><button type="button" class="btn btn-primary" id="firstSignupButton" >create new user</button>
                 <button type="button" class="btn btn-primary" id="firstLoginButton" >log to your account</button></center>
             </div>
-
             <div class="row">
                 <div class="col-xs-4">
                     <center class="subtitle">games</center>
                     <table  class="table" id="table-games">
                         <tbody>
-                         <tr v-for="game in games"
-                             v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
-                             <td><img src="photos/ancla.png" alt="ancla" height="30">
-                                 <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
-                                     {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                                 </a></td>
-                         </tr>
-
-                        <tr  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
-                            <td><img src="photos/ancla.png" alt="ancla" height="30">
-                            <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
-                                {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}
-                                </a></td>
-                        </tr>
-
-                        <tr v-else-if="game.gamePlayers[1]">
-                            <td><img src="photos/ancla.png" alt="ancla" height="30">
-                            {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}</td>
-                        </tr>
-
-                        <tr v-else-if="game.gamePlayers[0].player.id==currentUserId">
-                            <td><img src="photos/ancla.png" alt="ancla" height="30">
-                            <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
+                            <tr v-for="game in games"
+                                v-if="game.gamePlayers[1] && game.gamePlayers[0].player.id==currentUserId">
+                                <td><img src="photos/ancla.png" alt="ancla" height="30">
+                                    <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
+                                    {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}</a>
+                                </td>
+                            </tr>
+                            <tr  v-else-if="game.gamePlayers[1] && game.gamePlayers[1].player.id==currentUserId">
+                                <td><img src="photos/ancla.png" alt="ancla" height="30">
+                                    <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[1].id'>
+                                    {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}</a>
+                                </td>
+                            </tr>
+                            <tr v-else-if="game.gamePlayers[1]">
+                                <td><img src="photos/ancla.png" alt="ancla" height="30">
+                                {{game.id}}: {{game.gamePlayers[0].player.userName}} vs {{game.gamePlayers[1].player.userName}}</td>
+                            </tr>
+                            <tr v-else-if="game.gamePlayers[0].player.id==currentUserId">
+                                <td><img src="photos/ancla.png" alt="ancla" height="30">
+                                    <a :href='"http://localhost:8080/web/game.html?gp="+game.gamePlayers[0].id'>
+                                    {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent</a>
+                                </td>
+                            </tr>
+                            <tr v-else>
+                                <td><img src="photos/ancla.png" alt="ancla" height="30">
                                 {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
-                            </a></td>
-                        </tr>
-
-                        <tr v-else>
-                            <td><img src="photos/ancla.png" alt="ancla" height="30">
-                            {{game.id}}: {{game.gamePlayers[0].player.userName}} is waiting for an opponent
-                            <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button></td>
-                        </tr>
+                                <button type="button" onclick="joinGame(event)" class="joinButton btn btn-success" :data-gid="game.id" :id="'gpIdButton' + game.gamePlayers[0].id" style="display:none">join</button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -83,37 +75,32 @@
                     <center class="subtitle">scores</center>
                     <table class="table" id="table-scores">
                         <thead>
-                        <tr>
-                            <th scope="col">name</th>
-                            <th scope="col">total</th>
-                            <th scope="col">won</th>
-                            <th scope="col">lost</th>
-                            <th scope="col">tied</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">name</th>
+                                <th scope="col">total</th>
+                                <th scope="col">won</th>
+                                <th scope="col">lost</th>
+                                <th scope="col">tied</th>
+                            </tr>
                         </thead>
-
                         <tbody>
-                        <tr v-for ="player in dataObjectsOfPlayers">
-                            <td>{{player.userName}}</td>
-                            <td>{{player.points}}</td>
-                            <td>{{player.win}}</td>
-                            <td>{{player.lost}}</td>
-                            <td>{{player.tied}}</td>
-                        </tr>
+                            <tr v-for ="player in dataObjectsOfPlayers">
+                                <td>{{player.userName}}</td>
+                                <td>{{player.points}}</td>
+                                <td>{{player.win}}</td>
+                                <td>{{player.lost}}</td>
+                                <td>{{player.tied}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script src="scripts/alertify.min.js"></script>
-    <!--JQUERY-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <!--Vue-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!--js-->
     <script src="scripts/games.js"></script>
     <script src="scripts/gameslogin.js"></script>
     <script src="scripts/functionFetch.js"></script>

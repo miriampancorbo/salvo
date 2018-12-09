@@ -158,6 +158,7 @@ button.disabled:hover {
 .send-new-salvo{
     background-image:url('../photos/mirilla.png') !important;
     background-size:contain;
+    z-index:1;
 }
 
 .my-ship{
