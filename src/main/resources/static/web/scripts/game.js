@@ -35,9 +35,11 @@ $(function () {
             opponentHits:{},
             playerSunkBoats:{},
             opponentSunkBoats:{},
-            turnNumbers:[],
+            turnNumbersFirstPlayer:[],
+            turnNumbersSecondPlayer:[],
             playerLefts:[],
             opponentLefts:[],
+            checkIfCurrentPlayerIsFirst:"",
             tableGame:[
                 {
                     turn:"",
@@ -56,18 +58,21 @@ $(function () {
             console.log("Good fetch!")
             getMsg(json);
             getIds(json);
+            app.checkIfCurrentPlayerIsFirst = app.playerGpId < app.opponentGpId;
             app.state = json.statusPlayer;
             app.playState = getState(json.statusPlayer);
             app.ships = json.ship;
             app.playerA = json.gamePlayers[0].player.userName;
             if (json.gamePlayers[1]) { app.playerB = json.gamePlayers[1].player.userName;}
             app.salvo=json.salvo;
-            placeSavedShips(app.ships);
+            placeSavedShips(app.ships, gridFix, '');
             app.playerHits = json.playerHits;
             app.opponentHits = json.opponentHits;
             app.playerSunkBoats = json.playerSunkBoats;
             app.opponentSunkBoats = json.opponentSunkBoats;
-            app.turnNumbers = getReverseTurnNumbers(json, app.salvo);
+            placeSavedShips(app.opponentSunkBoats[Object.keys(app.opponentSunkBoats).length], gridOpponent, 'Sunk');
+            app.turnNumbersFirstPlayer = getReverseturnNumbersFirstPlayer(json, app.salvo, 'first');
+            app.turnNumbersSecondPlayer = getReverseturnNumbersFirstPlayer(json, app.salvo, 'second');
             app.playerLefts = getLeftBoats(json.playerSunkBoats);
             app.opponentLefts = getLeftBoats(json.opponentSunkBoats);
             app.tableGame = fillTableGame();
@@ -149,10 +154,13 @@ $(function () {
     }
 
 
-    function getReverseTurnNumbers(json, salvo) { //Take the quantity of turns per player in reverse order
+    function getReverseturnNumbersFirstPlayer(json, salvo, player) { //Take the quantity of turns per player in reverse order
         var lastTurn = salvo.length/2;
-        if (salvo.length % 2 !== 0 ) {
+        if (salvo.length % 2 !== 0 && player=='first') {
             lastTurn += 0.5;
+        }
+        if (salvo.length % 2 !== 0 && player=='second') {
+            lastTurn -= 0.5;
         }
         var arrayTurns = [];
         while (lastTurn > 0) { //Reverse
@@ -172,20 +180,21 @@ $(function () {
         return liveBoats;
     }
 
-    function takeSunkInTurn(playerSunks, numberOfTurns, turn) { //Take type of sunk boats per player and per turn
+    function takeSunkInTurn(playerSunks, numberOfTurnsPlayer, turn) { //Take type of sunk boats per player and per turn
         var computedSunks = []; //Sunk boats so far
         var sinkingNow = [];
         var sinkInTurn = [];
-        for (var i = 0; i < numberOfTurns; i++) {
+        for (var i = 0; i < numberOfTurnsPlayer; i++) {
             var position = i+1; //No index 0
-            //if (position < numberOfTurns) {
+            //if (position < numberOfTurnsPlayer) {
+            if (playerSunks[position]) {
                 for (var j = 0; j < Object.keys(playerSunks[position]).length; j++) {
                     if ((playerSunks[position][j].type) && !computedSunks.includes(playerSunks[position][j].type)) { //If it is sunk in this turn
                         computedSunks.push(playerSunks[position][j].type);
                         sinkingNow.push(playerSunks[position][j].type);
                     }
                 }
-            //}
+            }
             sinkInTurn.push(sinkingNow); //The ones for this turn
             sinkingNow = []; //To not accumulate
         }
@@ -193,7 +202,8 @@ $(function () {
     }
     function fillTableGame() {
         var objectGameTable=[];
-        var allTurns = app.turnNumbers;
+        var allTurnsFirstPlayer = app.turnNumbersFirstPlayer;
+        var allTurnsSecondPlayer = app.turnNumbersSecondPlayer;
         var allPlayerLefts = app.playerLefts;
         var allOpponentLefts = app.opponentLefts;
         var allPlayerHits = app.playerHits;
@@ -202,8 +212,9 @@ $(function () {
         var opponentHitsPerTurn = [];
         var playerSunkBoats = app.playerSunkBoats;
         var opponentSunkBoats = app.opponentSunkBoats;
+        var checkIfCurrentPlayerIsFirst = app.checkIfCurrentPlayerIsFirst;
 
-        for (var i = 0; i < allTurns.length; i++) { //Main 'for'
+        for (var i = 0; i < allTurnsFirstPlayer.length; i++) { //Main 'for'
             var lastHits = allPlayerHits[Object.keys(allPlayerHits).length-i]; //Start with the last hit
             for (var ship in lastHits) {
                 var numberHits = lastHits[ship].length;
@@ -226,15 +237,28 @@ $(function () {
                 opponentHitsPerTurn = "-";
             }
 
-            objectGameTable.push({
-                           turn: allTurns[i],
-                           opponentHitsOnPlayerTable: joinHits(opponentHitsPerTurn),
-                           sunksPlayerTable:takeSunkInTurn(playerSunkBoats, allTurns.length, allTurns.length-i-1),
-                           playerLeftsTable: allOpponentLefts[i],
-                           playerHitsOnOpponentTable: joinHits(playerHitsPerTurn),
-                           sunksOpponentTable:takeSunkInTurn(opponentSunkBoats, allTurns.length, allTurns.length-i-1),
-                           opponentLeftsTable: allPlayerLefts[i]
-            })
+            if(checkIfCurrentPlayerIsFirst && allTurnsFirstPlayer[i]) {
+                objectGameTable.push({
+                    turn: allTurnsFirstPlayer[i],
+                    opponentHitsOnPlayerTable: joinHits(opponentHitsPerTurn),
+                    playerLeftsTable: allOpponentLefts[i],
+                    playerHitsOnOpponentTable: joinHits(playerHitsPerTurn),
+                    opponentLeftsTable: allPlayerLefts[i],
+                    sunksPlayerTable:takeSunkInTurn(playerSunkBoats, allTurnsFirstPlayer.length, allTurnsFirstPlayer.length-i-1),
+                    sunksOpponentTable:takeSunkInTurn(opponentSunkBoats, allTurnsFirstPlayer.length, allTurnsFirstPlayer.length-i-1)
+                })
+            }
+            else if (allTurnsSecondPlayer[i]){
+                objectGameTable.push({
+                    turn: allTurnsSecondPlayer[i],
+                    opponentHitsOnPlayerTable: joinHits(opponentHitsPerTurn),
+                    playerLeftsTable: allOpponentLefts[i],
+                    playerHitsOnOpponentTable: joinHits(playerHitsPerTurn),
+                    opponentLeftsTable: allPlayerLefts[i],
+                    sunksPlayerTable:takeSunkInTurn(playerSunkBoats, allTurnsFirstPlayer.length, allTurnsFirstPlayer.length-i-1),
+                    sunksOpponentTable:takeSunkInTurn(opponentSunkBoats, allTurnsFirstPlayer.length, allTurnsFirstPlayer.length-i-1)
+                })
+            }
 
             var playerHitsPerTurn = [];
             var opponentHitsPerTurn = [];
@@ -254,6 +278,7 @@ $(function () {
         }
         return result.join("\n");
     }
+
 }); //END MAIN FUNCTION
 
 //---------------------------------------------------------CROSSES-------
@@ -369,6 +394,23 @@ $(function () {
     }
     $('#gridFix').gridstack(optionsFix);
     gridFix = $('#gridFix').data('gridstack');
+
+    var optionsOpponent = {
+        width: 10,
+        height: 10,
+        padding:1,
+        verticalMargin: 0,
+        cellHeight: 45,
+        disableResize: true,
+		float: true,
+        disableOneColumnMode: true,
+        staticGrid: true,
+        animate: true,
+        acceptWidgets: true,
+        resizable:false
+    }
+    $('#opponent-complete-grid').gridstack(optionsOpponent);
+    gridOpponent = $('#opponent-complete-grid').data('gridstack');
 
 /*-------------------------------------------TURN BOATS---------------------------*/
 
@@ -559,7 +601,7 @@ function addShips(playerShips, gamePlayerId) {
                 $.get("/api/game_view/" + gamePlayerId)
                     .done(function(json){
                         app.ships = playerShips;
-                        placeSavedShips(app.ships);
+                        placeSavedShips(app.ships, gridFix, '');
                         console.log("app.ships: ")
                         console.log(app.ships)
                     });
@@ -570,38 +612,38 @@ function addShips(playerShips, gamePlayerId) {
             })
 }
 
-function placeSavedShips(appShips){
+function placeSavedShips(appShips, grid, state){
     for (var i = 0; i < appShips.length; i++){
         switch (appShips[i].type){
             case "AIRCRAFT":
-                placeEachShip(appShips, i, 'aircraftHorizontal', 'aircraftVertical', 5);
+                placeEachShip(appShips, i, 'aircraftHorizontal' + state, 'aircraftVertical' + state, 5, grid);
                 break;
 
             case "BATTLESHIP":
-                placeEachShip(appShips, i, 'battleshipHorizontal', 'battleshipVertical', 4);
+                placeEachShip(appShips, i, 'battleshipHorizontal' + state, 'battleshipVertical' + state, 4, grid);
                 break;
 
             case "SUBMARINE":
-                placeEachShip(appShips, i, 'submarineHorizontal', 'submarineVertical', 3);
+                placeEachShip(appShips, i, 'submarineHorizontal' + state, 'submarineVertical' + state, 3, grid);
                 break;
 
             case "DESTROYER":
-                placeEachShip(appShips, i, 'destroyerHorizontal', 'destroyerVertical', 3);
+                placeEachShip(appShips, i, 'destroyerHorizontal' + state, 'destroyerVertical' + state, 3, grid);
                 break;
 
             case "PATROL":
-                placeEachShip(appShips, i, 'patrolHorizontal', 'patrolVertical', 2);
+                placeEachShip(appShips, i, 'patrolHorizontal' + state, 'patrolVertical' + state, 2, grid);
                 break;
         };
     }
 }
-function placeEachShip(appShips, i, shipHorizontal, shipVertical, shipSize) {
+function placeEachShip(appShips, i, shipHorizontal, shipVertical, shipSize, grid) {
     if(appShips[i].locations[0][1] !== appShips[i].locations[1][1]) {
-        gridFix.addWidget($('<div class="grid-stack-item-content ' + shipHorizontal + '"></div>'),
+        grid.addWidget($('<div class="grid-stack-item-content ' + shipHorizontal + '"></div>'),
         appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),shipSize,1);
     }
     else {
-        gridFix.addWidget($('<div class="grid-stack-item-content ' +  shipVertical + '"></div>'),
+        grid.addWidget($('<div class="grid-stack-item-content ' +  shipVertical + '"></div>'),
         appShips[i].locations[0].slice(1,appShips[i].locations[0].length)-1, letters.indexOf(appShips[i].locations[0][0]),1,shipSize);
     };
 }
@@ -614,8 +656,6 @@ jQuery(document).ready(function($) {
 })
 function printEachSalvo() {
     var json = getJson ();
-    //var count = json.ship.length;
-
     var count;
     if (json.playerSunkBoats[2]) { //json.opponentSunkBoats[Object.keys(json.playerSunkBoats).length].length
         count = json.ship.length - json.playerSunkBoats[Object.keys(json.playerSunkBoats).length].length + 1;
@@ -705,7 +745,7 @@ function postSalvo(){
             var empty={
                         "error" : "Need to send at least one salvo."
                       }
-            if(response.responseText == JSON.stringify(empty)){alertify.error("Need to send at least one salvo")}//NO FUNCTIONA
+            if(response.responseText == JSON.stringify(empty)){alertify.error("Need to send at least one salvo")}
             console.log(response.responseText);
         })
 }

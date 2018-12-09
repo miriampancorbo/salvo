@@ -87,10 +87,22 @@ body {
     margin-top: 17px;
     background-color:#c15303;
     border:none;
+    button:disabled;
 }
 
 .saveSalvoesButton:hover {
     background-color:#d18f1d;
+}
+
+button.disabled {
+    color:white;
+    background-color:rgb(150,150,150);
+    opacity:1 !important;
+}
+
+button.disabled:hover {
+    color:white;
+    background-color:rgb(150,150,150);
 }
 
 .saveShipsButton {
@@ -180,7 +192,10 @@ body {
     width: 45px !important;
     height: 45px !important;
     border: 0px solid yellow;
-
+}
+.table-opponent {
+    position: absolute;
+    margin-top:-450px;
 }
 /*--------------------------------------------------DESAPARECER MIS GRILLAS*/
 
@@ -226,7 +241,7 @@ body {
 
 
 .aircraftHorizontal{
-    background-image: url('../dist/barco.png');
+    background-image: url('../dist/aircraftHorizontal.png');
     background-size: contain;
 }
 
@@ -287,6 +302,76 @@ body {
     width: 45px !important;
     background-color: green;
 }
+
+
+
+
+/**--sunks*/
+
+.aircraftHorizontalSunk{
+    background-image: url('../dist/aircraftHorizontalSunk.png');
+    background-size: contain;
+}
+
+.aircraftVerticalSunk{
+    background-image: url('../dist/aircraftVerticalSunk.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+}
+
+.battleshipHorizontalSunk{
+    background-image: url('../dist/battleshipHorizontalSunk.png');
+    background-size: contain;
+    background-color: blue;
+}
+
+.battleshipVerticalSunk{
+    background-image: url('../dist/battleshipVerticalSunk.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+    background-color: blue;
+}
+
+.submarineHorizontalSunk{
+    background-image: url('../dist/submarineHorizontalSunk.png');
+    background-size: contain;
+    background-color: orange;
+}
+
+.submarineVerticalSunk{
+    background-image: url('../dist/submarineVerticalSunk.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+    background-color: orange;
+}
+
+.destroyerHorizontalSunk{
+    background-image: url('../dist/destroyerHorizontalSunk.png');
+    background-size: contain;
+    background-color: pink;
+}
+
+.destroyerVerticalSunk{
+    background-image: url('../dist/destroyerVerticalSunk.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+    background-color: pink;
+}
+
+.patrolHorizontalSunk{
+    background-image: url('../dist/patrolHorizontalSunk.png');
+    background-size: contain;
+    background-color: green;
+}
+
+.patrolVerticalSunk{
+    background-image: url('../dist/patrolVerticalSunk.png');
+    background-size: 100% 100%;
+    width: 45px !important;
+    background-color: green;
+}
+
+
 
 
 .gameOver {
