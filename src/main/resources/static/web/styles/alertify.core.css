@@ -55,9 +55,9 @@
 .alertify-logs {
 	position: fixed;
 	z-index: 5000;
-	bottom: 10px;
+	bottom: 50%;
 	right: 10px;
-	width: 300px;
+	width: 500px;
 }
 .alertify-logs-hidden {
 	display: none;
@@ -122,9 +122,11 @@
 				margin-left: 5px;
 			}
 	.alertify-log-error {
-		color: #B94A48;
-		background: #F2DEDE;
-		border: 1px solid #EED3D7;
+		color: red;
+		background: black;
+		text-align: center;
+		font-size:180%;
+		border: 2px solid red;
 	}
 
 @media only screen and (max-width: 680px) {
