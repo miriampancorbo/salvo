@@ -58,6 +58,7 @@ $(function () {
             console.log("Good fetch!")
             getMsg(json);
             getIds(json);
+            checkStatusForTimeAndGrid(json);
             app.checkIfCurrentPlayerIsFirst = app.playerGpId < app.opponentGpId;
             app.state = json.statusPlayer;
             app.playState = getState(json.statusPlayer);
@@ -70,7 +71,7 @@ $(function () {
             app.opponentHits = json.opponentHits;
             app.playerSunkBoats = json.playerSunkBoats;
             app.opponentSunkBoats = json.opponentSunkBoats;
-            placeSavedShips(app.opponentSunkBoats[Object.keys(app.opponentSunkBoats).length], gridOpponent, 'Sunk');
+            if (app.opponentSunkBoats[Object.keys(app.opponentSunkBoats).length]) {placeSavedShips(app.opponentSunkBoats[Object.keys(app.opponentSunkBoats).length], gridOpponent, 'Sunk');}
             app.turnNumbersFirstPlayer = getReverseturnNumbersFirstPlayer(json, app.salvo, 'first');
             app.turnNumbersSecondPlayer = getReverseturnNumbersFirstPlayer(json, app.salvo, 'second');
             app.playerLefts = getLeftBoats(json.playerSunkBoats);
@@ -78,7 +79,6 @@ $(function () {
             app.tableGame = fillTableGame();
             if (json.gamePlayers[1]) { salvoCross(json, app.salvo); }
             app.gameOverState = getGameOverStates(json.statusPlayer);
-            checkStatusForTimeAndGrid(json);
         })
         .catch(function (error) {
             console.log("Wrong fetch...")
@@ -155,18 +155,21 @@ $(function () {
 
 
     function getReverseturnNumbersFirstPlayer(json, salvo, player) { //Take the quantity of turns per player in reverse order
-        var lastTurn = salvo.length/2;
-        if (salvo.length % 2 !== 0 && player=='first') {
-            lastTurn += 0.5;
-        }
-        if (salvo.length % 2 !== 0 && player=='second') {
-            lastTurn -= 0.5;
-        }
-        var arrayTurns = [];
-        while (lastTurn > 0) { //Reverse
-            arrayTurns.push(lastTurn);
-            lastTurn--;
-        }
+        /*if (salvo.length < 2 && player=='first') {var lastTurn = 1; return lastTurn; }
+        else {*/
+            var lastTurn = salvo.length/2;
+            if (salvo.length % 2 !== 0 && player=='first') {
+                lastTurn += 0.5;
+            }
+            if (salvo.length % 2 !== 0 && player=='second') {
+                lastTurn -= 0.5;
+            }
+            var arrayTurns = [];
+            while (lastTurn > 0) { //Reverse
+                arrayTurns.push(lastTurn);
+                lastTurn--;
+            }
+        //}
         return arrayTurns;
     }
 
@@ -664,7 +667,6 @@ function printEachSalvo() {
         count = json.ship.length + 1;
     }
 
-
     document.getElementById("count-salvoes").innerHTML= "salvoes availables: " + count;
     $(".cells").click(function() {
         if ($(this).hasClass("send-new-salvo") && count >= 0){
@@ -680,7 +682,7 @@ function printEachSalvo() {
         else {
             alertify.error("No more salvoes availables.");
         }
-        getJson ()
+        getJson ();
     })
 }
 
@@ -745,6 +747,7 @@ function postSalvo(){
             var empty={
                         "error" : "Need to send at least one salvo."
                       }
+            alertify.error("Need to send at least one salvo." );
             if(response.responseText == JSON.stringify(empty)){alertify.error("Need to send at least one salvo")}
             console.log(response.responseText);
         })

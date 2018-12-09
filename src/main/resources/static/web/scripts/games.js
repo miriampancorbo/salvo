@@ -1,4 +1,5 @@
 var app;
+setInterval(function(){location.reload(); }, 180000);
 
 $(function () {
     app = new Vue({
