@@ -9,7 +9,6 @@ import static java.util.stream.Collectors.toList;
 
 @Entity
 public class Salvo {
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -25,14 +24,11 @@ public class Salvo {
     @Column(name="salvoLocation")
     public List<String> salvoLocation = new ArrayList<>();
 
-    //Methods, constructors:
     public Salvo (){}
     public Salvo (int turnNumber, List<String> salvoLocation) {
         this.turnNumber = turnNumber;
         this.salvoLocation = salvoLocation;
     }
-
-    //Generates the salvoDTO from current state
 
     public Map<String, Object> salvoDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
@@ -40,11 +36,9 @@ public class Salvo {
         dto.put("player", this.getGamePlayer().gamePlayerDTO());
         dto.put("locations", this.salvoLocation);
         dto.put("hits", getPlayerHits());
-        //dto.put("sunks", getSunks());
         return dto;
     }
 
-    //Get map of ships with hits that the current player has performed
     public Map<String, List<String>> getPlayerHits() {
         Optional<GamePlayer> opponent = getOpponentGamePlayerOptional();
         return opponent.isPresent() ? getHitsOver(opponent.get(), salvoLocation) : new HashMap<>();
@@ -110,8 +104,6 @@ public class Salvo {
                 .filter(salvo -> salvo.getTurnNumber() <= this.getTurnNumber())
                 .forEach(salvo -> allSalvoes.addAll(salvo.getSalvoLocation()));
         List<Map<String, Object>> allSinks = new ArrayList<>();
-
-        //if (opponentGamePlayer.isPresent()) {
         allSinks =
                 this.gamePlayer
                         .getShips()
@@ -119,7 +111,6 @@ public class Salvo {
                         .filter(ship -> allSalvoes.containsAll(ship.getShipLocation()))
                         .map(Ship::shipDTO)
                         .collect(toList());
-        //}
         return allSinks;
     }
 
@@ -156,63 +147,7 @@ public class Salvo {
         dto.put("lefts", 5 - this.getPlayerSunks().size());
         return dto;
     }
-/*    public List<Map<String, Integer>> opponentNumberSunks() {
-        Optional<GamePlayer> opponentGamePlayer = getOpponentGamePlayerOptional();
-        List <String> allSalvoes= new ArrayList<>();
-        Integer numberOfSunks = 5;
-        return numberOfSunks;
-        /*
-        this.gamePlayer.getSalvoes()
-                .stream()
-                .filter(salvo -> salvo.getTurnNumber() <= this.getTurnNumber())
-                .forEach(salvo -> allSalvoes.addAll(salvo.getSalvoLocation()));
-        List<Map<String, Object>> allSinks = new ArrayList<>();
 
-        if (opponentGamePlayer.isPresent()) {
-            allSinks =
-                    opponentGamePlayer
-                            .get()
-                            .getShips()
-                            .stream()
-                            .filter(ship -> allSalvoes.containsAll(ship.getShipLocation()))
-                            .map(Ship::shipDTO)
-                            .collect(toList());
-        }
-        return allSinks;*/
-    //}
-
-        /*
-    }
-    private List<String> checkBoatPerHit() {
-
-
-        this.gamePlayer.getSalvoes().stream().map(salvo -> salvo.getSalvoLocation().stream().map(cell -> allSalvoes.add(cell) ));
-
-        Optional<GamePlayer> opponentGamePlayer = this.getGamePlayer().getGame().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() !=this.getGamePlayer().getId()).findFirst();
-        opponentGamePlayer.get().getShips().stream().map(ship -> )
-        return allSalvoes;*/
-    /*public Map<String, Object> salvoOpponentTurnDTO(){
-        Map<String,Object> dto = new LinkedHashMap<>();
-        long currentGamePlayer = this.getGamePlayer().getId();
-        Optional<GamePlayer>  opponentGamePlayer;*/
-        /*if(this.getGamePlayer().getGame().getGamePlayers().size()==2) {
-            opponentGamePlayer = this.getGamePlayer().getPlayer().gamePlayers.stream().filter(gamePlayer -> gamePlayer.getId() != currentGamePlayer).findFirst();
-        }
-        else {opponentGamePlayer =null;}*/
-        /*dto.put("turnNumber" , this.turnNumber);
-        dto.put("boatType" ,  this.getGamePlayer().getShips());
-        dto.put("numberOfHits" ,  this.hitsDTO());
-        dto.put("sunk" ,  "");
-        dto.put("opponentGamePlayer" ,  "");
-        return dto;
-    }
-    public Map<String, Object> hitsDTO() {
-        Map<String, Object> dto = new LinkedHashMap<>();
-
-        return dto;
-    }*/
-
-    //Set and get
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
 

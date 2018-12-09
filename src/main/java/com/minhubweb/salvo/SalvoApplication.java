@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -16,7 +15,7 @@ import java.util.*;
 public class SalvoApplication {
 
     @Autowired
-    PasswordEncoder passwordEncoder; //PaswordEncoder es una interfaz que puede ser implementada por ciertas Class
+    PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 

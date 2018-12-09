@@ -11,7 +11,6 @@ import java.util.Map;
 @Entity
 public class Ship {
 
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -27,15 +26,12 @@ public class Ship {
     @Column(name="shipLocation")
     public List<String> shipLocation = new ArrayList<>();
 
-
-    //Methods, constructors:
     public Ship (){}
     public Ship (ShipType type, List<String> shipLocation) {
         this.shipType = type;
         this.shipLocation = shipLocation;
     }
 
-    //Methods, others:
     public Map<String, Object> shipDTO(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("type", this.getShipType());
@@ -43,8 +39,6 @@ public class Ship {
         return dto;
     }
 
-
-    //Set and get:
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
 

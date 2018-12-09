@@ -14,7 +14,6 @@ import static java.util.stream.Collectors.toList;
 @Entity
 public class Game{
 
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -22,7 +21,6 @@ public class Game{
 
     private LocalDateTime date; //LocalDateTime= tipo de variable
 
-    //Methods, constructor:
     public Game(){
         this.date = LocalDateTime.now();
     }
@@ -31,7 +29,6 @@ public class Game{
         this.date = date;
     }
 
-    //Methods, others:
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<GamePlayer> gamePlayers;
 
@@ -65,7 +62,6 @@ public class Game{
         return dto;
     }
 
-    //Set and get:
     public void setId(long id) {this.id = id;}
     public long getId() {return id;}
 

@@ -15,10 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-    @Autowired  //Spring hará nuevos objetos de tipo playerRepository. Busca una class ya creada que se llame así y se lo paso. Inyección de dependencia
-    PlayerRepository playerRepository; ///inyección de dependencia. Spring crea un new pr o ve si hay creados
+    @Autowired
+    PlayerRepository playerRepository;
 
-    @Bean //Guarda en memoria ese método para usarlo cuando se necesite
+    @Bean
     public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
 
     @Override

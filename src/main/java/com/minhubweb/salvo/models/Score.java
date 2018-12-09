@@ -11,7 +11,6 @@ import java.util.Map;
 @Entity
 public class Score {
 
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -29,7 +28,6 @@ public class Score {
     @JoinColumn(name="game_id")
     private Game game;
 
-    //Methods, constructors
     public Score(){};
 
     public Score(Game game, Player player,  int points, LocalDateTime finishDate) {
@@ -55,8 +53,6 @@ public class Score {
         dto.put("finishDates", this.getFinishDate());
         return dto;
     }
-
-    //Set and get
 
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}

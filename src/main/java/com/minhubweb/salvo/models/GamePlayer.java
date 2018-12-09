@@ -8,11 +8,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
 @Entity
 public class GamePlayer {
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -38,8 +35,6 @@ public class GamePlayer {
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Salvo> salvoes = new HashSet<>();
 
-
-    //Methods, constructors
     public GamePlayer(){}
 
     public GamePlayer(Game game, Player player, LocalDateTime joinDate, Set<Ship> ships, Set<Salvo> salvoes) {
@@ -60,7 +55,6 @@ public class GamePlayer {
         this.addShips(ships);
         this.addSalvoes(salvoes);
     }
-    //Methods, others
     public void addShips(Set<Ship> ships){
         ships.stream().forEach(ship -> {
             ship.setGamePlayer(this);
@@ -148,18 +142,10 @@ public class GamePlayer {
 
 
     public  void updateState(GamePlayer opponent, int turn){
-        // I am second player
         if (this.getId() > opponent.getId()) {
             int playerSunks = this.getNumberOfSunkInTurn(turn);
             int opponentSunks = opponent.getNumberOfSunkInTurn(turn);
             LocalDateTime now = LocalDateTime.now();
-
-    /*public  void updateState(GamePlayer current, GamePlayer opponent, int turn){
-         I am second player
-        if (current.getId() > opponent.getId()) {
-            int playerSunks = current.getNumberOfSunkInTurn(turn);
-            int opponentSunks = opponent.getNumberOfSunkInTurn(turn);
-            LocalDateTime now = LocalDateTime.now();*/
 
             if (playerSunks == 5 && opponentSunks == 5) {
                 this.setState(State.TIE);
@@ -187,10 +173,6 @@ public class GamePlayer {
         }
     }
 
-
-
-
-
     public Map<String, Object> gamePlayerId(){
         Map<String,Object> dto = new LinkedHashMap<>();
         dto.put("id", this.getId());
@@ -199,7 +181,6 @@ public class GamePlayer {
 
     public Optional<Score> getScore(){return this.player.getGameScore(this.game);}
 
-    //Set and get
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
 

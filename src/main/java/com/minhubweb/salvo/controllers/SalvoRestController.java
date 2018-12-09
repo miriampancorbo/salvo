@@ -205,8 +205,6 @@ public class SalvoRestController {
         if (salvo.getSalvoLocation().size()==0) {
             return new ResponseEntity<>(makeMap(Messages.KEY_ERROR, Messages.MSG_ERROR_SEND_AT_LEAST_ONE_SALVO), HttpStatus.FORBIDDEN);//403
         }
-        if(salvo.getSalvoLocation().size() > currentGamePlayer.get().getShips().size()){ //AQUI RESTAR EL Sinks
-        }
 
         salvo.setTurnNumber(currentTurn);
         currentGamePlayer.get().addSalvo(salvo);

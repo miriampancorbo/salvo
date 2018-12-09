@@ -1,9 +1,5 @@
 package com.minhubweb.salvo.models;
-
-import com.minhubweb.salvo.repositories.PlayerRepository;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -12,7 +8,6 @@ import static java.util.stream.Collectors.toList;
 @Entity
 public class Player {
 
-    //Properties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -20,14 +15,8 @@ public class Player {
 
     private String userName;
 
-    //@Autowire
-    //PasswordEncoder passwordEncoder;
     private String password;
 
-    /*@Autowired
-    private PlayerRepository playerRepository;*/
-
-    //Methods, constructors:
     public Player(){ }
 
     public Player(String userName, String password) {
@@ -35,7 +24,6 @@ public class Player {
         this.password = password;
     }
 
-    //Methods, others:
     @OneToMany(mappedBy="player", fetch= FetchType.EAGER, cascade = CascadeType.ALL)
     Set<GamePlayer> gamePlayers;
 
@@ -75,7 +63,6 @@ public class Player {
 
     public Optional<Score> getGameScore(Game game){return scores.stream().filter(score -> score.getGame().getId() == game.getId()).findAny();}
 
-    //Set and get:
     public void setId(long id) {this.id = id;}
     public long getId() {return id;}
 
