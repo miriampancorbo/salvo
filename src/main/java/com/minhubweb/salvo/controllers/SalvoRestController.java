@@ -148,7 +148,6 @@ public class SalvoRestController {
 
 
         currentGamePlayer.get().addShips(ships);
-        // currentGamePlayer.get().setStateInGamePlayer(currentGamePlayer, opponentGamePlayer, currentGamePlayer.get().getSalvoes());
         if (opponentGamePlayer.isPresent() && !opponentGamePlayer.get().getShips().isEmpty()) {
             if (currentGamePlayer.get().getId() < opponentGamePlayer.get().getId()) {
                 currentGamePlayer.get().setState(State.PLAY);

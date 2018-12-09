@@ -114,16 +114,13 @@ button.disabled:hover {
     font-size: 150%;
     border: none;
 }
+
 .saveShipsButton:hover {
     background-color:#ad7b08;
     border: none;
     font-size:160%;
  }
 
-/*table, td, th{
-    border: 1px solid blue;
-    padding: 0;
-}*/
 .table-history{
     margin-left:auto;
     margin-right:auto;
@@ -166,7 +163,6 @@ button.disabled:hover {
 }
 
 .my-salvo{
-    /*background-color:red;*/
     color:red;
     font-size:120%;
     font-weight:bold;
@@ -182,6 +178,7 @@ button.disabled:hover {
     color:yellowgreen;
     font-weight:bold;
 }
+
 .title-players{
     font-size:450%;
     margin-bottom:0;
@@ -194,19 +191,17 @@ button.disabled:hover {
     height: 45px !important;
     border: 0px solid yellow;
 }
+
 .table-opponent {
     position: absolute;
     margin-top:-450px;
 }
-/*--------------------------------------------------DESAPARECER MIS GRILLAS*/
 
 .hideGrid{
     display:none;
 }
 
-/*------------------------------------------------ STYLE.CSS*/
-
-.grid-ships{                                                                /*mi grilla*/
+.grid-ships{
     height: 540px;
     width: 540px;
     padding: 45px;
@@ -214,7 +209,7 @@ button.disabled:hover {
     margin-bottom:50px;
     margin-top:5%;
 }
-.grid-ships-opponent{                                                       /*grilla oponente*/
+.grid-ships-opponent{
     height: 540px;
     width: 540px;
     padding: 45px;
@@ -222,15 +217,9 @@ button.disabled:hover {
     margin-top:5%;
 }
 
-#grid-two{                                                                  /*lugar barcos inicio*/
+#grid-two{
     height: 270px;
     width: 270px;
-    /*border: 1px solid red; PARA COMPROBAR SI ES POSIBLE O NO ENVIAR SALVOES"*/
-}
-
-/*------------------------------------ BARCOS -----------------------------------------------------*/
-.grid-stack {
-    /*background-color:pink;*/
 }
 
 .grid-stack-item-content {
@@ -239,7 +228,6 @@ button.disabled:hover {
     cursor: -moz-grab;
     text-align: center;
 }
-
 
 .aircraftHorizontal{
     background-image: url('../dist/aircraftHorizontal.png');
@@ -304,11 +292,6 @@ button.disabled:hover {
     background-color: green;
 }
 
-
-
-
-/**--sunks*/
-
 .aircraftHorizontalSunk{
     background-image: url('../dist/aircraftHorizontalSunk.png');
     background-size: contain;
@@ -371,9 +354,6 @@ button.disabled:hover {
     width: 45px !important;
     background-color: green;
 }
-
-
-
 
 .gameOver {
     font-size: 900%;

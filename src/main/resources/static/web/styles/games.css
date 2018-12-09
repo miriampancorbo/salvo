@@ -1,16 +1,13 @@
 body{
     font-family: 'Krub', sans-serif;
-    /*background-color:rgb(214, 229, 255);*/
-    /*background-image: linear-gradient(to right, orange , white,orange);*/
     background: url('../photos/fondo21.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     padding-top: 2%;
-    /*height: 100%;
-    width: 100%;*/
 }
+
 .invalid-button{
     background-color:grey;
 }
@@ -41,10 +38,6 @@ form{
     padding-left:20%;
     color:white;
     font-size:150%;
-    /*margin-right:5px;
-    align: right;
-    margin-top: -6.5%;
-    position:fixed;*/
 }
 
 #firstSignupButton, #firstLoginButton {
@@ -115,11 +108,13 @@ form{
     font-size: 150%;
     border: none;
 }
+
  #newGameButton:hover {
     background-color:#ad7b08;
     border: none;
     font-size:160%;
  }
+
 .joinButton {
     background-color: #085104;
     margin-left: 2%;
@@ -146,18 +141,19 @@ input {
 .active-access{
     background-color:#ff9933;
 }
+
 #greeting{
-    /*font-family: 'Syncopate', sans-serif;*/
     font-size:550%;
 }
+
 .myBattleList{
     color:red;
 }
+
 .noMyBattles{
     color:blue;
 }
 
-/*TABLES*/
  table{
     margin-left:auto;
     margin-right:auto;
@@ -165,9 +161,6 @@ input {
     margin-bottom:3%;
     font-weight:bold;
     border:none;
-    /*width:85%*/
-    /*border-collapse:collapse;
-    border:1px solid #004d4d;*/
 }
 
 td{
@@ -187,6 +180,7 @@ td{
     background:#D7D4D4;
     opacity:0.95;
 }
+
 #table-scores th{
     padding:2% 5%;
     text-align:center;
